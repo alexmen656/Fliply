@@ -3,11 +3,13 @@
         <!-- Header -->
         <header class="bg-gradient-to-br from-[#4255FF] to-indigo-600 px-4 pt-8 pb-12">
             <div class="flex flex-col items-center">
-                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center text-4xl mb-3 shadow-lg">
+                <button @click="editProfile" class="w-24 h-24 bg-white rounded-full flex items-center justify-center text-4xl mb-3 shadow-lg relative group">
                     👤
-                </div>
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-active:bg-opacity-10 rounded-full transition"></div>
+                </button>
                 <h1 class="text-2xl font-bold text-white mb-1">Max Mustermann</h1>
                 <p class="text-white opacity-90 text-sm">max@example.com</p>
+                <button @click="editProfile" class="mt-2 text-white text-sm underline">Profil bearbeiten</button>
             </div>
         </header>
 
@@ -122,7 +124,7 @@ const settings = ref([
         iconPath: 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9',
         iconBg: 'bg-blue-100',
         iconColor: 'text-blue-600',
-        action: () => console.log('Notifications')
+        action: () => router.push('/settings/notifications')
     },
     {
         id: 2,
@@ -130,7 +132,7 @@ const settings = ref([
         iconPath: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4',
         iconBg: 'bg-green-100',
         iconColor: 'text-green-600',
-        action: () => console.log('Goals')
+        action: () => router.push('/settings/goals')
     },
     {
         id: 3,
@@ -138,7 +140,7 @@ const settings = ref([
         iconPath: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01',
         iconBg: 'bg-purple-100',
         iconColor: 'text-purple-600',
-        action: () => console.log('Appearance')
+        action: () => router.push('/settings/appearance')
     },
     {
         id: 4,
@@ -146,7 +148,7 @@ const settings = ref([
         iconPath: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
         iconBg: 'bg-orange-100',
         iconColor: 'text-orange-600',
-        action: () => console.log('Help')
+        action: () => router.push('/settings/help')
     },
     {
         id: 5,
@@ -154,9 +156,20 @@ const settings = ref([
         iconPath: 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1',
         iconBg: 'bg-red-100',
         iconColor: 'text-red-600',
-        action: () => console.log('Logout')
+        action: () => logout()
     }
 ])
+
+const editProfile = () => {
+    router.push('/edit-profile')
+}
+
+const logout = () => {
+    if (confirm('Möchtest du dich wirklich abmelden?')) {
+        console.log('Logging out...')
+        router.push('/home')
+    }
+}
 
 const navItems = ref([
     {

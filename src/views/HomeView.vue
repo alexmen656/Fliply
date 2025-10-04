@@ -7,7 +7,7 @@
                     <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
                     </svg>
-                    <span class="text-white text-xl font-bold">Quizlet</span>
+                    <span class="text-white text-xl font-bold">Fliply</span>
                 </div>
                 <button class="text-white p-2">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

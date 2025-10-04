@@ -4,6 +4,13 @@ import LibraryView from '../views/LibraryView.vue'
 import CreateView from '../views/CreateView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import SetDetailView from '../views/SetDetailView.vue'
+import FlashcardView from '../views/FlashcardView.vue'
+import EditSetView from '../views/EditSetView.vue'
+import EditProfileView from '../views/EditProfileView.vue'
+import NotificationsView from '../views/settings/NotificationsView.vue'
+import GoalsView from '../views/settings/GoalsView.vue'
+import AppearanceView from '../views/settings/AppearanceView.vue'
+import HelpView from '../views/settings/HelpView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +43,41 @@ const router = createRouter({
       path: '/set/:id',
       name: 'set-detail',
       component: SetDetailView,
+    },
+    {
+      path: '/flashcards/:id',
+      name: 'flashcards',
+      component: FlashcardView,
+    },
+    {
+      path: '/edit-set/:id',
+      name: 'edit-set',
+      component: EditSetView,
+    },
+    {
+      path: '/edit-profile',
+      name: 'edit-profile',
+      component: EditProfileView,
+    },
+    {
+      path: '/settings/notifications',
+      name: 'notifications',
+      component: NotificationsView,
+    },
+    {
+      path: '/settings/goals',
+      name: 'goals',
+      component: GoalsView,
+    },
+    {
+      path: '/settings/appearance',
+      name: 'appearance',
+      component: AppearanceView,
+    },
+    {
+      path: '/settings/help',
+      name: 'help',
+      component: HelpView,
     },
   ],
 })
