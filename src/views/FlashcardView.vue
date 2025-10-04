@@ -5,7 +5,8 @@
             <div class="flex items-center justify-between">
                 <button @click="$router.back()" class="text-gray-600">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
                 <div class="text-center">
@@ -13,7 +14,8 @@
                 </div>
                 <button @click="shuffleCards" class="text-gray-600">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                 </button>
             </div>
@@ -21,7 +23,7 @@
             <!-- Progress Bar -->
             <div class="mt-4">
                 <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div class="h-full bg-[#4255FF] rounded-full transition-all" 
+                    <div class="h-full bg-[#4255FF] rounded-full transition-all"
                         :style="{ width: ((currentCardIndex + 1) / cards.length * 100) + '%' }">
                     </div>
                 </div>
@@ -31,12 +33,9 @@
         <!-- Flashcard -->
         <main class="flex-1 flex items-center justify-center px-6 py-8">
             <div class="w-full max-w-md">
-                <div 
-                    @click="flipCard"
-                    class="flashcard-container"
-                    :class="{ 'flipped': isFlipped }"
-                >
-                    <div class="flashcard bg-white rounded-3xl shadow-2xl p-8 min-h-[400px] flex items-center justify-center cursor-pointer">
+                <div @click="flipCard" class="flashcard-container" :class="{ 'flipped': isFlipped }">
+                    <div
+                        class="flashcard bg-white rounded-3xl shadow-2xl p-8 min-h-[400px] flex items-center justify-center cursor-pointer">
                         <div class="flashcard-front" v-show="!isFlipped">
                             <div class="text-center">
                                 <div class="text-sm text-gray-500 mb-4">Vorderseite</div>
@@ -61,30 +60,20 @@
         <!-- Bottom Controls -->
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 safe-area-inset">
             <div class="flex items-center justify-between gap-4">
-                <button 
-                    @click="previousCard" 
-                    :disabled="currentCardIndex === 0"
-                    :class="[
-                        'flex-1 py-4 rounded-xl font-semibold transition',
-                        currentCardIndex === 0 
-                            ? 'bg-gray-200 text-gray-400' 
-                            : 'bg-gray-100 text-gray-800 active:scale-95'
-                    ]"
-                >
+                <button @click="previousCard" :disabled="currentCardIndex === 0" :class="[
+                    'flex-1 py-4 rounded-xl font-semibold transition',
+                    currentCardIndex === 0
+                        ? 'bg-gray-200 text-gray-400'
+                        : 'bg-gray-100 text-gray-800 active:scale-95'
+                ]">
                     ← Zurück
                 </button>
-                <button 
-                    v-if="currentCardIndex < cards.length - 1"
-                    @click="nextCard" 
-                    class="flex-1 bg-[#4255FF] text-white py-4 rounded-xl font-semibold active:scale-95 transition"
-                >
+                <button v-if="currentCardIndex < cards.length - 1" @click="nextCard"
+                    class="flex-1 bg-[#4255FF] text-white py-4 rounded-xl font-semibold active:scale-95 transition">
                     Weiter →
                 </button>
-                <button 
-                    v-else
-                    @click="finishSession" 
-                    class="flex-1 bg-green-500 text-white py-4 rounded-xl font-semibold active:scale-95 transition"
-                >
+                <button v-else @click="finishSession"
+                    class="flex-1 bg-green-500 text-white py-4 rounded-xl font-semibold active:scale-95 transition">
                     ✓ Fertig
                 </button>
             </div>

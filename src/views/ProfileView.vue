@@ -3,9 +3,12 @@
         <!-- Header -->
         <header class="bg-gradient-to-br from-[#4255FF] to-indigo-600 px-4 pt-8 pb-12">
             <div class="flex flex-col items-center">
-                <button @click="editProfile" class="w-24 h-24 bg-white rounded-full flex items-center justify-center text-4xl mb-3 shadow-lg relative group">
+                <button @click="editProfile"
+                    class="w-24 h-24 bg-white rounded-full flex items-center justify-center text-4xl mb-3 shadow-lg relative group">
                     👤
-                    <div class="absolute inset-0 bg-black bg-opacity-0 group-active:bg-opacity-10 rounded-full transition"></div>
+                    <div
+                        class="absolute inset-0 bg-black bg-opacity-0 group-active:bg-opacity-10 rounded-full transition">
+                    </div>
                 </button>
                 <h1 class="text-2xl font-bold text-white mb-1">Max Mustermann</h1>
                 <p class="text-white opacity-90 text-sm">max@example.com</p>

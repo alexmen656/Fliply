@@ -19,11 +19,10 @@
             <div class="mb-6">
                 <h3 class="font-bold text-gray-800 mb-3">Farbschema</h3>
                 <div class="space-y-3">
-                    <button v-for="theme in themes" :key="theme.id" @click="selectTheme(theme.id)"
-                        :class="[
-                            'w-full flex items-center justify-between p-4 rounded-xl border-2 transition',
-                            selectedTheme === theme.id ? 'border-[#4255FF] bg-blue-50' : 'border-gray-200 bg-white'
-                        ]">
+                    <button v-for="theme in themes" :key="theme.id" @click="selectTheme(theme.id)" :class="[
+                        'w-full flex items-center justify-between p-4 rounded-xl border-2 transition',
+                        selectedTheme === theme.id ? 'border-[#4255FF] bg-blue-50' : 'border-gray-200 bg-white'
+                    ]">
                         <div class="flex items-center gap-3">
                             <div :class="['w-10 h-10 rounded-full', theme.color]"></div>
                             <div class="text-left">
@@ -31,8 +30,11 @@
                                 <div class="text-sm text-gray-500">{{ theme.description }}</div>
                             </div>
                         </div>
-                        <svg v-if="selectedTheme === theme.id" class="w-6 h-6 text-[#4255FF]" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        <svg v-if="selectedTheme === theme.id" class="w-6 h-6 text-[#4255FF]" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
                         </svg>
                     </button>
                 </div>
@@ -65,9 +67,11 @@
                             <div class="font-medium text-gray-800">Animationen</div>
                             <div class="text-sm text-gray-500 mt-1">Reduziere Bewegungen</div>
                         </div>
-                        <button @click="toggleAnimations" 
+                        <button @click="toggleAnimations"
                             :class="['w-12 h-7 rounded-full transition', animations ? 'bg-[#4255FF]' : 'bg-gray-300']">
-                            <div :class="['w-5 h-5 bg-white rounded-full shadow transition-transform', animations ? 'translate-x-6' : 'translate-x-1']"></div>
+                            <div
+                                :class="['w-5 h-5 bg-white rounded-full shadow transition-transform', animations ? 'translate-x-6' : 'translate-x-1']">
+                            </div>
                         </button>
                     </div>
                     <div class="flex items-center justify-between px-4 py-4">
@@ -75,9 +79,11 @@
                             <div class="font-medium text-gray-800">Kompaktansicht</div>
                             <div class="text-sm text-gray-500 mt-1">Mehr Inhalt auf dem Bildschirm</div>
                         </div>
-                        <button @click="toggleCompact" 
+                        <button @click="toggleCompact"
                             :class="['w-12 h-7 rounded-full transition', compactMode ? 'bg-[#4255FF]' : 'bg-gray-300']">
-                            <div :class="['w-5 h-5 bg-white rounded-full shadow transition-transform', compactMode ? 'translate-x-6' : 'translate-x-1']"></div>
+                            <div
+                                :class="['w-5 h-5 bg-white rounded-full shadow transition-transform', compactMode ? 'translate-x-6' : 'translate-x-1']">
+                            </div>
                         </button>
                     </div>
                 </div>

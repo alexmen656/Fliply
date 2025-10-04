@@ -18,12 +18,15 @@
             <!-- Avatar -->
             <div class="flex flex-col items-center mb-8">
                 <div class="relative">
-                    <div class="w-24 h-24 bg-gradient-to-br from-[#4255FF] to-indigo-600 rounded-full flex items-center justify-center text-4xl text-white shadow-lg">
+                    <div
+                        class="w-24 h-24 bg-gradient-to-br from-[#4255FF] to-indigo-600 rounded-full flex items-center justify-center text-4xl text-white shadow-lg">
                         {{ userEmoji }}
                     </div>
-                    <button class="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
+                    <button
+                        class="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
                         <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                         </svg>
                     </button>
                 </div>
@@ -34,13 +37,13 @@
             <div class="space-y-4">
                 <div>
                     <label class="text-sm font-medium text-gray-700 mb-2 block">Name</label>
-                    <input v-model="userName" type="text" 
+                    <input v-model="userName" type="text"
                         class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
                 </div>
 
                 <div>
                     <label class="text-sm font-medium text-gray-700 mb-2 block">E-Mail</label>
-                    <input v-model="userEmail" type="email" 
+                    <input v-model="userEmail" type="email"
                         class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
                 </div>
 
@@ -58,12 +61,13 @@
             </div>
 
             <!-- Emoji Picker -->
-            <div v-if="showEmojiPicker" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click="showEmojiPicker = false">
+            <div v-if="showEmojiPicker"
+                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                @click="showEmojiPicker = false">
                 <div class="bg-white rounded-2xl p-6 m-4 max-w-sm w-full" @click.stop>
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Wähle ein Emoji</h3>
                     <div class="grid grid-cols-5 gap-3">
-                        <button v-for="emoji in emojiList" :key="emoji" 
-                            @click="selectEmoji(emoji)"
+                        <button v-for="emoji in emojiList" :key="emoji" @click="selectEmoji(emoji)"
                             class="text-4xl p-3 hover:bg-gray-100 rounded-xl active:scale-95 transition">
                             {{ emoji }}
                         </button>

@@ -18,7 +18,7 @@
             <!-- Set Info -->
             <div class="mb-6">
                 <label class="text-sm font-medium text-gray-700 mb-2 block">Set-Titel</label>
-                <input v-model="setTitle" type="text" 
+                <input v-model="setTitle" type="text"
                     class="w-full text-xl font-bold text-gray-800 bg-white rounded-xl px-4 py-4 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
             </div>
 
@@ -62,7 +62,8 @@
 
         <!-- Bottom Action Bar -->
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4 safe-area-inset">
-            <button @click="deleteSet" class="w-full bg-red-500 text-white font-bold py-4 rounded-xl active:scale-98 transition">
+            <button @click="deleteSet"
+                class="w-full bg-red-500 text-white font-bold py-4 rounded-xl active:scale-98 transition">
                 Set löschen
             </button>
         </div>

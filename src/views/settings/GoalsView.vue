@@ -48,7 +48,7 @@
             <!-- Study Time -->
             <div class="bg-white rounded-xl p-5 shadow-sm">
                 <h3 class="font-bold text-gray-800 mb-3">Bevorzugte Lernzeit</h3>
-                <select v-model="studyTime" 
+                <select v-model="studyTime"
                     class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-[#4255FF]">
                     <option value="morning">Morgens (6-12 Uhr)</option>
                     <option value="afternoon">Nachmittags (12-18 Uhr)</option>

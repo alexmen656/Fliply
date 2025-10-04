@@ -22,9 +22,11 @@
                         <div class="font-medium text-gray-800">{{ item.title }}</div>
                         <div class="text-sm text-gray-500 mt-1">{{ item.description }}</div>
                     </div>
-                    <button @click="toggleNotification(item.id)" 
+                    <button @click="toggleNotification(item.id)"
                         :class="['w-12 h-7 rounded-full transition', item.enabled ? 'bg-[#4255FF]' : 'bg-gray-300']">
-                        <div :class="['w-5 h-5 bg-white rounded-full shadow transition-transform', item.enabled ? 'translate-x-6' : 'translate-x-1']"></div>
+                        <div
+                            :class="['w-5 h-5 bg-white rounded-full shadow transition-transform', item.enabled ? 'translate-x-6' : 'translate-x-1']">
+                        </div>
                     </button>
                 </div>
             </div>
