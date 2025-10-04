@@ -100,7 +100,7 @@ const cards = ref([
     { front: 'No', back: 'Nein' }
 ])
 
-const currentCard = computed(() => cards.value[currentCardIndex.value])
+const currentCard = computed(() => cards.value[currentCardIndex.value] as { front: string; back: string })
 
 const flipCard = () => {
     isFlipped.value = !isFlipped.value
