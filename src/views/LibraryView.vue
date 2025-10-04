@@ -22,7 +22,7 @@
             </div>
         </header>
         <main class="flex-1 overflow-y-auto pb-20 px-4 py-5">
-            \ <div v-if="activeTab === 'mySets'" class="space-y-3">
+            <div v-if="activeTab === 'mySets'" class="space-y-3">
                 <div v-for="set in mySets" :key="set.id" @click="openSet(set.id)"
                     class="bg-white rounded-xl p-4 shadow-sm active:scale-98 transition cursor-pointer">
                     <div class="flex items-start justify-between mb-3">
