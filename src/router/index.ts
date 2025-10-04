@@ -11,6 +11,8 @@ import NotificationsView from '../views/settings/NotificationsView.vue'
 import GoalsView from '../views/settings/GoalsView.vue'
 import AppearanceView from '../views/settings/AppearanceView.vue'
 import HelpView from '../views/settings/HelpView.vue'
+import OnboardingView from '../views/OnboardingView.vue'
+import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +20,11 @@ const router = createRouter({
     {
       path: '/',
       redirect: '/home',
+    },
+    {
+      path: '/onboarding',
+      name: 'onboarding',
+      component: OnboardingView,
     },
     {
       path: '/home',
@@ -80,6 +87,19 @@ const router = createRouter({
       component: HelpView,
     },
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore()
+  const needsOnboarding = userStore.checkOnboardingStatus()
+
+  if (needsOnboarding && to.path !== '/onboarding') {
+    next('/onboarding')
+  } else if (!needsOnboarding && to.path === '/onboarding') {
+    next('/home')
+  } else {
+    next()
+  }
 })
 
 export default router
