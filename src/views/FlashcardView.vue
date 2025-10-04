@@ -84,9 +84,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useStreakStore } from '@/stores/streak'
 
 const router = useRouter()
 const route = useRoute()
+const streakStore = useStreakStore()
 
 const currentCardIndex = ref(0)
 const isFlipped = ref(false)
@@ -127,6 +129,8 @@ const shuffleCards = () => {
 }
 
 const finishSession = () => {
+    // Record study session when user finishes
+    streakStore.recordStudySession()
     router.push('/home')
 }
 </script>
