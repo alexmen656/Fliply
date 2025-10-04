@@ -110,8 +110,8 @@
     </header>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+<script lang="ts">
+import { ref, computed, onMounted, onUnmounted, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import { useNotificationsStore, type Notification as NotificationType } from '@/stores/notifications'
 
@@ -123,102 +123,107 @@ interface SearchResult {
     icon: string
 }
 
-const router = useRouter()
-const notificationsStore = useNotificationsStore()
+export default {
+    setup() {
+        const instance = getCurrentInstance()
+        const $axios = instance?.appContext.config.globalProperties.$axios
+        const router = useRouter()
+        const notificationsStore = useNotificationsStore()
 
-const searchQuery = ref('')
-const showSearchResults = ref(false)
-const isSearching = ref(false)
-const searchResults = ref<SearchResult[]>([])
+        const searchQuery = ref('')
+        const showSearchResults = ref(false)
+        const isSearching = ref(false)
+        const searchResults = ref<SearchResult[]>([])
 
-const allSets = ref<SearchResult[]>([
-    { id: 1, title: 'Exercise 1&2', cards: 62, author: 'Expert teacher', icon: '📚' },
-    { id: 2, title: 'Deutsch Vokabeln A2', cards: 124, author: 'Maria Schmidt', icon: '🇩🇪' },
-    { id: 3, title: 'Geschichte: Mittelalter', cards: 89, author: 'Prof. Weber', icon: '🏰' },
-    { id: 4, title: 'Mathematik: Algebra', cards: 156, author: 'Dr. Müller', icon: '📐' },
-    { id: 5, title: 'Englisch: Business', cards: 203, author: 'John Smith', icon: '🇬🇧' },
-    { id: 6, title: 'Biologie: Zellen', cards: 78, author: 'Prof. Schmidt', icon: '🧬' },
-    { id: 7, title: 'Chemie: Periodensystem', cards: 118, author: 'Dr. Fischer', icon: '⚗️' },
-    { id: 8, title: 'Physik: Mechanik', cards: 94, author: 'Prof. Einstein', icon: '⚛️' },
-    { id: 9, title: 'Spanisch: Grundlagen', cards: 167, author: 'Carmen Rodriguez', icon: '🇪🇸' },
-    { id: 10, title: 'Geographie: Europa', cards: 132, author: 'Dr. Wagner', icon: '🌍' }
-])
+        const allSets = ref<SearchResult[]>([])
+        $axios.get('/api/expert-sets').then((response: any) => {
+            allSets.value = response.data
+        })
 
-const showNotifications = ref(false)
-const notifications = computed(() => notificationsStore.notifications)
-const unreadCount = computed(() => notificationsStore.unreadCount)
+        const showNotifications = ref(false)
+        const notifications = computed(() => notificationsStore.notifications)
+        const unreadCount = computed(() => notificationsStore.unreadCount)
 
-let searchTimeout: ReturnType<typeof setTimeout> | null = null
-const handleSearch = () => {
-    if (searchTimeout) {
-        clearTimeout(searchTimeout)
+        let searchTimeout: ReturnType<typeof setTimeout> | null = null
+        const handleSearch = () => {
+            if (searchTimeout) clearTimeout(searchTimeout)
+
+            if (searchQuery.value.trim() === '') {
+                searchResults.value = []
+                return
+            }
+
+            isSearching.value = true
+            searchTimeout = setTimeout(() => {
+                const query = searchQuery.value.toLowerCase()
+                searchResults.value = allSets.value.filter(set =>
+                    set.title.toLowerCase().includes(query) ||
+                    set.author.toLowerCase().includes(query)
+                )
+                isSearching.value = false
+            }, 300)
+        }
+
+        const selectResult = (result: SearchResult) => {
+            router.push(`/set/${result.id}`)
+            searchQuery.value = ''
+            searchResults.value = []
+            showSearchResults.value = false
+        }
+
+        const toggleNotifications = () => {
+            showNotifications.value = !showNotifications.value
+            if (showNotifications.value) {
+                showSearchResults.value = false
+            }
+        }
+
+        const markAllAsRead = () => {
+            notificationsStore.markAllAsRead()
+        }
+
+        const handleNotificationClick = (notification: NotificationType) => {
+            notificationsStore.markAsRead(notification.id)
+            showNotifications.value = false
+            if (notification.link) router.push(notification.link)
+        }
+
+        const closeDropdowns = () => {
+            showNotifications.value = false
+            showSearchResults.value = false
+        }
+
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') closeDropdowns()
+        }
+
+        onMounted(() => {
+            document.addEventListener('keydown', handleEscape)
+        })
+
+        onUnmounted(() => {
+            document.removeEventListener('keydown', handleEscape)
+            if (searchTimeout) clearTimeout(searchTimeout)
+        })
+
+        return {
+            searchQuery,
+            showSearchResults,
+            isSearching,
+            searchResults,
+            allSets,
+            showNotifications,
+            notifications,
+            unreadCount,
+            handleSearch,
+            selectResult,
+            toggleNotifications,
+            markAllAsRead,
+            handleNotificationClick,
+            closeDropdowns
+        }
     }
-
-    if (searchQuery.value.trim() === '') {
-        searchResults.value = []
-        return
-    }
-
-    isSearching.value = true
-
-    searchTimeout = setTimeout(() => {
-        const query = searchQuery.value.toLowerCase()
-        searchResults.value = allSets.value.filter(set =>
-            set.title.toLowerCase().includes(query) ||
-            set.author.toLowerCase().includes(query)
-        )
-        isSearching.value = false
-    }, 300)
 }
-
-const selectResult = (result: SearchResult) => {
-    router.push(`/set/${result.id}`)
-    searchQuery.value = ''
-    searchResults.value = []
-    showSearchResults.value = false
-}
-
-const toggleNotifications = () => {
-    showNotifications.value = !showNotifications.value
-    if (showNotifications.value) {
-        showSearchResults.value = false
-    }
-}
-
-const markAllAsRead = () => {
-    notificationsStore.markAllAsRead()
-}
-
-const handleNotificationClick = (notification: NotificationType) => {
-    notificationsStore.markAsRead(notification.id)
-    showNotifications.value = false
-
-    if (notification.link) {
-        router.push(notification.link)
-    }
-}
-
-const closeDropdowns = () => {
-    showNotifications.value = false
-    showSearchResults.value = false
-}
-
-const handleEscape = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-        closeDropdowns()
-    }
-}
-
-onMounted(() => {
-    document.addEventListener('keydown', handleEscape)
-})
-
-onUnmounted(() => {
-    document.removeEventListener('keydown', handleEscape)
-    if (searchTimeout) {
-        clearTimeout(searchTimeout)
-    }
-})
 </script>
 
 <style scoped>
