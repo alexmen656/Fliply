@@ -39,9 +39,30 @@
             <section class="mb-6">
                 <h2 class="text-lg font-bold text-gray-800 mb-3">Errungenschaften</h2>
                 <div class="grid grid-cols-3 gap-3">
-                    <div v-for="badge in badges" :key="badge.id" class="bg-white rounded-xl p-3 shadow-sm text-center">
-                        <div class="text-3xl mb-1">{{ badge.icon }}</div>
-                        <div class="text-xs font-medium text-gray-700">{{ badge.name }}</div>
+                    <div v-for="badge in achievementsStore.achievements" :key="badge.id" :class="[
+                        'rounded-xl p-3 shadow-sm text-center transition',
+                        badge.unlocked
+                            ? 'bg-white'
+                            : 'bg-gray-100 opacity-60'
+                    ]">
+                        <div :class="[
+                            'text-3xl mb-1',
+                            !badge.unlocked && 'grayscale opacity-40'
+                        ]">
+                            {{ badge.icon }}
+                        </div>
+                        <div :class="[
+                            'text-xs font-medium',
+                            badge.unlocked ? 'text-gray-700' : 'text-gray-400'
+                        ]">
+                            {{ badge.name }}
+                        </div>
+                        <div v-if="badge.unlocked" class="mt-1">
+                            <span class="text-[10px] text-green-600">✓</span>
+                        </div>
+                        <div v-else class="mt-1">
+                            <span class="text-[10px] text-gray-400">🔒</span>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -87,12 +108,14 @@ import { useRouter } from 'vue-router'
 import BottomNavigation from '@/components/BottomNavigation.vue'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
+import { useAchievementsStore } from '@/stores/achievements'
 import { Preferences } from '@capacitor/preferences'
 import axios from '@/axios'
 
 const router = useRouter()
 const userStore = useUserStore()
 const setsStore = useSetsStore()
+const achievementsStore = useAchievementsStore()
 
 const totalSets = computed(() => setsStore.mySets.length)
 const totalCards = ref(0)
@@ -141,6 +164,9 @@ onMounted(async () => {
         }
     }
 
+    await achievementsStore.loadFromStorage()
+    await achievementsStore.checkAndUnlockAchievements()
+
     isLoadingStats.value = false
 })
 
@@ -149,7 +175,7 @@ const updateTotalCards = async (count: number) => {
     await Preferences.set({ key: 'fliply_total_cards', value: count.toString() })
 }
 
-const badges = ref([
+const badges_old = ref([
     { id: 1, icon: '🏆', name: 'Starter' },
     { id: 2, icon: '🔥', name: '7 Tage' },
     { id: 3, icon: '⭐', name: 'Top Lerner' },

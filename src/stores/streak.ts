@@ -87,6 +87,14 @@ export const useStreakStore = defineStore('streak', () => {
     }
 
     await saveToStorage()
+
+    try {
+      const { useAchievementsStore } = await import('./achievements')
+      const achievementsStore = useAchievementsStore()
+      await achievementsStore.checkAndUnlockAchievements()
+    } catch (error) {
+      console.error('Error checking achievements:', error)
+    }
   }
 
   const checkStreak = async () => {

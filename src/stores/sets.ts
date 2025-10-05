@@ -198,6 +198,14 @@ export const useSetsStore = defineStore('sets', () => {
         totalCards += typeof set.cards === 'number' ? set.cards : (set.cards as any[]).length
       }
       await Preferences.set({ key: 'fliply_total_cards', value: totalCards.toString() })
+
+      try {
+        const { useAchievementsStore } = await import('./achievements')
+        const achievementsStore = useAchievementsStore()
+        await achievementsStore.checkAndUnlockAchievements()
+      } catch (error) {
+        console.error('Error checking achievements:', error)
+      }
     } catch (error) {
       console.error('Error updating total cards count:', error)
     }

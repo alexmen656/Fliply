@@ -93,23 +93,41 @@
             <section class="px-4 py-5">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-lg font-bold text-gray-800">Achievements</h2>
-                    <button class="text-[#4255FF] text-sm font-semibold">View all</button>
+                    <button @click="router.push('/profile')" class="text-[#4255FF] text-sm font-semibold">View
+                        all</button>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white rounded-xl p-4 shadow-sm text-center">
-                        <div class="text-5xl mb-2">🎖️</div>
-                        <h3 class="font-bold text-gray-800 text-sm mb-1">{{ streakStore.currentStreak }}-day streak</h3>
-                        <p class="text-xs text-gray-500">
-                            {{ streakStore.currentStreak > 0
-                                ? `Du warst ${streakStore.currentStreak} Tage am Stück fleißig!`
-                                : 'Starte deine Lernreihe heute!' }}
+                    <div v-for="achievement in displayedAchievements" :key="achievement.id" :class="[
+                        'rounded-xl p-4 shadow-sm text-center transition',
+                        achievement.unlocked
+                            ? 'bg-white'
+                            : 'bg-gray-100 opacity-60'
+                    ]">
+                        <div :class="[
+                            'text-5xl mb-2 transition',
+                            !achievement.unlocked && 'grayscale opacity-40'
+                        ]">
+                            {{ achievement.icon }}
+                        </div>
+                        <h3 :class="[
+                            'font-bold text-sm mb-1',
+                            achievement.unlocked ? 'text-gray-800' : 'text-gray-400'
+                        ]">
+                            {{ achievement.name }}
+                        </h3>
+                        <p :class="[
+                            'text-xs',
+                            achievement.unlocked ? 'text-gray-500' : 'text-gray-400'
+                        ]">
+                            {{ achievement.description }}
                         </p>
-                    </div>
-                    <div class="bg-white rounded-xl p-4 shadow-sm text-center">
-                        <div class="text-5xl mb-2">🎮</div>
-                        <h3 class="font-bold text-gray-800 text-sm mb-1">Active learner</h3>
-                        <p class="text-xs text-gray-500">100 Karten diese Woche gemeistert</p>
+                        <div v-if="achievement.unlocked && achievement.unlockedAt" class="mt-2">
+                            <span class="text-xs text-green-600 font-medium">✓ Erreicht</span>
+                        </div>
+                        <div v-else class="mt-2">
+                            <span class="text-xs text-gray-400">🔒 Gesperrt</span>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -120,12 +138,13 @@
 </template>
 
 <script lang="ts">
-import { getCurrentInstance, ref, onMounted } from 'vue'
+import { getCurrentInstance, ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import BottomNavigation from '@/components/BottomNavigation.vue'
 import Header from '@/components/home/Header.vue'
 import { useSetsStore } from '@/stores/sets'
 import { useStreakStore } from '@/stores/streak'
+import { useAchievementsStore } from '@/stores/achievements'
 
 export default {
     name: 'Dashboard',
@@ -134,11 +153,21 @@ export default {
         const router = useRouter()
         const setsStore = useSetsStore()
         const streakStore = useStreakStore()
+        const achievementsStore = useAchievementsStore()
 
         onMounted(async () => {
             await setsStore.fetchMySets()
             await setsStore.fetchExpertSets()
             await streakStore.checkStreak()
+
+            await achievementsStore.loadFromStorage()
+            await achievementsStore.checkAndUnlockAchievements()
+        })
+
+        const displayedAchievements = computed(() => {
+            const unlocked = achievementsStore.unlockedAchievements.slice(0, 4)
+            const locked = achievementsStore.lockedAchievements.slice(0, 4 - unlocked.length)
+            return [...unlocked, ...locked]
         })
 
         const openSet = (id: string | number | undefined) => {
@@ -152,8 +181,11 @@ export default {
         }
 
         return {
+            router,
             setsStore,
             streakStore,
+            achievementsStore,
+            displayedAchievements,
             openSet,
             openCreateView,
         }
