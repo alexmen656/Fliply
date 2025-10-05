@@ -8,6 +8,8 @@ export interface UserProfile {
   name: string
   email?: string
   emoji?: string
+  avatar?: string
+  coins: number
   hasCompletedOnboarding: boolean
   onboardingStep: number
   createdAt: string
@@ -18,6 +20,8 @@ export const useUserStore = defineStore('user', () => {
     name: '',
     email: undefined,
     emoji: '😊',
+    avatar: undefined,
+    coins: 0,
     hasCompletedOnboarding: false,
     onboardingStep: 0,
     createdAt: '',
@@ -101,11 +105,33 @@ export const useUserStore = defineStore('user', () => {
       name: '',
       email: undefined,
       emoji: '😊',
+      avatar: undefined,
+      coins: 0,
       hasCompletedOnboarding: false,
       onboardingStep: 0,
       createdAt: '',
     }
     await Preferences.remove({ key: 'fliply_user' })
+  }
+
+  const earnCoins = async (amount: number) => {
+    profile.value.coins += amount
+    await saveToStorage()
+  }
+
+  const spendCoins = async (amount: number): Promise<boolean> => {
+    if (profile.value.coins >= amount) {
+      profile.value.coins -= amount
+      await saveToStorage()
+      return true
+    }
+    return false
+  }
+
+  const setAvatar = async (avatarUrl: string) => {
+    profile.value.avatar = avatarUrl
+    profile.value.emoji = undefined
+    await saveToStorage()
   }
 
   return {
@@ -118,5 +144,8 @@ export const useUserStore = defineStore('user', () => {
     completeOnboarding,
     setOnboardingStep,
     reset,
+    earnCoins,
+    spendCoins,
+    setAvatar,
   }
 })

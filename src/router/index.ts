@@ -12,6 +12,7 @@ import AllCardsView from '../views/AllCardsView.vue'
 import EditSetView from '../views/EditSetView.vue'
 import EditProfileView from '../views/EditProfileView.vue'
 import ExpertSetsView from '../views/ExpertSetsView.vue'
+import AvatarShopView from '../views/AvatarShopView.vue'
 import NotificationsView from '../views/settings/NotificationsView.vue'
 import GoalsView from '../views/settings/GoalsView.vue'
 import AppearanceView from '../views/settings/AppearanceView.vue'
@@ -95,6 +96,11 @@ const router = createRouter({
       path: '/edit-profile',
       name: 'edit-profile',
       component: EditProfileView,
+    },
+    {
+      path: '/avatar-shop',
+      name: 'avatar-shop',
+      component: AvatarShopView,
     },
     {
       path: '/settings/notifications',

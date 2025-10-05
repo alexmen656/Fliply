@@ -78,9 +78,11 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStreakStore } from '@/stores/streak'
+import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
 const streakStore = useStreakStore()
+const userStore = useUserStore()
 
 const currentCardIndex = ref(0)
 const isFlipped = ref(false)
@@ -131,6 +133,9 @@ const shuffleCards = () => {
 const finishSession = () => {
     // Record study session when user finishes
     streakStore.recordStudySession()
+    // Award 3 coins per card reviewed
+    const coinsEarned = cards.value.length * 3
+    userStore.earnCoins(coinsEarned)
     router.push('/home')
 }
 </script>

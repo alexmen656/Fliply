@@ -15,10 +15,12 @@
             <div class="flex flex-col items-center mb-8">
                 <div class="relative">
                     <div
-                        class="w-24 h-24 bg-gradient-to-br from-[#4255FF] to-indigo-600 rounded-full flex items-center justify-center text-4xl text-white shadow-lg">
-                        {{ userEmoji }}
+                        class="w-24 h-24 bg-gradient-to-br from-[#4255FF] to-indigo-600 rounded-full flex items-center justify-center text-4xl text-white shadow-lg overflow-hidden">
+                        <img v-if="userStore.profile.avatar" :src="userStore.profile.avatar" alt="Avatar"
+                            class="w-full h-full object-cover" />
+                        <span v-else>{{ userEmoji }}</span>
                     </div>
-                    <button
+                    <button @click="$router.push('/avatar-shop')"
                         class="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
                         <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -26,7 +28,8 @@
                         </svg>
                     </button>
                 </div>
-                <button @click="changeEmoji" class="mt-3 text-sm text-[#4255FF] font-semibold">Emoji ändern</button>
+                <button @click="$router.push('/avatar-shop')" class="mt-3 text-sm text-[#4255FF] font-semibold">Avatar
+                    ändern</button>
             </div>
             <div class="space-y-4">
                 <div>
@@ -68,10 +71,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
+const userStore = useUserStore()
 
 const userName = ref('Max Mustermann')
 const userEmail = ref('max@example.com')
@@ -79,6 +84,13 @@ const userBio = ref('Lerne fleißig für meine Prüfungen 📚')
 const dailyGoal = ref(20)
 const userEmoji = ref('👤')
 const showEmojiPicker = ref(false)
+
+onMounted(async () => {
+    await userStore.loadFromStorage()
+    if (userStore.profile.name) userName.value = userStore.profile.name
+    if (userStore.profile.email) userEmail.value = userStore.profile.email
+    if (userStore.profile.emoji) userEmoji.value = userStore.profile.emoji
+})
 
 const emojiList = ['👤', '😀', '🎓', '📚', '🚀', '⭐', '💪', '🎯', '🔥', '✨', '🌟', '💡', '🎨', '🎮', '🏆']
 
@@ -91,13 +103,11 @@ const selectEmoji = (emoji: string) => {
     showEmojiPicker.value = false
 }
 
-const saveProfile = () => {
-    console.log('Saving profile:', {
+const saveProfile = async () => {
+    await userStore.updateProfile({
         name: userName.value,
         email: userEmail.value,
-        bio: userBio.value,
-        dailyGoal: dailyGoal.value,
-        emoji: userEmoji.value
+        emoji: userStore.profile.avatar ? undefined : userEmoji.value,
     })
     router.back()
 }

@@ -114,6 +114,15 @@
                     <h2 class="text-2xl font-bold text-gray-800 mb-2">Lernrunde abgeschlossen!</h2>
                     <p class="text-gray-600 mb-6">Du hast {{ masteredCards }} von {{ cards.length }} Karten gemeistert
                     </p>
+                    <div v-if="coinsEarned > 0" class="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-4 mb-6">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-3xl">🪙</span>
+                            <div>
+                                <div class="text-lg font-bold text-yellow-800">+{{ coinsEarned }} Münzen verdient!</div>
+                                <div class="text-sm text-yellow-700">Gesamt: {{ userStore.profile.coins }} Münzen</div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="grid grid-cols-3 gap-4 mb-6">
                         <div class="bg-green-50 rounded-xl p-4">
                             <div class="text-2xl font-bold text-green-600">{{ stats.mastered }}</div>
@@ -154,8 +163,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
+const userStore = useUserStore()
 
 interface Card {
     id: number
@@ -180,6 +191,7 @@ const isCorrect = ref(false)
 const showResults = ref(false)
 const totalAnswers = ref(0)
 const correctAnswers = ref(0)
+const coinsEarned = ref(0)
 
 const currentCard = computed(() => cards.value[currentCardIndex.value])
 const masteredCards = computed(() => cards.value.filter(c => c.level === 3).length)
@@ -234,6 +246,9 @@ const nextCard = () => {
     }
 
     if (attempts === cards.value.length) {
+        // Calculate coins earned (5 coins per mastered card)
+        coinsEarned.value = masteredCards.value * 5
+        userStore.earnCoins(coinsEarned.value)
         showResults.value = true
     } else {
         currentCardIndex.value = nextIndex
@@ -248,6 +263,7 @@ const restartLearn = () => {
     showResults.value = false
     totalAnswers.value = 0
     correctAnswers.value = 0
+    coinsEarned.value = 0
 }
 
 const exitLearn = () => {

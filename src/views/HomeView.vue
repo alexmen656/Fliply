@@ -2,10 +2,8 @@
     <div class="flex flex-col h-screen bg-gray-50">
         <Header></Header>
         <main class="flex-1 overflow-y-auto pb-20">
-            <!-- Stats Section -->
             <section class="px-4 pt-3 pb-4">
-                <div class="grid grid-cols-2 gap-3">
-                    <!-- Streak Card -->
+                <div class="grid grid-cols-3 gap-3">
                     <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-xl p-4 shadow-sm text-white">
                         <div class="flex items-center gap-2 mb-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -17,17 +15,15 @@
                             <span class="text-sm font-medium">Streak</span>
                         </div>
                         <div class="text-3xl font-bold">{{ streakStore.currentStreak }}</div>
-                        <div class="text-xs opacity-90 mt-1">Tage in Folge</div>
+                        <div class="text-xs opacity-90 mt-1">Tage</div>
                     </div>
-
-                    <!-- Daily Goal Card -->
                     <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl p-4 shadow-sm text-white">
                         <div class="flex items-center gap-2 mb-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                             </svg>
-                            <span class="text-sm font-medium">Tagesziel</span>
+                            <span class="text-sm font-medium">Ziel</span>
                         </div>
                         <div class="text-3xl font-bold">{{ goalsStore.todayProgress }}/{{ goalsStore.dailyGoal }}</div>
                         <div class="w-full bg-white/30 rounded-full h-1.5 mt-2">
@@ -35,9 +31,17 @@
                                 :style="{ width: goalsStore.getDailyProgressPercentage() + '%' }"></div>
                         </div>
                     </div>
+                    <div @click="router.push('/avatar-shop')"
+                        class="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl p-4 shadow-sm text-white cursor-pointer active:scale-95 transition">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xl">🪙</span>
+                            <span class="text-sm font-medium">Münzen</span>
+                        </div>
+                        <div class="text-3xl font-bold">{{ userStore.profile.coins }}</div>
+                        <div class="text-xs opacity-90 mt-1">Zum Shop</div>
+                    </div>
                 </div>
             </section>
-
             <section class="py-5">
                 <div class="flex items-center justify-between mb-4 px-4">
                     <h2 class="text-lg font-bold text-gray-800">My sets</h2>
@@ -172,7 +176,6 @@
                 </div>
             </section>
         </main>
-
         <BottomNavigation />
     </div>
 </template>
@@ -186,6 +189,7 @@ import { useSetsStore } from '@/stores/sets'
 import { useStreakStore } from '@/stores/streak'
 import { useAchievementsStore } from '@/stores/achievements'
 import { useGoalsStore } from '@/stores/goals'
+import { useUserStore } from '@/stores/user'
 
 export default {
     name: 'Dashboard',
@@ -196,12 +200,14 @@ export default {
         const streakStore = useStreakStore()
         const achievementsStore = useAchievementsStore()
         const goalsStore = useGoalsStore()
+        const userStore = useUserStore()
 
         onMounted(async () => {
             await setsStore.fetchMySets()
             await setsStore.fetchExpertSets()
             await streakStore.checkStreak()
             await goalsStore.loadGoals()
+            await userStore.loadFromStorage()
 
             await achievementsStore.loadFromStorage()
             await achievementsStore.checkAndUnlockAchievements()
@@ -242,6 +248,7 @@ export default {
             streakStore,
             achievementsStore,
             goalsStore,
+            userStore,
             displayedAchievements,
             openSet,
             openCreateView,

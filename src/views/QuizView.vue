@@ -86,6 +86,16 @@
                     <p class="text-gray-600 mb-6">Du hast {{ score }} von {{ questions.length }} Fragen richtig
                         beantwortet</p>
 
+                    <div v-if="coinsEarned > 0" class="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-4 mb-6">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-3xl">🪙</span>
+                            <div>
+                                <div class="text-lg font-bold text-yellow-800">+{{ coinsEarned }} Münzen verdient!</div>
+                                <div class="text-sm text-yellow-700">Gesamt: {{ userStore.profile.coins }} Münzen</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-3 gap-4 mb-6">
                         <div class="bg-green-50 rounded-xl p-4">
                             <div class="text-2xl font-bold text-green-600">{{ score }}</div>
@@ -126,14 +136,17 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
 const route = useRoute()
+const userStore = useUserStore()
 
 const currentQuestionIndex = ref(0)
 const selectedAnswer = ref<string | null>(null)
 const score = ref(0)
 const showResults = ref(false)
+const coinsEarned = ref(0)
 
 const questions = ref([
     {
@@ -201,6 +214,9 @@ const nextQuestion = () => {
         currentQuestionIndex.value++
         selectedAnswer.value = null
     } else {
+        // Calculate coins earned (10 coins per correct answer)
+        coinsEarned.value = score.value * 10
+        userStore.earnCoins(coinsEarned.value)
         showResults.value = true
     }
 }
@@ -210,6 +226,7 @@ const restartQuiz = () => {
     selectedAnswer.value = null
     score.value = 0
     showResults.value = false
+    coinsEarned.value = 0
 }
 
 const exitQuiz = () => {

@@ -37,7 +37,10 @@
                             <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
                             <p class="text-sm text-gray-600 mb-2">{{ set.cards }} Karten</p>
                             <div class="flex items-center gap-2">
-                                <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
+                                <div v-if="isUrl(set.avatar || '')" class="w-5 h-5 rounded-full overflow-hidden">
+                                    <img :src="set.avatar" class="w-full h-full object-cover" alt="avatar" />
+                                </div>
+                                <div v-else class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
                                     <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

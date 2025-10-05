@@ -3,15 +3,24 @@
         <header class="bg-gradient-to-br from-[#4255FF] to-indigo-600 px-4 pt-8 pb-12">
             <div class="flex flex-col items-center">
                 <button @click="editProfile"
-                    class="w-24 h-24 bg-white rounded-full flex items-center justify-center text-4xl mb-3 shadow-lg relative group">
-                    {{ userStore.profile.emoji || '👤' }}
+                    class="w-24 h-24 bg-white rounded-full flex items-center justify-center text-4xl mb-3 shadow-lg relative group overflow-hidden">
+                    <img v-if="userStore.profile.avatar" :src="userStore.profile.avatar" alt="Avatar"
+                        class="w-full h-full object-cover rounded-full" />
+                    <span v-else>{{ userStore.profile.emoji || '👤' }}</span>
                     <div
                         class="absolute inset-0 bg-black bg-opacity-0 group-active:bg-opacity-10 rounded-full transition">
                     </div>
                 </button>
                 <h1 class="text-2xl font-bold text-white mb-1">{{ userStore.profile.name || 'Dein Name' }}</h1>
                 <p class="text-white opacity-90 text-sm">{{ userStore.profile.email || 'deine@email.com' }}</p>
-                <button @click="editProfile" class="mt-2 text-white text-sm underline">Profil bearbeiten</button>
+                <div class="mt-3 bg-white bg-opacity-20 rounded-full px-4 py-2 flex items-center gap-2">
+                    <span class="text-2xl">🪙</span>
+                    <span class="text-white font-bold">{{ userStore.profile.coins }} Münzen</span>
+                </div>
+                <button @click="openAvatarShop"
+                    class="mt-2 bg-white text-[#4255FF] px-4 py-2 rounded-xl font-semibold text-sm active:scale-95 transition">
+                    🛒 Avatar Shop
+                </button>
             </div>
         </header>
         <div class="px-4 -mt-8 mb-6">
@@ -229,6 +238,10 @@ const settings = ref([
 
 const editProfile = () => {
     router.push('/edit-profile')
+}
+
+const openAvatarShop = () => {
+    router.push('/avatar-shop')
 }
 
 const logout = () => {
