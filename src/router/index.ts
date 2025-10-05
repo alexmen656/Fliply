@@ -89,9 +89,9 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
-  const needsOnboarding = userStore.checkOnboardingStatus()
+  const needsOnboarding = await userStore.checkOnboardingStatus()
 
   if (needsOnboarding && to.path !== '/onboarding') {
     next('/onboarding')

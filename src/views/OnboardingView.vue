@@ -195,31 +195,31 @@ const selectedEmoji = ref('😊')
 
 const emojis = ['😊', '😎', '🤓', '🥳', '🚀', '⭐', '🎯', '💪', '🔥', '🌟', '🎨', '🎮']
 
-const nextStep = () => {
+const nextStep = async () => {
     if (currentStep.value === 0 && userName.value.trim()) {
-        userStore.setName(userName.value.trim())
+        await userStore.setName(userName.value.trim())
         currentStep.value++
-        userStore.setOnboardingStep(currentStep.value)
+        await userStore.setOnboardingStep(currentStep.value)
     } else if (currentStep.value > 0) {
         currentStep.value++
-        userStore.setOnboardingStep(currentStep.value)
+        await userStore.setOnboardingStep(currentStep.value)
     }
 }
 
-const saveProfile = () => {
-    userStore.updateProfile({
+const saveProfile = async () => {
+    await userStore.updateProfile({
         emoji: selectedEmoji.value,
         email: userEmail.value || undefined
     })
-    nextStep()
+    await nextStep()
 }
 
-const skipProfile = () => {
-    nextStep()
+const skipProfile = async () => {
+    await nextStep()
 }
 
-const finishOnboarding = () => {
-    userStore.completeOnboarding()
+const finishOnboarding = async () => {
+    await userStore.completeOnboarding()
     router.push('/home')
 }
 </script>

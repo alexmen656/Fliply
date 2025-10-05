@@ -6,8 +6,10 @@ import router from './router'
 import axiosInstance from './axios'
 import './index.css'
 
+const pinia = createPinia()
 const app = createApp(App)
-app.use(createPinia())
+
+app.use(pinia)
 app.use(router)
 
 app.config.globalProperties.$axios = axiosInstance

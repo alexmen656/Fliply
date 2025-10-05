@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { Preferences } from '@capacitor/preferences'
+import axios from '@/axios'
 
 export interface UserProfile {
+  id?: string
   name: string
   email?: string
   emoji?: string
@@ -22,53 +25,78 @@ export const useUserStore = defineStore('user', () => {
 
   const isOnboarding = ref(false)
 
-  const loadFromStorage = () => {
-    const stored = localStorage.getItem('fliply_user')
-    if (stored) {
-      try {
-        const data = JSON.parse(stored)
+  const loadFromStorage = async () => {
+    try {
+      const { value } = await Preferences.get({ key: 'fliply_user' })
+      if (value) {
+        const data = JSON.parse(value)
         profile.value = { ...profile.value, ...data }
-      } catch (e) {
-        console.error('Error loading user data:', e)
       }
+    } catch (e) {
+      console.error('Error loading user data:', e)
     }
   }
 
-  const saveToStorage = () => {
-    localStorage.setItem('fliply_user', JSON.stringify(profile.value))
+  const saveToStorage = async () => {
+    try {
+      await Preferences.set({
+        key: 'fliply_user',
+        value: JSON.stringify(profile.value),
+      })
+    } catch (e) {
+      console.error('Error saving user data:', e)
+    }
   }
 
-  const checkOnboardingStatus = () => {
-    loadFromStorage()
+  const checkOnboardingStatus = async () => {
+    await loadFromStorage()
     return !profile.value.hasCompletedOnboarding
   }
 
-  const setName = (name: string) => {
+  const setName = async (name: string) => {
     profile.value.name = name
     if (!profile.value.createdAt) {
       profile.value.createdAt = new Date().toISOString()
     }
-    saveToStorage()
+    await saveToStorage()
   }
 
-  const updateProfile = (updates: Partial<UserProfile>) => {
+  const updateProfile = async (updates: Partial<UserProfile>) => {
     profile.value = { ...profile.value, ...updates }
-    saveToStorage()
+    await saveToStorage()
   }
 
-  const completeOnboarding = () => {
+  const completeOnboarding = async () => {
     profile.value.hasCompletedOnboarding = true
     profile.value.onboardingStep = 999
     isOnboarding.value = false
-    saveToStorage()
+
+    try {
+      const response = await axios.post('/api/users', {
+        name: profile.value.name,
+        email: profile.value.email,
+        emoji: profile.value.emoji,
+        hasCompletedOnboarding: true,
+        onboardingStep: 999,
+      })
+
+      if (response.data.success) {
+        profile.value.id = response.data.data._id
+        await saveToStorage()
+      }
+    } catch (error) {
+      console.error('Error creating user account:', error)
+    }
+
+    await saveToStorage()
   }
 
-  const setOnboardingStep = (step: number) => {
+  const setOnboardingStep = async (step: number) => {
     profile.value.onboardingStep = step
-    saveToStorage()
+    await saveToStorage()
   }
 
-  const reset = () => {
+  const reset = async () => {
     profile.value = {
       name: '',
       email: undefined,
@@ -77,7 +105,7 @@ export const useUserStore = defineStore('user', () => {
       onboardingStep: 0,
       createdAt: '',
     }
-    localStorage.removeItem('fliply_user')
+    await Preferences.remove({ key: 'fliply_user' })
   }
 
   return {
