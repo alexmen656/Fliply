@@ -23,7 +23,17 @@
         </header>
         <main class="flex-1 overflow-y-auto pb-20 px-4 py-5">
             <div v-if="activeTab === 'mySets'" class="space-y-3">
-                <div v-for="set in mySets" :key="set.id" @click="openSet(set.id)"
+                <div v-if="setsStore.isLoading" class="text-center py-8">
+                    <p class="text-gray-500">Lade Sets...</p>
+                </div>
+
+                <div v-else-if="setsStore.mySets.length === 0" class="text-center py-8">
+                    <div class="text-6xl mb-3">📚</div>
+                    <h3 class="font-bold text-gray-800 mb-2">Noch keine eigenen Sets</h3>
+                    <p class="text-sm text-gray-600 mb-4">Erstelle dein erstes Lernset!</p>
+                </div>
+
+                <div v-else v-for="set in setsStore.mySets" :key="set.id" @click="openSet(set.id)"
                     class="bg-white rounded-xl p-4 shadow-sm active:scale-98 transition cursor-pointer">
                     <div class="flex items-start justify-between mb-3">
                         <div class="flex-1">
@@ -36,12 +46,12 @@
                         </div>
                     </div>
                     <div class="flex items-center justify-between text-xs text-gray-500">
-                        <span>Zuletzt bearbeitet: {{ set.lastEdited }}</span>
-                        <button @click.stop="deleteSet(set.id)" class="text-red-500">Löschen</button>
+                        <span>Erstellt: {{ new Date(set.createdAt || '').toLocaleDateString('de-DE') }}</span>
+                        <button @click.stop="deleteSet(set.id)" class="text-red-500 hover:text-red-700">Löschen</button>
                     </div>
                 </div>
 
-                <button
+                <button @click="createNewSet"
                     class="w-full bg-[#4255FF] text-white font-semibold py-4 rounded-xl active:scale-98 transition mt-4">
                     + Neues Set erstellen
                 </button>
@@ -82,11 +92,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import BottomNavigation from '@/components/BottomNavigation.vue'
+import { useSetsStore } from '@/stores/sets'
 
 const router = useRouter()
+const setsStore = useSetsStore()
 const activeTab = ref('mySets')
 
 const tabs = ref([
@@ -95,60 +107,38 @@ const tabs = ref([
     { name: 'recent', label: 'Zuletzt verwendet' }
 ])
 
-const mySets = ref([
-    {
-        id: 1,
-        title: 'Englisch Vokabeln',
-        cards: 156,
-        icon: '🇬🇧',
-        lastEdited: '2 Tage'
-    },
-    {
-        id: 2,
-        title: 'Mathematik Formeln',
-        cards: 89,
-        icon: '🔢',
-        lastEdited: '5 Tage'
-    },
-    {
-        id: 3,
-        title: 'Geschichte Daten',
-        cards: 124,
-        icon: '📚',
-        lastEdited: '1 Woche'
-    }
-])
+onMounted(async () => {
+    await setsStore.fetchMySets()
+})
 
-const favorites = ref([
-    {
-        id: 4,
-        title: 'Deutsch B2 Prüfung',
-        cards: 200,
-        avatar: 'https://i.pravatar.cc/150?img=4',
-        author: 'Anna Müller'
+const openSet = (id: string | number | undefined) => {
+    if (id) {
+        router.push(`/set/${id}`)
     }
-])
-
-const recentSets = ref([
-    {
-        id: 5,
-        title: 'Biologie Zellen',
-        cards: 67,
-        accessedAt: 'Vor 2 Stunden'
-    }
-])
-
-const openSet = (id: number) => {
-    router.push(`/set/${id}`)
 }
 
-const deleteSet = (id: number) => {
-    console.log('Delete set:', id)
+const deleteSet = async (id: string | number | undefined) => {
+    if (!id) return
+
+    if (confirm('Möchtest du dieses Set wirklich löschen?')) {
+        const success = await setsStore.deleteSet(id)
+        if (success) {
+            // Refresh the list
+            await setsStore.fetchMySets(true)
+        }
+    }
 }
 
 const toggleFavorite = (id: number) => {
     console.log('Toggle favorite:', id)
 }
+
+const createNewSet = () => {
+    router.push('/create')
+}
+
+const favorites = ref([])
+const recentSets = ref([])
 </script>
 
 <style scoped>

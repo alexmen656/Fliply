@@ -9,7 +9,9 @@
                     </svg>
                 </button>
                 <h1 class="text-xl font-bold text-gray-800">Neues Set</h1>
-                <button @click="saveSet" class="text-[#4255FF] font-semibold">Fertig</button>
+                <button @click="saveSet" class="text-[#4255FF] font-semibold" :disabled="isSaving">
+                    {{ isSaving ? 'Speichert...' : 'Fertig' }}
+                </button>
             </div>
         </header>
 
@@ -65,9 +67,9 @@
 
         <!-- Bottom Action Bar -->
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4 safe-area-inset">
-            <button @click="saveSet"
-                class="w-full bg-[#4255FF] text-white font-bold py-4 rounded-xl active:scale-98 transition">
-                Set speichern ({{ cards.length }} Karten)
+            <button @click="saveSet" :disabled="isSaving"
+                class="w-full bg-[#4255FF] text-white font-bold py-4 rounded-xl active:scale-98 transition disabled:opacity-50">
+                {{ isSaving ? 'Speichert...' : `Set speichern (${cards.length} Karten)` }}
             </button>
         </div>
     </div>
@@ -76,11 +78,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useSetsStore } from '@/stores/sets'
 
 const router = useRouter()
+const setsStore = useSetsStore()
 
 const setTitle = ref('')
 const setDescription = ref('')
+const isSaving = ref(false)
 
 interface Card {
     front: string
@@ -102,7 +107,7 @@ const removeCard = (index: number) => {
     }
 }
 
-const saveSet = () => {
+const saveSet = async () => {
     if (!setTitle.value.trim()) {
         alert('Bitte gib einen Titel für das Set ein')
         return
@@ -115,13 +120,24 @@ const saveSet = () => {
         return
     }
 
-    console.log('Saving set:', {
-        title: setTitle.value,
-        description: setDescription.value,
-        cards: validCards
-    })
+    isSaving.value = true
+    try {
+        await setsStore.createSet({
+            title: setTitle.value,
+            cards: validCards.map((card, index) => ({
+                ...card,
+                order: index
+            })),
+            icon: '📚'
+        })
 
-    router.push('/library')
+        router.push('/library')
+    } catch (error) {
+        console.error('Error saving set:', error)
+        alert('Fehler beim Speichern des Sets. Bitte versuche es erneut.')
+    } finally {
+        isSaving.value = false
+    }
 }
 </script>
 

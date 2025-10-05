@@ -81,7 +81,7 @@ export const useUserStore = defineStore('user', () => {
       })
 
       if (response.data.success) {
-        profile.value.id = response.data.data._id
+        profile.value.id = response.data.data.id
         await saveToStorage()
       }
     } catch (error) {

@@ -131,23 +131,20 @@ export default {
     name: 'Dashboard',
     components: { BottomNavigation, Header },
     setup() {
-        const instance = getCurrentInstance()
-        const $axios = instance?.appContext.config.globalProperties.$axios
         const router = useRouter()
         const setsStore = useSetsStore()
         const streakStore = useStreakStore()
 
-        const studyStreak = ref(7)
-        const expertSets = ref([] as Array<{ id: number; title: string; cards: number; author: string; avatar: string; icon: string }>)
-
-        onMounted(() => {
-            setsStore.fetchMySets($axios)
-            setsStore.fetchExpertSets($axios)
-            streakStore.checkStreak()
+        onMounted(async () => {
+            await setsStore.fetchMySets()
+            await setsStore.fetchExpertSets()
+            await streakStore.checkStreak()
         })
 
-        const openSet = (id: number) => {
-            router.push(`/set/${id}`)
+        const openSet = (id: string | number | undefined) => {
+            if (id) {
+                router.push(`/set/${id}`)
+            }
         }
 
         const openCreateView = () => {
@@ -155,13 +152,10 @@ export default {
         }
 
         return {
-            studyStreak,
-            expertSets,
             setsStore,
             streakStore,
             openSet,
             openCreateView,
-            router
         }
     }
 }
