@@ -2,15 +2,57 @@
     <div class="flex flex-col h-screen bg-gray-50">
         <Header></Header>
         <main class="flex-1 overflow-y-auto pb-20">
+            <!-- Stats Section -->
+            <section class="px-4 pt-3 pb-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <!-- Streak Card -->
+                    <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-xl p-4 shadow-sm text-white">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                            </svg>
+                            <span class="text-sm font-medium">Streak</span>
+                        </div>
+                        <div class="text-3xl font-bold">{{ streakStore.currentStreak }}</div>
+                        <div class="text-xs opacity-90 mt-1">Tage in Folge</div>
+                    </div>
+
+                    <!-- Daily Goal Card -->
+                    <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl p-4 shadow-sm text-white">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                            </svg>
+                            <span class="text-sm font-medium">Tagesziel</span>
+                        </div>
+                        <div class="text-3xl font-bold">{{ goalsStore.todayProgress }}/{{ goalsStore.dailyGoal }}</div>
+                        <div class="w-full bg-white/30 rounded-full h-1.5 mt-2">
+                            <div class="bg-white rounded-full h-1.5 transition-all"
+                                :style="{ width: goalsStore.getDailyProgressPercentage() + '%' }"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section class="py-5">
                 <div class="flex items-center justify-between mb-4 px-4">
                     <h2 class="text-lg font-bold text-gray-800">My sets</h2>
-                    <button v-if="setsStore.mySets.length > 0" class="text-[#4255FF] text-sm font-semibold">View
-                        all</button>
+                    <button v-if="setsStore.mySets.length > 0" @click="router.push('/library')"
+                        class="text-[#4255FF] text-sm font-semibold">View all</button>
                 </div>
                 <div v-if="setsStore.mySets.length === 0" class="px-4">
                     <div class="bg-white rounded-xl p-6 shadow-sm text-center">
-                        <div class="text-6xl mb-3">📚</div>
+                        <div class="mx-auto w-16 h-16 mb-3 text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-full h-full">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
                         <h3 class="font-bold text-gray-800 mb-2">Noch keine eigenen Sets</h3>
                         <p class="text-sm text-gray-600 mb-4">Erstelle dein erstes Lernset und beginne zu lernen!</p>
                         <button @click="openCreateView"
@@ -22,19 +64,28 @@
                 <div v-else class="overflow-x-auto scrollbar-hide">
                     <div class="flex gap-3 px-4">
                         <div v-for="set in setsStore.mySets" :key="set.id" @click="openSet(set.id)"
-                            class="bg-white rounded-xl p-4 shadow-sm active:scale-98 transition cursor-pointer flex-shrink-0 w-72">
-                            <div class="flex items-start justify-between">
-                                <div class="flex-1">
+                            class="bg-white rounded-xl shadow-sm active:scale-98 transition cursor-pointer flex-shrink-0 w-72 overflow-hidden">
+                            <div class="flex items-stretch">
+                                <div class="flex-1 p-4">
                                     <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
                                     <p class="text-sm text-gray-600 mb-2">{{ set.cards }} Karten</p>
                                     <div class="flex items-center gap-2">
-                                        <img :src="set.avatar" class="w-5 h-5 rounded-full" alt="avatar" />
+                                        <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
+                                            <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
+                                        </div>
                                         <span class="text-xs text-gray-500">{{ set.author }}</span>
                                     </div>
                                 </div>
-                                <div
-                                    class="w-16 h-20 bg-[#4255FF] rounded-lg flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
+                                <div v-if="set.icon && !isUrl(set.icon)"
+                                    class="w-20 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
                                     {{ set.icon }}
+                                </div>
+                                <div v-else-if="set.icon" class="w-20 flex-shrink-0">
+                                    <img :src="set.icon" alt="Set Icon" class="w-full h-full object-cover" />
                                 </div>
                             </div>
                         </div>
@@ -44,46 +95,35 @@
             <section class="py-5">
                 <div class="flex items-center justify-between mb-4 px-4">
                     <h2 class="text-lg font-bold text-gray-800">Expert sets</h2>
-                    <button class="text-[#4255FF] text-sm font-semibold">View all</button>
+                    <button @click="router.push('/expert-sets')" class="text-[#4255FF] text-sm font-semibold">View
+                        all</button>
                 </div>
 
                 <div class="overflow-x-auto scrollbar-hide">
                     <div class="flex gap-3 px-4 pb-2">
                         <div v-for="set in setsStore.expertSets" :key="set.id" @click="openSet(set.id)"
-                            class="bg-white rounded-xl p-4 shadow-sm active:scale-98 transition cursor-pointer flex-shrink-0 w-72">
-                            <div class="flex items-start justify-between">
-                                <div class="flex-1">
+                            class="bg-white rounded-xl shadow-sm active:scale-98 transition cursor-pointer flex-shrink-0 w-72 overflow-hidden">
+                            <div class="flex items-stretch">
+                                <div class="flex-1 p-4">
                                     <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
                                     <p class="text-sm text-gray-600 mb-2">{{ set.cards }} Karten</p>
                                     <div class="flex items-center gap-2">
-                                        <img :src="set.avatar" class="w-5 h-5 rounded-full" alt="avatar" />
+                                        <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
+                                            <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
+                                        </div>
                                         <span class="text-xs text-gray-500">{{ set.author }}</span>
                                     </div>
                                 </div>
-                                <div
-                                    class="w-16 h-20 bg-[#4255FF] rounded-lg flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
+                                <div v-if="set.icon && !isUrl(set.icon)"
+                                    class="w-20 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
                                     {{ set.icon }}
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="overflow-x-auto scrollbar-hide">
-                    <div class="flex gap-3 px-4">
-                        <div v-for="set in setsStore.expertSets" :key="set.id" @click="openSet(set.id)"
-                            class="bg-white rounded-xl p-4 shadow-sm active:scale-98 transition cursor-pointer flex-shrink-0 w-72">
-                            <div class="flex items-start justify-between">
-                                <div class="flex-1">
-                                    <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
-                                    <p class="text-sm text-gray-600 mb-2">{{ set.cards }} Karten</p>
-                                    <div class="flex items-center gap-2">
-                                        <img :src="set.avatar" class="w-5 h-5 rounded-full" alt="avatar" />
-                                        <span class="text-xs text-gray-500">{{ set.author }}</span>
-                                    </div>
-                                </div>
-                                <div
-                                    class="w-16 h-20 bg-[#4255FF] rounded-lg flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
-                                    {{ set.icon }}
+                                <div v-else-if="set.icon" class="w-20 flex-shrink-0">
+                                    <img :src="set.icon" alt="Set Icon" class="w-full h-full object-cover" />
                                 </div>
                             </div>
                         </div>
@@ -145,6 +185,7 @@ import Header from '@/components/home/Header.vue'
 import { useSetsStore } from '@/stores/sets'
 import { useStreakStore } from '@/stores/streak'
 import { useAchievementsStore } from '@/stores/achievements'
+import { useGoalsStore } from '@/stores/goals'
 
 export default {
     name: 'Dashboard',
@@ -154,11 +195,13 @@ export default {
         const setsStore = useSetsStore()
         const streakStore = useStreakStore()
         const achievementsStore = useAchievementsStore()
+        const goalsStore = useGoalsStore()
 
         onMounted(async () => {
             await setsStore.fetchMySets()
             await setsStore.fetchExpertSets()
             await streakStore.checkStreak()
+            await goalsStore.loadGoals()
 
             await achievementsStore.loadFromStorage()
             await achievementsStore.checkAndUnlockAchievements()
@@ -170,8 +213,17 @@ export default {
             return [...unlocked, ...locked]
         })
 
-        const openSet = (id: string | number | undefined) => {
+        const openSet = async (id: string | number | undefined) => {
             if (id) {
+                // Hole Set-Details für markAsRecent
+                let set = setsStore.mySets.find(s => s.id === id) ||
+                    setsStore.expertSets.find(s => s.id === id)
+
+                if (set) {
+                    const cardCount = typeof set.cards === 'number' ? set.cards : set.cards.length
+                    await setsStore.markAsRecent(id, set.title, cardCount)
+                }
+
                 router.push(`/set/${id}`)
             }
         }
@@ -180,14 +232,20 @@ export default {
             router.push('/create')
         }
 
+        const isUrl = (str: string) => {
+            return str && (str.startsWith('http://') || str.startsWith('https://'))
+        }
+
         return {
             router,
             setsStore,
             streakStore,
             achievementsStore,
+            goalsStore,
             displayedAchievements,
             openSet,
             openCreateView,
+            isUrl,
         }
     }
 }
@@ -215,6 +273,7 @@ export default {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
 .grayscale {
     filter: grayscale(100%);
 }

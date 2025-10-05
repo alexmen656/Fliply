@@ -23,9 +23,18 @@ export interface Set {
   updatedAt?: string
 }
 
+export interface RecentSet {
+  setId: string | number
+  accessedAt: string
+  title?: string
+  cards?: number
+}
+
 export const useSetsStore = defineStore('sets', () => {
   const mySets = ref<Set[]>([])
   const expertSets = ref<Set[]>([])
+  const favoriteSets = ref<Set[]>([])
+  const recentSets = ref<RecentSet[]>([])
   const isLoading = ref(false)
   const error = ref<string | null>(null)
 
@@ -211,9 +220,138 @@ export const useSetsStore = defineStore('sets', () => {
     }
   }
 
+  // Favoriten laden
+  const loadFavorites = async () => {
+    try {
+      const { value } = await Preferences.get({ key: 'fliply_favorites' })
+      if (value) {
+        const favoriteIds: (string | number)[] = JSON.parse(value)
+        // Lade die Details für jedes Favoriten-Set
+        const promises = favoriteIds.map((id) => getSetById(id))
+        const results = await Promise.all(promises)
+        favoriteSets.value = results
+          .filter((set) => set !== null)
+          .map((set: any) => ({
+            ...set,
+            cards: Array.isArray(set.cards) ? set.cards.length : 0,
+          }))
+      }
+    } catch (error) {
+      console.error('Error loading favorites:', error)
+    }
+  }
+
+  // Favoriten speichern
+  const saveFavorites = async () => {
+    try {
+      const favoriteIds = favoriteSets.value.map((set) => set.id).filter((id) => id !== undefined)
+      await Preferences.set({
+        key: 'fliply_favorites',
+        value: JSON.stringify(favoriteIds),
+      })
+    } catch (error) {
+      console.error('Error saving favorites:', error)
+    }
+  }
+
+  // Favorit hinzufügen/entfernen
+  const toggleFavorite = async (setId: string | number) => {
+    const index = favoriteSets.value.findIndex((set) => set.id === setId)
+    if (index !== -1) {
+      // Entfernen
+      favoriteSets.value.splice(index, 1)
+    } else {
+      // Hinzufügen
+      const set = await getSetById(setId)
+      if (set) {
+        favoriteSets.value.push({
+          ...set,
+          cards: Array.isArray(set.cards) ? set.cards.length : 0,
+        })
+      }
+    }
+    await saveFavorites()
+  }
+
+  // Prüfen ob ein Set ein Favorit ist
+  const isFavorite = (setId: string | number) => {
+    return favoriteSets.value.some((set) => set.id === setId)
+  }
+
+  // Zuletzt verwendete Sets laden
+  const loadRecentSets = async () => {
+    try {
+      const { value } = await Preferences.get({ key: 'fliply_recent_sets' })
+      if (value) {
+        recentSets.value = JSON.parse(value)
+      }
+    } catch (error) {
+      console.error('Error loading recent sets:', error)
+    }
+  }
+
+  // Set als "zuletzt verwendet" markieren
+  const markAsRecent = async (setId: string | number, title: string, cards: number) => {
+    try {
+      // Entferne das Set falls es schon existiert
+      recentSets.value = recentSets.value.filter((set) => set.setId !== setId)
+
+      // Füge es am Anfang hinzu
+      recentSets.value.unshift({
+        setId,
+        title,
+        cards,
+        accessedAt: new Date().toISOString(),
+      })
+
+      // Behalte nur die letzten 10
+      if (recentSets.value.length > 10) {
+        recentSets.value = recentSets.value.slice(0, 10)
+      }
+
+      // Speichern
+      await Preferences.set({
+        key: 'fliply_recent_sets',
+        value: JSON.stringify(recentSets.value),
+      })
+    } catch (error) {
+      console.error('Error marking set as recent:', error)
+    }
+  }
+
+  // Zuletzt verwendete Sets mit Details abrufen
+  const getRecentSetsWithDetails = async () => {
+    await loadRecentSets()
+    const setsWithDetails = []
+
+    for (const recent of recentSets.value) {
+      // Versuche, das Set aus mySets oder expertSets zu finden
+      let set =
+        mySets.value.find((s) => s.id === recent.setId) ||
+        expertSets.value.find((s) => s.id === recent.setId)
+
+      // Falls nicht gefunden, hole von API
+      if (!set) {
+        set = await getSetById(recent.setId)
+      }
+
+      if (set) {
+        setsWithDetails.push({
+          ...set,
+          cards: Array.isArray(set.cards) ? set.cards.length : set.cards || recent.cards || 0,
+          accessedAt: recent.accessedAt,
+        })
+      }
+    }
+
+    return setsWithDetails
+  }
+
   return {
     mySets,
     expertSets,
+    favoriteSets,
+    recentSets,
     isLoading,
     error,
     fetchMySets,
@@ -223,5 +361,11 @@ export const useSetsStore = defineStore('sets', () => {
     updateSet,
     deleteSet,
     updateTotalCardsCount,
+    loadFavorites,
+    toggleFavorite,
+    isFavorite,
+    loadRecentSets,
+    markAsRecent,
+    getRecentSetsWithDetails,
   }
 })

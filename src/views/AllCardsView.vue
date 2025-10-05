@@ -32,9 +32,19 @@
             </div>
         </header>
         <main class="flex-1 overflow-y-auto px-4 py-4">
-            <div class="max-w-2xl mx-auto space-y-3">
+            <div v-if="isLoading" class="text-center py-12">
+                <p class="text-gray-500">Lade Karten...</p>
+            </div>
+
+            <div v-else class="max-w-2xl mx-auto space-y-3">
                 <div v-if="filteredCards.length === 0" class="text-center py-12">
-                    <div class="text-gray-400 text-4xl mb-3">🔍</div>
+                    <div class="mx-auto w-16 h-16 mb-3 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-full h-full">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                    </div>
                     <p class="text-gray-600">Keine Karten gefunden</p>
                 </div>
 
@@ -95,23 +105,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useSetsStore } from '@/stores/sets'
 
 const router = useRouter()
 const route = useRoute()
+const setsStore = useSetsStore()
 
 interface Card {
-    id: number
+    id?: number
     front: string
     back: string
-    starred: boolean
+    order: number
+    starred?: boolean
     progress?: number
 }
 
 const searchMode = ref(false)
 const searchQuery = ref('')
 const activeFilter = ref('all')
+const isLoading = ref(true)
+const setTitle = ref('')
 
 const filters = ref([
     { id: 'all', label: 'Alle', count: undefined },
@@ -121,18 +136,38 @@ const filters = ref([
     { id: 'mastered', label: 'Gemeistert' }
 ])
 
-const cards = ref<Card[]>([
-    { id: 1, front: 'What is Vue.js?', back: 'A progressive JavaScript framework for building user interfaces', starred: true, progress: 100 },
-    { id: 2, front: 'What is TypeScript?', back: 'A typed superset of JavaScript that compiles to plain JavaScript', starred: false, progress: 75 },
-    { id: 3, front: 'What is Tailwind CSS?', back: 'A utility-first CSS framework', starred: true, progress: 100 },
-    { id: 4, front: 'What is Capacitor?', back: 'A cross-platform app runtime', starred: false, progress: 50 },
-    { id: 5, front: 'What is a component?', back: 'A reusable piece of UI with its own logic and styling', starred: false, progress: 25 },
-    { id: 6, front: 'What is reactive programming?', back: 'A programming paradigm that deals with data streams and propagation of change', starred: false, progress: 0 },
-    { id: 7, front: 'What is a computed property?', back: 'A property that is derived from other data and automatically updates when dependencies change', starred: true, progress: 80 },
-    { id: 8, front: 'What is a watcher?', back: 'A function that runs when a specific reactive property changes', starred: false, progress: 60 },
-    { id: 9, front: 'What is the Virtual DOM?', back: 'A lightweight copy of the actual DOM that enables efficient updates', starred: true, progress: 100 },
-    { id: 10, front: 'What is a directive?', back: 'Special attributes with the v- prefix that apply reactive behavior to the DOM', starred: false, progress: 40 }
-])
+const cards = ref<Card[]>([])
+
+onMounted(async () => {
+    await loadCards()
+})
+
+const loadCards = async () => {
+    const setId = route.params.id
+    if (!setId || Array.isArray(setId)) return
+
+    isLoading.value = true
+    try {
+        const setData = await setsStore.getSetById(setId)
+        if (setData) {
+            setTitle.value = setData.title
+            if (Array.isArray(setData.cards)) {
+                cards.value = setData.cards.map((card: any, index: number) => ({
+                    id: index,
+                    front: card.front,
+                    back: card.back,
+                    order: card.order || index,
+                    starred: false,
+                    progress: 0
+                }))
+            }
+        }
+    } catch (error) {
+        console.error('Error loading cards:', error)
+    } finally {
+        isLoading.value = false
+    }
+}
 
 const filteredCards = computed(() => {
     let result = cards.value

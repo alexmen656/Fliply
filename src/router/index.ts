@@ -11,6 +11,7 @@ import LearnView from '../views/LearnView.vue'
 import AllCardsView from '../views/AllCardsView.vue'
 import EditSetView from '../views/EditSetView.vue'
 import EditProfileView from '../views/EditProfileView.vue'
+import ExpertSetsView from '../views/ExpertSetsView.vue'
 import NotificationsView from '../views/settings/NotificationsView.vue'
 import GoalsView from '../views/settings/GoalsView.vue'
 import AppearanceView from '../views/settings/AppearanceView.vue'
@@ -39,6 +40,11 @@ const router = createRouter({
       path: '/library',
       name: 'library',
       component: LibraryView,
+    },
+    {
+      path: '/expert-sets',
+      name: 'expert-sets',
+      component: ExpertSetsView,
     },
     {
       path: '/create',

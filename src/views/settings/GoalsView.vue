@@ -53,17 +53,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useGoalsStore } from '@/stores/goals'
 
 const router = useRouter()
+const goalsStore = useGoalsStore()
 
 const dailyGoal = ref(20)
 const weeklyGoal = ref(5)
 const studyTime = ref('evening')
 
-const saveGoals = () => {
-    console.log('Saving goals:', { dailyGoal: dailyGoal.value, weeklyGoal: weeklyGoal.value, studyTime: studyTime.value })
+onMounted(async () => {
+    await goalsStore.loadGoals()
+    dailyGoal.value = goalsStore.dailyGoal
+    weeklyGoal.value = goalsStore.weeklyGoal
+    studyTime.value = goalsStore.studyTime
+})
+
+const saveGoals = async () => {
+    goalsStore.dailyGoal = dailyGoal.value
+    goalsStore.weeklyGoal = weeklyGoal.value
+    goalsStore.studyTime = studyTime.value
+    await goalsStore.saveGoals()
     router.back()
 }
 </script>

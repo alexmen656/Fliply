@@ -8,7 +8,7 @@
                 <div>
                     <span class="text-white text-xl font-bold">Fliply</span>
                     <p v-if="userStore.profile.name" class="text-blue-100 text-sm">
-                        👋 Hallo, {{ userStore.profile.name }}!
+                        Hallo, {{ userStore.profile.name }}!
                     </p>
                 </div>
             </div>

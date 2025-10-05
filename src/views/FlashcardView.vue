@@ -1,6 +1,5 @@
 <template>
     <div class="flex flex-col h-screen bg-gray-50">
-        <!-- Header -->
         <header class="bg-white border-b border-gray-200 px-4 py-4">
             <div class="flex items-center justify-between">
                 <button @click="$router.back()" class="text-gray-600">
@@ -19,8 +18,6 @@
                     </svg>
                 </button>
             </div>
-
-            <!-- Progress Bar -->
             <div class="mt-4">
                 <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                     <div class="h-full bg-[#4255FF] rounded-full transition-all"
@@ -29,21 +26,19 @@
                 </div>
             </div>
         </header>
-
-        <!-- Flashcard -->
         <main class="flex-1 flex items-center justify-center px-6 py-8">
             <div class="w-full max-w-md">
                 <div @click="flipCard" class="flashcard-container" :class="{ 'flipped': isFlipped }">
                     <div
                         class="flashcard bg-white rounded-3xl shadow-2xl p-8 min-h-[400px] flex items-center justify-center cursor-pointer">
                         <div class="flashcard-front" v-show="!isFlipped">
-                            <div class="text-center">
+                            <div v-show="!isReallyFlipped" class="text-center">
                                 <div class="text-sm text-gray-500 mb-4">Vorderseite</div>
                                 <div class="text-2xl font-bold text-gray-800">{{ currentCard.front }}</div>
                             </div>
                         </div>
                         <div class="flashcard-back" v-show="isFlipped">
-                            <div class="text-center">
+                            <div v-show="isReallyFlipped" class="text-center">
                                 <div class="text-sm text-gray-500 mb-4">Rückseite</div>
                                 <div class="text-xl text-gray-800">{{ currentCard.back }}</div>
                             </div>
@@ -56,8 +51,6 @@
                 </div>
             </div>
         </main>
-
-        <!-- Bottom Controls -->
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 safe-area-inset">
             <div class="flex items-center justify-between gap-4">
                 <button @click="previousCard" :disabled="currentCardIndex === 0" :class="[
@@ -83,15 +76,15 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useStreakStore } from '@/stores/streak'
 
 const router = useRouter()
-const route = useRoute()
 const streakStore = useStreakStore()
 
 const currentCardIndex = ref(0)
 const isFlipped = ref(false)
+const isReallyFlipped = ref(false)
 
 const cards = ref([
     { front: 'Hello', back: 'Hallo' },
@@ -106,12 +99,17 @@ const currentCard = computed(() => cards.value[currentCardIndex.value] as { fron
 
 const flipCard = () => {
     isFlipped.value = !isFlipped.value
+
+    setTimeout(() => {
+        isReallyFlipped.value = !isReallyFlipped.value
+    }, 160)
 }
 
 const nextCard = () => {
     if (currentCardIndex.value < cards.value.length - 1) {
         currentCardIndex.value++
         isFlipped.value = false
+        isReallyFlipped.value = false
     }
 }
 
@@ -119,6 +117,7 @@ const previousCard = () => {
     if (currentCardIndex.value > 0) {
         currentCardIndex.value--
         isFlipped.value = false
+        isReallyFlipped.value = false
     }
 }
 
@@ -126,6 +125,7 @@ const shuffleCards = () => {
     cards.value = cards.value.sort(() => Math.random() - 0.5)
     currentCardIndex.value = 0
     isFlipped.value = false
+    isReallyFlipped.value = false
 }
 
 const finishSession = () => {

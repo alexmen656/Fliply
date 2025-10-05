@@ -7,25 +7,38 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <button @click="editSet" class="text-gray-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                </button>
+                <div class="flex items-center gap-3">
+                    <button @click="toggleFavorite" class="text-2xl">
+                        {{ isFavorite ? '⭐' : '☆' }}
+                    </button>
+                    <button @click="editSet" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="mb-4">
+            <div v-if="isLoading" class="text-center py-8">
+                <p class="text-gray-500">Lade Set...</p>
+            </div>
+            <div v-else class="mb-4">
                 <h1 class="text-2xl font-bold text-gray-800 mb-2">{{ setTitle }}</h1>
                 <div class="flex items-center gap-3 text-sm text-gray-600">
                     <span>{{ totalCards }} Karten</span>
                     <span>•</span>
                     <div class="flex items-center gap-2">
-                        <img :src="authorAvatar" class="w-5 h-5 rounded-full" alt="avatar" />
+                        <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
+                            <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
                         <span>{{ authorName }}</span>
                     </div>
                 </div>
             </div>
-            <div class="mb-4">
+            <div v-if="!isLoading" class="mb-4">
                 <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
                     <span>Fortschritt</span>
                     <span>{{ progress }}%</span>
@@ -37,7 +50,7 @@
             </div>
         </header>
         <main class="flex-1 overflow-y-auto pb-6 px-4 py-5">
-            <section class="mb-6">
+            <section v-if="!isLoading" class="mb-6">
                 <h2 class="text-lg font-bold text-gray-800 mb-3">Lernmodi</h2>
                 <div class="grid grid-cols-2 gap-3">
                     <button @click="startMode('flashcards')"
@@ -74,7 +87,7 @@
                     </button>
                 </div>
             </section>
-            <section>
+            <section v-if="!isLoading && cards.length > 0">
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-lg font-bold text-gray-800">Karten ({{ cards.length }})</h2>
                     <button @click="viewAllCards" class="text-[#4255FF] text-sm font-semibold">Alle anzeigen</button>
@@ -84,9 +97,6 @@
                         class="bg-white rounded-xl p-4 shadow-sm">
                         <div class="flex items-start justify-between mb-2">
                             <span class="text-xs font-semibold text-gray-500">Karte {{ index + 1 }}</span>
-                            <button class="text-yellow-500 text-lg">
-                                {{ card.starred ? '⭐' : '☆' }}
-                            </button>
                         </div>
                         <div class="space-y-2">
                             <div class="text-gray-800 font-medium">{{ card.front }}</div>
@@ -95,8 +105,12 @@
                     </div>
                 </div>
             </section>
+            <section v-if="!isLoading && cards.length === 0" class="text-center py-8">
+                <p class="text-gray-500">Keine Karten in diesem Set</p>
+            </section>
         </main>
-        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4 safe-area-inset">
+        <div v-if="!isLoading"
+            class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4 safe-area-inset">
             <button @click="startMode('flashcards')"
                 class="w-full bg-[#4255FF] text-white font-bold py-4 rounded-xl active:scale-98 transition flex items-center justify-center gap-2">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,25 +126,78 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useSetsStore } from '@/stores/sets'
 
 const router = useRouter()
 const route = useRoute()
+const setsStore = useSetsStore()
 
-const setTitle = ref('Exercise 1&2')
-const authorName = ref('Expert teacher')
-const authorAvatar = ref('https://i.pravatar.cc/150?img=1')
-const totalCards = ref(62)
-const progress = ref(45)
+const setTitle = ref('')
+const authorName = ref('')
+const authorAvatar = ref('')
+const totalCards = ref(0)
+const progress = ref(0)
+const cards = ref<any[]>([])
+const setIcon = ref('📚')
+const isLoading = ref(true)
+const isFavorite = ref(false)
 
-const cards = ref([
-    { front: 'What is Vue.js?', back: 'A progressive JavaScript framework for building user interfaces', starred: true },
-    { front: 'What is TypeScript?', back: 'A typed superset of JavaScript that compiles to plain JavaScript', starred: false },
-    { front: 'What is Tailwind CSS?', back: 'A utility-first CSS framework', starred: true },
-    { front: 'What is Capacitor?', back: 'A cross-platform app runtime', starred: false },
-    { front: 'What is a component?', back: 'A reusable piece of UI with its own logic and styling', starred: false }
-])
+onMounted(async () => {
+    await loadSetData()
+})
+
+const loadSetData = async () => {
+    const setId = route.params.id
+    if (!setId || Array.isArray(setId)) return
+
+    isLoading.value = true
+    try {
+        const setData = await setsStore.getSetById(setId)
+        if (setData) {
+            setTitle.value = setData.title
+            authorName.value = setData.author || 'Unbekannt'
+            authorAvatar.value = setData.avatar || ''
+            setIcon.value = setData.icon || '📚'
+
+            // Karten verarbeiten
+            if (Array.isArray(setData.cards)) {
+                cards.value = setData.cards.map((card: any, index: number) => ({
+                    front: card.front,
+                    back: card.back,
+                    order: card.order || index,
+                    starred: false
+                }))
+                totalCards.value = cards.value.length
+            } else {
+                totalCards.value = 0
+                cards.value = []
+            }
+
+            // Fortschritt berechnen (TODO: später aus Preferences laden)
+            progress.value = 0
+
+            // Favoriten-Status prüfen
+            isFavorite.value = setsStore.isFavorite(setId)
+
+            // Als "zuletzt verwendet" markieren
+            await setsStore.markAsRecent(setId, setTitle.value, totalCards.value)
+        }
+    } catch (error) {
+        console.error('Error loading set data:', error)
+    } finally {
+        isLoading.value = false
+    }
+}
+
+const toggleFavorite = async () => {
+    const setId = route.params.id
+    if (setId && !Array.isArray(setId)) {
+        await setsStore.toggleFavorite(setId)
+        isFavorite.value = setsStore.isFavorite(setId)
+    }
+}
 
 const startMode = (mode: string) => {
     const setId = route.params.id
