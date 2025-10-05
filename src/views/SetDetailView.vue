@@ -77,7 +77,7 @@
             <section>
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-lg font-bold text-gray-800">Karten ({{ cards.length }})</h2>
-                    <button class="text-[#4255FF] text-sm font-semibold">Alle anzeigen</button>
+                    <button @click="viewAllCards" class="text-[#4255FF] text-sm font-semibold">Alle anzeigen</button>
                 </div>
                 <div class="space-y-3">
                     <div v-for="(card, index) in cards.slice(0, 5)" :key="index"
@@ -136,6 +136,12 @@ const startMode = (mode: string) => {
     const setId = route.params.id
     if (mode === 'flashcards') {
         router.push(`/flashcards/${setId}`)
+    } else if (mode === 'quiz') {
+        router.push(`/quiz/${setId}`)
+    } else if (mode === 'match') {
+        router.push(`/match/${setId}`)
+    } else if (mode === 'learn') {
+        router.push(`/learn/${setId}`)
     } else {
         console.log('Starting mode:', mode)
     }
@@ -144,6 +150,11 @@ const startMode = (mode: string) => {
 const editSet = () => {
     const setId = route.params.id
     router.push(`/edit-set/${setId}`)
+}
+
+const viewAllCards = () => {
+    const setId = route.params.id
+    router.push(`/set/${setId}/cards`)
 }
 </script>
 

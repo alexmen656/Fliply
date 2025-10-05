@@ -5,6 +5,10 @@ import CreateView from '../views/CreateView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import SetDetailView from '../views/SetDetailView.vue'
 import FlashcardView from '../views/FlashcardView.vue'
+import QuizView from '../views/QuizView.vue'
+import MatchView from '../views/MatchView.vue'
+import LearnView from '../views/LearnView.vue'
+import AllCardsView from '../views/AllCardsView.vue'
 import EditSetView from '../views/EditSetView.vue'
 import EditProfileView from '../views/EditProfileView.vue'
 import NotificationsView from '../views/settings/NotificationsView.vue'
@@ -55,6 +59,26 @@ const router = createRouter({
       path: '/flashcards/:id',
       name: 'flashcards',
       component: FlashcardView,
+    },
+    {
+      path: '/quiz/:id',
+      name: 'quiz',
+      component: QuizView,
+    },
+    {
+      path: '/match/:id',
+      name: 'match',
+      component: MatchView,
+    },
+    {
+      path: '/learn/:id',
+      name: 'learn',
+      component: LearnView,
+    },
+    {
+      path: '/set/:id/cards',
+      name: 'all-cards',
+      component: AllCardsView,
     },
     {
       path: '/edit-set/:id',
