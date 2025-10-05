@@ -129,7 +129,7 @@ const deleteSet = async (id: string | number | undefined) => {
     }
 }
 
-const toggleFavorite = (id: number) => {
+const toggleFavorite = (id: number | string) => {
     console.log('Toggle favorite:', id)
 }
 
@@ -137,8 +137,23 @@ const createNewSet = () => {
     router.push('/create')
 }
 
-const favorites = ref([])
-const recentSets = ref([])
+interface FavoriteSet {
+    id: number | string
+    title: string
+    cards: number
+    avatar: string
+    author: string
+}
+
+interface RecentSet {
+    id: number | string
+    title: string
+    cards: number
+    accessedAt: string
+}
+
+const favorites = ref<FavoriteSet[]>([])
+const recentSets = ref<RecentSet[]>([])
 </script>
 
 <style scoped>

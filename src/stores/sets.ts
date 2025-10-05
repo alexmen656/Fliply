@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from '@/axios'
 import { useUserStore } from './user'
+import { Preferences } from '@capacitor/preferences'
 
 export interface Card {
   front: string
@@ -49,6 +50,7 @@ export const useSetsStore = defineStore('sets', () => {
           cards: Array.isArray(set.cards) ? set.cards.length : 0,
           avatar: userStore.profile.emoji || '😊',
         }))
+        await updateTotalCardsCount()
       }
     } catch (err) {
       console.error('Error fetching my sets:', err)
@@ -131,6 +133,7 @@ export const useSetsStore = defineStore('sets', () => {
           cards: newSet.cards.length,
           avatar: userStore.profile.emoji || '😊',
         })
+        await updateTotalCardsCount()
         return newSet
       }
     } catch (err) {
@@ -156,6 +159,7 @@ export const useSetsStore = defineStore('sets', () => {
             cards: Array.isArray(updatedSet.cards) ? updatedSet.cards.length : 0,
           }
         }
+        await updateTotalCardsCount()
         return updatedSet
       }
     } catch (err) {
@@ -174,6 +178,7 @@ export const useSetsStore = defineStore('sets', () => {
       const response = await axios.delete(`/api/sets/${id}`)
       if (response.data.success) {
         mySets.value = mySets.value.filter((set) => set.id !== id)
+        await updateTotalCardsCount()
         return true
       }
       return false
@@ -183,6 +188,18 @@ export const useSetsStore = defineStore('sets', () => {
       return false
     } finally {
       isLoading.value = false
+    }
+  }
+
+  const updateTotalCardsCount = async () => {
+    try {
+      let totalCards = 0
+      for (const set of mySets.value) {
+        totalCards += typeof set.cards === 'number' ? set.cards : (set.cards as any[]).length
+      }
+      await Preferences.set({ key: 'fliply_total_cards', value: totalCards.toString() })
+    } catch (error) {
+      console.error('Error updating total cards count:', error)
     }
   }
 
@@ -197,5 +214,6 @@ export const useSetsStore = defineStore('sets', () => {
     createSet,
     updateSet,
     deleteSet,
+    updateTotalCardsCount,
   }
 })

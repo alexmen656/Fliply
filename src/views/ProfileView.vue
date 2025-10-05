@@ -1,25 +1,25 @@
 <template>
     <div class="flex flex-col h-screen bg-gray-50">
-        <!-- Header -->
         <header class="bg-gradient-to-br from-[#4255FF] to-indigo-600 px-4 pt-8 pb-12">
             <div class="flex flex-col items-center">
                 <button @click="editProfile"
                     class="w-24 h-24 bg-white rounded-full flex items-center justify-center text-4xl mb-3 shadow-lg relative group">
-                    👤
+                    {{ userStore.profile.emoji || '👤' }}
                     <div
                         class="absolute inset-0 bg-black bg-opacity-0 group-active:bg-opacity-10 rounded-full transition">
                     </div>
                 </button>
-                <h1 class="text-2xl font-bold text-white mb-1">Max Mustermann</h1>
-                <p class="text-white opacity-90 text-sm">max@example.com</p>
+                <h1 class="text-2xl font-bold text-white mb-1">{{ userStore.profile.name || 'Dein Name' }}</h1>
+                <p class="text-white opacity-90 text-sm">{{ userStore.profile.email || 'deine@email.com' }}</p>
                 <button @click="editProfile" class="mt-2 text-white text-sm underline">Profil bearbeiten</button>
             </div>
         </header>
-
-        <!-- Stats Cards -->
         <div class="px-4 -mt-8 mb-6">
             <div class="bg-white rounded-2xl p-4 shadow-lg">
-                <div class="grid grid-cols-3 gap-4">
+                <div v-if="isLoadingStats" class="text-center py-4">
+                    <p class="text-gray-500 text-sm">Lade Statistiken...</p>
+                </div>
+                <div v-else class="grid grid-cols-3 gap-4">
                     <div class="text-center">
                         <div class="text-2xl font-bold text-[#4255FF]">{{ totalSets }}</div>
                         <div class="text-xs text-gray-600 mt-1">Sets</div>
@@ -35,10 +35,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto pb-20 px-4">
-            <!-- Achievement Section -->
             <section class="mb-6">
                 <h2 class="text-lg font-bold text-gray-800 mb-3">Errungenschaften</h2>
                 <div class="grid grid-cols-3 gap-3">
@@ -48,8 +45,6 @@
                     </div>
                 </div>
             </section>
-
-            <!-- Settings Section -->
             <section class="mb-6">
                 <h2 class="text-lg font-bold text-gray-800 mb-3">Einstellungen</h2>
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm">
@@ -74,8 +69,6 @@
                     </button>
                 </div>
             </section>
-
-            <!-- About Section -->
             <section>
                 <div class="bg-white rounded-xl p-4 shadow-sm text-center">
                     <p class="text-sm text-gray-600 mb-2">Fliply Version 1.0.0</p>
@@ -89,22 +82,79 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import BottomNavigation from '@/components/BottomNavigation.vue'
+import { useUserStore } from '@/stores/user'
+import { useSetsStore } from '@/stores/sets'
+import { Preferences } from '@capacitor/preferences'
+import axios from '@/axios'
 
 const router = useRouter()
+const userStore = useUserStore()
+const setsStore = useSetsStore()
 
-const totalSets = ref(12)
-const totalCards = ref(347)
-const streakDays = ref(7)
+const totalSets = computed(() => setsStore.mySets.length)
+const totalCards = ref(0)
+const streakDays = ref(0)
+const isLoadingStats = ref(true)
+
+onMounted(async () => {
+    isLoadingStats.value = true
+
+    await userStore.loadFromStorage()
+    await setsStore.fetchMySets()
+
+    try {
+        const { value } = await Preferences.get({ key: 'fliply_total_cards' })
+        if (value) {
+            totalCards.value = parseInt(value, 10)
+        } else {
+            let cardCount = 0
+            for (const set of setsStore.mySets) {
+                cardCount += typeof set.cards === 'number' ? set.cards : (set.cards as any[]).length
+            }
+            totalCards.value = cardCount
+            await Preferences.set({ key: 'fliply_total_cards', value: cardCount.toString() })
+        }
+    } catch (error) {
+        console.error('Error loading total cards:', error)
+    }
+
+    if (userStore.profile.id) {
+        try {
+            const response = await axios.get(`/api/users/${userStore.profile.id}`)
+            if (response.data.success) {
+                streakDays.value = response.data.data.currentStreak || 0
+            }
+        } catch (error) {
+            console.error('Error loading streak from API:', error)
+            try {
+                const { value } = await Preferences.get({ key: 'fliply_streak' })
+                if (value) {
+                    const streakData = JSON.parse(value)
+                    streakDays.value = streakData.currentStreak || 0
+                }
+            } catch (e) {
+                console.error('Error loading streak from preferences:', e)
+            }
+        }
+    }
+
+    isLoadingStats.value = false
+})
+
+const updateTotalCards = async (count: number) => {
+    totalCards.value = count
+    await Preferences.set({ key: 'fliply_total_cards', value: count.toString() })
+}
 
 const badges = ref([
     { id: 1, icon: '🏆', name: 'Starter' },
     { id: 2, icon: '🔥', name: '7 Tage' },
     { id: 3, icon: '⭐', name: 'Top Lerner' },
     { id: 4, icon: '🎯', name: '100 Karten' },
-    { id: 5, icon: '📚', name: 'Bücherw' },
+    { id: 5, icon: '📚', name: 'Bücher' },
     { id: 6, icon: '💪', name: 'Fleißig' }
 ])
 
