@@ -1,6 +1,5 @@
 <template>
     <div class="flex flex-col h-screen bg-gray-50">
-        <!-- Header -->
         <header class="bg-white border-b border-gray-200 px-4 py-4">
             <div class="flex items-center justify-between">
                 <button @click="$router.back()" class="text-gray-600">
@@ -12,10 +11,7 @@
                 <div class="w-6"></div>
             </div>
         </header>
-
-        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto px-4 py-5">
-            <!-- Theme Selection -->
             <div class="mb-6">
                 <h3 class="font-bold text-gray-800 mb-3">Farbschema</h3>
                 <div class="space-y-3">
@@ -39,8 +35,6 @@
                     </button>
                 </div>
             </div>
-
-            <!-- Font Size -->
             <div class="mb-6">
                 <h3 class="font-bold text-gray-800 mb-3">Schriftgröße</h3>
                 <div class="bg-white rounded-xl p-5 shadow-sm">
@@ -57,8 +51,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Animations -->
             <div>
                 <h3 class="font-bold text-gray-800 mb-3">Weitere Optionen</h3>
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm">
@@ -141,5 +133,9 @@ input[type="range"]::-moz-range-thumb {
     background: #4255FF;
     cursor: pointer;
     border-radius: 50%;
+}
+
+header {
+    padding-top: env(safe-area-inset-top);
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
     <div class="flex flex-col h-screen bg-gray-50">
-        <!-- Header -->
         <header class="bg-white border-b border-gray-200 px-4 py-4">
             <div class="flex items-center justify-between">
                 <button @click="$router.back()" class="text-gray-600">
@@ -12,10 +11,7 @@
                 <button @click="saveProfile" class="text-[#4255FF] font-semibold">Fertig</button>
             </div>
         </header>
-
-        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto px-4 py-6">
-            <!-- Avatar -->
             <div class="flex flex-col items-center mb-8">
                 <div class="relative">
                     <div
@@ -32,35 +28,28 @@
                 </div>
                 <button @click="changeEmoji" class="mt-3 text-sm text-[#4255FF] font-semibold">Emoji ändern</button>
             </div>
-
-            <!-- Form Fields -->
             <div class="space-y-4">
                 <div>
                     <label class="text-sm font-medium text-gray-700 mb-2 block">Name</label>
                     <input v-model="userName" type="text"
                         class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
                 </div>
-
                 <div>
                     <label class="text-sm font-medium text-gray-700 mb-2 block">E-Mail</label>
                     <input v-model="userEmail" type="email"
                         class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
                 </div>
-
                 <div>
                     <label class="text-sm font-medium text-gray-700 mb-2 block">Bio</label>
                     <textarea v-model="userBio" rows="4" placeholder="Erzähle etwas über dich..."
                         class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none resize-none"></textarea>
                 </div>
-
                 <div>
                     <label class="text-sm font-medium text-gray-700 mb-2 block">Lernziel (Karten pro Tag)</label>
                     <input v-model.number="dailyGoal" type="number" min="1" max="100"
                         class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
                 </div>
             </div>
-
-            <!-- Emoji Picker -->
             <div v-if="showEmojiPicker"
                 class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
                 @click="showEmojiPicker = false">
@@ -117,5 +106,9 @@ const saveProfile = () => {
 <style scoped>
 .active\:scale-95:active {
     transform: scale(0.95);
+}
+
+header {
+    padding-top: env(safe-area-inset-top);
 }
 </style>

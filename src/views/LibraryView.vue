@@ -164,4 +164,8 @@ const recentSets = ref<RecentSet[]>([])
 .active\:scale-98:active {
     transform: scale(0.98);
 }
+
+header {
+    padding-top: env(safe-area-inset-top);
+}
 </style>

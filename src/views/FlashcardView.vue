@@ -160,4 +160,8 @@ const finishSession = () => {
 .active\:scale-95:active {
     transform: scale(0.95);
 }
+
+header {
+    padding-top: env(safe-area-inset-top);
+}
 </style>

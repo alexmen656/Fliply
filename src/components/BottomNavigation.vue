@@ -1,8 +1,8 @@
 <template>
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 safe-area-inset">
-        <div class="flex items-center justify-around px-2 py-2">
+        <div class="flex items-center justify-around px-2 pt-2">
             <button v-for="item in navItems" :key="item.name" :class="[
-                'flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition flex-1',
+                'flex flex-col items-center gap-1 px-3 pt-2 rounded-xl transition flex-1',
                 item.active ? 'text-[#4255FF]' : 'text-gray-400'
             ]" @click="navigate(item.name)">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

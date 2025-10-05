@@ -1,6 +1,5 @@
 <template>
     <div class="flex flex-col h-screen bg-gray-50">
-        <!-- Header -->
         <header class="bg-white border-b border-gray-200 px-4 py-4">
             <div class="flex items-center justify-between">
                 <button @click="$router.back()" class="text-gray-600">
@@ -12,10 +11,7 @@
                 <div class="w-6"></div>
             </div>
         </header>
-
-        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto px-4 py-5">
-            <!-- FAQ Section -->
             <div class="mb-6">
                 <h3 class="font-bold text-gray-800 mb-3">Häufige Fragen</h3>
                 <div class="space-y-2">
@@ -35,8 +31,6 @@
                     </button>
                 </div>
             </div>
-
-            <!-- Contact Support -->
             <div class="mb-6">
                 <h3 class="font-bold text-gray-800 mb-3">Kontakt</h3>
                 <div class="space-y-3">
@@ -53,24 +47,8 @@
                             <div class="text-sm text-gray-500">support@fliply.app</div>
                         </div>
                     </a>
-
-                    <button @click="openChat"
-                        class="w-full bg-white rounded-xl p-4 shadow-sm flex items-center gap-3 active:bg-gray-50">
-                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="font-semibold text-gray-800">Live Chat</div>
-                            <div class="text-sm text-gray-500">Mo-Fr, 9-18 Uhr</div>
-                        </div>
-                    </button>
                 </div>
             </div>
-
-            <!-- App Info -->
             <div>
                 <h3 class="font-bold text-gray-800 mb-3">App-Info</h3>
                 <div class="bg-white rounded-xl p-4 shadow-sm space-y-3">
@@ -133,5 +111,9 @@ const openChat = () => {
 <style scoped>
 .active\:bg-gray-50:active {
     background-color: rgb(249 250 251);
+}
+
+header {
+    padding-top: env(safe-area-inset-top);
 }
 </style>

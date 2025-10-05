@@ -1,6 +1,5 @@
 <template>
     <div class="flex flex-col h-screen bg-gray-50">
-        <!-- Header -->
         <header class="bg-white border-b border-gray-200 px-4 py-4">
             <div class="flex items-center justify-between mb-4">
                 <button @click="$router.back()" class="text-gray-600">
@@ -15,7 +14,6 @@
                     </svg>
                 </button>
             </div>
-
             <div class="mb-4">
                 <h1 class="text-2xl font-bold text-gray-800 mb-2">{{ setTitle }}</h1>
                 <div class="flex items-center gap-3 text-sm text-gray-600">
@@ -27,8 +25,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Progress Bar -->
             <div class="mb-4">
                 <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
                     <span>Fortschritt</span>
@@ -40,10 +36,7 @@
                 </div>
             </div>
         </header>
-
-        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto pb-6 px-4 py-5">
-            <!-- Study Options -->
             <section class="mb-6">
                 <h2 class="text-lg font-bold text-gray-800 mb-3">Lernmodi</h2>
                 <div class="grid grid-cols-2 gap-3">
@@ -55,7 +48,6 @@
                         </svg>
                         <span class="font-semibold">Karteikarten</span>
                     </button>
-
                     <button @click="startMode('quiz')"
                         class="bg-gradient-to-br from-purple-500 to-pink-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition flex flex-col items-center justify-center">
                         <svg class="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,7 +56,6 @@
                         </svg>
                         <span class="font-semibold">Quiz</span>
                     </button>
-
                     <button @click="startMode('match')"
                         class="bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition flex flex-col items-center justify-center">
                         <svg class="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +64,6 @@
                         </svg>
                         <span class="font-semibold">Match</span>
                     </button>
-
                     <button @click="startMode('learn')"
                         class="bg-gradient-to-br from-orange-500 to-red-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition flex flex-col items-center justify-center">
                         <svg class="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,14 +74,11 @@
                     </button>
                 </div>
             </section>
-
-            <!-- Cards Preview -->
             <section>
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-lg font-bold text-gray-800">Karten ({{ cards.length }})</h2>
                     <button class="text-[#4255FF] text-sm font-semibold">Alle anzeigen</button>
                 </div>
-
                 <div class="space-y-3">
                     <div v-for="(card, index) in cards.slice(0, 5)" :key="index"
                         class="bg-white rounded-xl p-4 shadow-sm">
@@ -109,8 +96,6 @@
                 </div>
             </section>
         </main>
-
-        <!-- Bottom Action -->
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4 safe-area-inset">
             <button @click="startMode('flashcards')"
                 class="w-full bg-[#4255FF] text-white font-bold py-4 rounded-xl active:scale-98 transition flex items-center justify-center gap-2">
@@ -153,7 +138,6 @@ const startMode = (mode: string) => {
         router.push(`/flashcards/${setId}`)
     } else {
         console.log('Starting mode:', mode)
-        // Andere Modi können später implementiert werden
     }
 }
 
@@ -174,5 +158,9 @@ const editSet = () => {
 
 .active\:scale-95:active {
     transform: scale(0.95);
+}
+
+header {
+    padding-top: env(safe-area-inset-top);
 }
 </style>

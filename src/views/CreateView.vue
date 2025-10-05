@@ -1,6 +1,5 @@
 <template>
     <div class="flex flex-col h-screen bg-gray-50">
-        <!-- Header -->
         <header class="bg-white border-b border-gray-200 px-4 py-4">
             <div class="flex items-center justify-between">
                 <button @click="$router.back()" class="text-gray-600">
@@ -14,22 +13,15 @@
                 </button>
             </div>
         </header>
-
-        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto pb-20 px-4 py-5">
-            <!-- Set Title -->
             <div class="mb-6">
                 <input v-model="setTitle" type="text" placeholder="Titel des Sets eingeben"
                     class="w-full text-xl font-bold text-gray-800 bg-white rounded-xl px-4 py-4 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
             </div>
-
-            <!-- Set Description -->
             <div class="mb-6">
                 <textarea v-model="setDescription" placeholder="Beschreibung (optional)" rows="3"
                     class="w-full text-gray-700 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none resize-none"></textarea>
             </div>
-
-            <!-- Cards -->
             <div class="space-y-4">
                 <div v-for="(card, index) in cards" :key="index" class="bg-white rounded-xl p-4 shadow-sm">
                     <div class="flex items-center justify-between mb-3">
@@ -38,14 +30,12 @@
                             Löschen
                         </button>
                     </div>
-
                     <div class="space-y-3">
                         <div>
                             <label class="text-xs font-medium text-gray-600 mb-1 block">Vorderseite</label>
                             <input v-model="card.front" type="text" placeholder="Begriff oder Frage"
                                 class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-[#4255FF] focus:outline-none" />
                         </div>
-
                         <div>
                             <label class="text-xs font-medium text-gray-600 mb-1 block">Rückseite</label>
                             <textarea v-model="card.back" placeholder="Definition oder Antwort" rows="3"
@@ -53,8 +43,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Add Card Button -->
                 <button @click="addCard"
                     class="w-full bg-white border-2 border-dashed border-gray-300 text-gray-600 font-semibold py-4 rounded-xl active:scale-98 transition flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,8 +52,6 @@
                 </button>
             </div>
         </main>
-
-        <!-- Bottom Action Bar -->
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4 safe-area-inset">
             <button @click="saveSet" :disabled="isSaving"
                 class="w-full bg-[#4255FF] text-white font-bold py-4 rounded-xl active:scale-98 transition disabled:opacity-50">
@@ -148,5 +134,9 @@ const saveSet = async () => {
 
 .active\:scale-98:active {
     transform: scale(0.98);
+}
+
+header {
+    padding-top: env(safe-area-inset-top);
 }
 </style>

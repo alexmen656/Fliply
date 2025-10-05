@@ -215,4 +215,7 @@ export default {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+.grayscale {
+    filter: grayscale(100%);
+}
 </style>

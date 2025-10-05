@@ -247,4 +247,12 @@ const logout = () => {
 .active\:bg-gray-50:active {
     background-color: rgb(249 250 251);
 }
+
+header {
+    padding-top: env(safe-area-inset-top);
+}
+
+.grayscale {
+    filter: grayscale(100%);
+}
 </style>

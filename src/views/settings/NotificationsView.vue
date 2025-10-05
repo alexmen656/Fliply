@@ -1,6 +1,5 @@
 <template>
     <div class="flex flex-col h-screen bg-gray-50">
-        <!-- Header -->
         <header class="bg-white border-b border-gray-200 px-4 py-4">
             <div class="flex items-center justify-between">
                 <button @click="$router.back()" class="text-gray-600">
@@ -12,8 +11,6 @@
                 <div class="w-6"></div>
             </div>
         </header>
-
-        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto px-4 py-5">
             <div class="bg-white rounded-xl overflow-hidden shadow-sm">
                 <div v-for="(item, index) in notifications" :key="item.id"
@@ -49,3 +46,8 @@ const toggleNotification = (id: number) => {
     if (item) item.enabled = !item.enabled
 }
 </script>
+<style scoped>
+header {
+    padding-top: env(safe-area-inset-top);
+}
+</style>

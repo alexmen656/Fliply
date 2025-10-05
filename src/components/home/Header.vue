@@ -1,5 +1,5 @@
 <template>
-    <header class="bg-[#4255FF] px-4 pt-3 pb-4 relative">
+    <header class="bg-[#4255FF] px-4 pt-3 relative">
         <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-3">
                 <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -8,7 +8,7 @@
                 <div>
                     <span class="text-white text-xl font-bold">Fliply</span>
                     <p v-if="userStore.profile.name" class="text-blue-100 text-sm">
-                        Hallo, {{ userStore.profile.name }}! 👋
+                        👋 Hallo, {{ userStore.profile.name }}!
                     </p>
                 </div>
             </div>
@@ -35,7 +35,7 @@
         </div>
 
         <Transition name="search">
-            <div v-if="showSearch" class="relative mt-3">
+            <div v-if="showSearch" class="relative mt-3 mb-4">
                 <input ref="searchInput" v-model="searchQuery" @input="handleSearch" @focus="showSearchResults = true"
                     type="text" placeholder="Suche Lernsets, Lehrbücher..."
                     class="w-full bg-white rounded-lg px-4 py-3 pr-10 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300" />
@@ -277,5 +277,9 @@ export default {
 .search-leave-to {
     opacity: 0;
     transform: translateY(-10px);
+}
+
+header {
+    padding-top: max(44px, env(safe-area-inset-top, 44px)) !important;
 }
 </style>
