@@ -62,6 +62,7 @@
                     </button>
                 </div>
             </div>
+            <!---
             <div class="mb-6">
                 <h3 class="font-bold text-gray-800 mb-3">Schriftgröße</h3>
                 <div class="bg-white rounded-xl p-5 shadow-sm">
@@ -106,7 +107,8 @@
                         </button>
                     </div>
                 </div>
-            </div>
+            </div>-->
+
         </main>
     </div>
 </template>

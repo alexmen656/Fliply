@@ -7,10 +7,7 @@
                     <img v-if="userStore.profile.avatar" :src="userStore.profile.avatar" alt="Avatar"
                         class="w-full h-full object-cover rounded-full"
                         @error="(e) => (e.target as HTMLImageElement).style.display = 'none'" />
-                    <span v-if="!userStore.profile.avatar || !avatarLoaded" class="text-3xl">{{ userStore.profile.emoji
-                        || '👤' }}</span>
-                    <div
-                        class="absolute inset-0 bg-black bg-opacity-0 group-active:bg-opacity-10 rounded-full transition">
+                    <div class="absolute inset-0 group-active:bg-opacity-10 rounded-full transition">
                     </div>
                 </button>
                 <div class="flex-1 pt-2">
@@ -21,11 +18,11 @@
             <div class="flex gap-3">
                 <button @click="openCoinHistory"
                     class="flex-1 bg-white bg-opacity-20 backdrop-blur-sm rounded-xl px-4 py-3 flex items-center justify-center gap-2 active:scale-95 transition">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span class="text-white font-bold">{{ userStore.profile.coins }}</span>
+                    <span class="font-bold">{{ userStore.profile.coins }}</span>
                 </button>
                 <button @click="openAvatarShop"
                     class="flex-1 bg-white text-[#4255FF] px-4 py-3 rounded-xl font-semibold text-sm active:scale-95 transition flex items-center justify-center gap-2">
@@ -261,14 +258,14 @@ const badges_old = ref([
 ])
 
 const settings = ref([
-    {
+    /*{
         id: 1,
         name: 'Benachrichtigungen',
         iconPath: 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9',
         iconBg: 'bg-blue-100',
         iconColor: 'text-blue-600',
         action: () => router.push('/settings/notifications')
-    },
+    },*/
     {
         id: 2,
         name: 'Lernziele',

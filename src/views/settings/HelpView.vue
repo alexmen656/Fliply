@@ -44,7 +44,7 @@
                         </div>
                         <div>
                             <div class="font-semibold text-gray-800">E-Mail Support</div>
-                            <div class="text-sm text-gray-500">support@fliply.app</div>
+                            <div class="text-sm text-gray-500">support.fliply@control-center.eu</div>
                         </div>
                     </a>
                 </div>
