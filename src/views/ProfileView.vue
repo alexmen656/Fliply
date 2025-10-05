@@ -1,29 +1,43 @@
 <template>
-    <div class="flex flex-col h-screen bg-gray-50">
-        <header class="bg-gradient-to-br from-[#4255FF] to-indigo-600 px-4 pt-8 pb-12">
-            <div class="flex flex-col items-center">
+    <div class="flex flex-col min-h-screen bg-gray-50">
+        <header :class="['px-4 py-8', currentBannerGradient]">
+            <div class="flex items-start gap-4 mb-4">
                 <button @click="editProfile"
-                    class="w-24 h-24 bg-white rounded-full flex items-center justify-center text-4xl mb-3 shadow-lg relative group overflow-hidden">
+                    class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-4xl shadow-lg relative group overflow-hidden flex-shrink-0">
                     <img v-if="userStore.profile.avatar" :src="userStore.profile.avatar" alt="Avatar"
-                        class="w-full h-full object-cover rounded-full" />
-                    <span v-else>{{ userStore.profile.emoji || '👤' }}</span>
+                        class="w-full h-full object-cover rounded-full"
+                        @error="(e) => (e.target as HTMLImageElement).style.display = 'none'" />
+                    <span v-if="!userStore.profile.avatar || !avatarLoaded" class="text-3xl">{{ userStore.profile.emoji
+                        || '👤' }}</span>
                     <div
                         class="absolute inset-0 bg-black bg-opacity-0 group-active:bg-opacity-10 rounded-full transition">
                     </div>
                 </button>
-                <h1 class="text-2xl font-bold text-white mb-1">{{ userStore.profile.name || 'Dein Name' }}</h1>
-                <p class="text-white opacity-90 text-sm">{{ userStore.profile.email || 'deine@email.com' }}</p>
-                <div class="mt-3 bg-white bg-opacity-20 rounded-full px-4 py-2 flex items-center gap-2">
-                    <span class="text-2xl">🪙</span>
-                    <span class="text-white font-bold">{{ userStore.profile.coins }} Münzen</span>
+                <div class="flex-1 pt-2">
+                    <h1 class="text-2xl font-bold text-white mb-1">{{ userStore.profile.name || 'Dein Name' }}</h1>
+                    <p class="text-white opacity-90 text-sm">{{ userStore.profile.email || 'keine E-Mail' }}</p>
                 </div>
+            </div>
+            <div class="flex gap-3">
+                <button @click="openCoinHistory"
+                    class="flex-1 bg-white bg-opacity-20 backdrop-blur-sm rounded-xl px-4 py-3 flex items-center justify-center gap-2 active:scale-95 transition">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="text-white font-bold">{{ userStore.profile.coins }}</span>
+                </button>
                 <button @click="openAvatarShop"
-                    class="mt-2 bg-white text-[#4255FF] px-4 py-2 rounded-xl font-semibold text-sm active:scale-95 transition">
-                    🛒 Avatar Shop
+                    class="flex-1 bg-white text-[#4255FF] px-4 py-3 rounded-xl font-semibold text-sm active:scale-95 transition flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span>Shop</span>
                 </button>
             </div>
         </header>
-        <div class="px-4 -mt-8 mb-6">
+        <div class="px-4 -mt-6 mb-6">
             <div class="bg-white rounded-2xl p-4 shadow-lg">
                 <div v-if="isLoadingStats" class="text-center py-4">
                     <p class="text-gray-500 text-sm">Lade Statistiken...</p>
@@ -44,11 +58,26 @@
                 </div>
             </div>
         </div>
-        <main class="flex-1 overflow-y-auto pb-20 px-4">
+        <main class="flex-1 pb-20 px-4">
             <section class="mb-6">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">Errungenschaften</h2>
-                <div class="grid grid-cols-3 gap-3">
-                    <div v-for="badge in achievementsStore.achievements" :key="badge.id" :class="[
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-lg font-bold text-gray-800">Errungenschaften</h2>
+                    <button @click="viewAllAchievements" class="text-[#4255FF] text-sm font-semibold">
+                        Alle ansehen
+                    </button>
+                </div>
+                <div v-if="displayedAchievements.length === 0" class="bg-white rounded-xl p-6 text-center shadow-sm">
+                    <p class="text-gray-500 text-sm">Noch keine Errungenschaften freigeschaltet.</p>
+                    <p class="text-gray-400 text-xs mt-1 flex items-center justify-center gap-1">
+                        <span>Lerne weiter, um Erfolge zu sammeln!</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </p>
+                </div>
+                <div v-else class="grid grid-cols-3 gap-3">
+                    <div v-for="badge in displayedAchievements" :key="badge.id" :class="[
                         'rounded-xl p-3 shadow-sm text-center transition',
                         badge.unlocked
                             ? 'bg-white'
@@ -67,10 +96,18 @@
                             {{ badge.name }}
                         </div>
                         <div v-if="badge.unlocked" class="mt-1">
-                            <span class="text-[10px] text-green-600">✓</span>
+                            <svg class="w-3 h-3 mx-auto text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
                         </div>
                         <div v-else class="mt-1">
-                            <span class="text-[10px] text-gray-400">🔒</span>
+                            <svg class="w-3 h-3 mx-auto text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -118,6 +155,7 @@ import BottomNavigation from '@/components/BottomNavigation.vue'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
 import { useAchievementsStore } from '@/stores/achievements'
+import { useBannersStore } from '@/stores/banners'
 import { Preferences } from '@capacitor/preferences'
 import axios from '@/axios'
 
@@ -125,17 +163,38 @@ const router = useRouter()
 const userStore = useUserStore()
 const setsStore = useSetsStore()
 const achievementsStore = useAchievementsStore()
+const bannersStore = useBannersStore()
+
+const currentBannerGradient = computed(() => {
+    const banner = bannersStore.getCurrentBanner()
+    return banner ? banner.gradient : 'bg-gradient-to-br from-[#4255FF] to-indigo-600'
+})
 
 const totalSets = computed(() => setsStore.mySets.length)
 const totalCards = ref(0)
 const streakDays = ref(0)
 const isLoadingStats = ref(true)
+const avatarLoaded = ref(false)
+
+// Nur freigeschaltete und gesperrte Achievements anzeigen (max 3 pro Zeile)
+const displayedAchievements = computed(() => {
+    const unlocked = achievementsStore.unlockedAchievements
+    const locked = achievementsStore.lockedAchievements
+
+    // Berechne wie viele gesperrte wir brauchen um auf ein Vielfaches von 3 zu kommen
+    const unlockedCount = unlocked.length
+    const remainder = unlockedCount % 3
+    const lockedNeeded = remainder === 0 ? 0 : 3 - remainder
+
+    return [...unlocked, ...locked.slice(0, lockedNeeded)]
+})
 
 onMounted(async () => {
     isLoadingStats.value = true
 
     await userStore.loadFromStorage()
     await setsStore.fetchMySets()
+    await bannersStore.loadFromStorage()
 
     try {
         const { value } = await Preferences.get({ key: 'fliply_total_cards' })
@@ -182,6 +241,14 @@ onMounted(async () => {
 const updateTotalCards = async (count: number) => {
     totalCards.value = count
     await Preferences.set({ key: 'fliply_total_cards', value: count.toString() })
+}
+
+const viewAllAchievements = () => {
+    router.push('/achievements')
+}
+
+const openCoinHistory = () => {
+    router.push('/coin-history')
 }
 
 const badges_old = ref([

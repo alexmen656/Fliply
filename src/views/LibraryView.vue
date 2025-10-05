@@ -3,12 +3,12 @@
         <header class="bg-white border-b border-gray-200 px-4 py-4">
             <div class="flex items-center justify-between mb-4">
                 <h1 class="text-2xl font-bold text-gray-800">Bibliothek</h1>
-                <button class="text-[#4255FF] p-2">
+                <!--<button class="text-[#4255FF] p-2">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                     </svg>
-                </button>
+                </button>-->
             </div>
             <div class="flex gap-4 border-b border-gray-200">
                 <button v-for="tab in tabs" :key="tab.name" @click="activeTab = tab.name" :class="[

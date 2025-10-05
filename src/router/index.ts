@@ -13,6 +13,8 @@ import EditSetView from '../views/EditSetView.vue'
 import EditProfileView from '../views/EditProfileView.vue'
 import ExpertSetsView from '../views/ExpertSetsView.vue'
 import AvatarShopView from '../views/AvatarShopView.vue'
+import AchievementsView from '../views/AchievementsView.vue'
+import CoinHistoryView from '../views/CoinHistoryView.vue'
 import NotificationsView from '../views/settings/NotificationsView.vue'
 import GoalsView from '../views/settings/GoalsView.vue'
 import AppearanceView from '../views/settings/AppearanceView.vue'
@@ -101,6 +103,16 @@ const router = createRouter({
       path: '/avatar-shop',
       name: 'avatar-shop',
       component: AvatarShopView,
+    },
+    {
+      path: '/achievements',
+      name: 'achievements',
+      component: AchievementsView,
+    },
+    {
+      path: '/coin-history',
+      name: 'coin-history',
+      component: CoinHistoryView,
     },
     {
       path: '/settings/notifications',

@@ -1,1 +1,23 @@
 @import 'tailwindcss';
+
+:root {
+  --color-primary: #4255ff;
+  --color-primary-dark: #3644cc;
+  --color-primary-light: #5a6aff;
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.border-primary {
+  border-color: var(--color-primary);
+}
+
+.ring-primary {
+  --tw-ring-color: var(--color-primary);
+}

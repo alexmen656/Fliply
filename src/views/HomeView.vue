@@ -2,53 +2,58 @@
     <div class="flex flex-col h-screen bg-gray-50">
         <Header></Header>
         <main class="flex-1 overflow-y-auto pb-20">
-            <section class="px-4 pt-3 pb-4">
-                <div class="grid grid-cols-3 gap-3">
-                    <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-xl p-4 shadow-sm text-white">
-                        <div class="flex items-center gap-2 mb-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
-                            </svg>
-                            <span class="text-sm font-medium">Streak</span>
+            <section class="px-3 pt-3 pb-4">
+                <div class="space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg class="w-5 h-5 text-[#4255FF]" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                                </svg>
+                                <span class="text-sm font-medium">Streak</span>
+                            </div>
+                            <div class="text-3xl font-bold text-gray-800">{{ streakStore.currentStreak }}</div>
+                            <div class="text-xs opacity-90 mt-1">Tage</div>
                         </div>
-                        <div class="text-3xl font-bold">{{ streakStore.currentStreak }}</div>
-                        <div class="text-xs opacity-90 mt-1">Tage</div>
-                    </div>
-                    <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl p-4 shadow-sm text-white">
-                        <div class="flex items-center gap-2 mb-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                            </svg>
-                            <span class="text-sm font-medium">Ziel</span>
-                        </div>
-                        <div class="text-3xl font-bold">{{ goalsStore.todayProgress }}/{{ goalsStore.dailyGoal }}</div>
-                        <div class="w-full bg-white/30 rounded-full h-1.5 mt-2">
-                            <div class="bg-white rounded-full h-1.5 transition-all"
-                                :style="{ width: goalsStore.getDailyProgressPercentage() + '%' }"></div>
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg class="w-5 h-5 text-[#4255FF]" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                                </svg>
+                                <span class="text-sm font-medium">Ziel</span>
+                            </div>
+                            <div class="text-3xl font-bold text-gray-800">{{ goalsStore.todayProgress }}/{{
+                                goalsStore.dailyGoal }}</div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                                <div class="bg-[#4255FF] rounded-full h-1.5 transition-all"
+                                    :style="{ width: goalsStore.getDailyProgressPercentage() + '%' }"></div>
+                            </div>
                         </div>
                     </div>
                     <div @click="router.push('/avatar-shop')"
-                        class="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl p-4 shadow-sm text-white cursor-pointer active:scale-95 transition">
+                        class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm cursor-pointer active:scale-95 transition">
                         <div class="flex items-center gap-2 mb-2">
-                            <span class="text-xl">🪙</span>
+                            <span class="text-xl text-[#4255FF]">🪙</span>
                             <span class="text-sm font-medium">Münzen</span>
                         </div>
-                        <div class="text-3xl font-bold">{{ userStore.profile.coins }}</div>
+                        <div class="text-3xl font-bold text-gray-800">{{ userStore.profile.coins }}</div>
                         <div class="text-xs opacity-90 mt-1">Zum Shop</div>
                     </div>
                 </div>
             </section>
             <section class="py-5">
-                <div class="flex items-center justify-between mb-4 px-4">
-                    <h2 class="text-lg font-bold text-gray-800">My sets</h2>
+                <div class="flex items-center justify-between mb-4 px-3">
+                    <h2 class="text-xl font-bold text-gray-800">My sets</h2>
                     <button v-if="setsStore.mySets.length > 0" @click="router.push('/library')"
                         class="text-[#4255FF] text-sm font-semibold">View all</button>
                 </div>
-                <div v-if="setsStore.mySets.length === 0" class="px-4">
+                <div v-if="setsStore.mySets.length === 0" class="px-3">
                     <div class="bg-white rounded-xl p-6 shadow-sm text-center">
                         <div class="mx-auto w-16 h-16 mb-3 text-gray-400">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -66,9 +71,9 @@
                     </div>
                 </div>
                 <div v-else class="overflow-x-auto scrollbar-hide">
-                    <div class="flex gap-3 px-4">
+                    <div class="px-3">
                         <div v-for="set in setsStore.mySets" :key="set.id" @click="openSet(set.id)"
-                            class="bg-white rounded-xl shadow-sm active:scale-98 transition cursor-pointer flex-shrink-0 w-72 overflow-hidden">
+                            class="bg-white rounded-xl shadow-sm active:scale-98 transition cursor-pointer overflow-hidden mb-3">
                             <div class="flex items-stretch">
                                 <div class="flex-1 p-4">
                                     <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
@@ -97,14 +102,14 @@
                 </div>
             </section>
             <section class="py-5">
-                <div class="flex items-center justify-between mb-4 px-4">
-                    <h2 class="text-lg font-bold text-gray-800">Expert sets</h2>
+                <div class="flex items-center justify-between mb-4 px-3">
+                    <h2 class="text-xl font-bold text-gray-800">Expert sets</h2>
                     <button @click="router.push('/expert-sets')" class="text-[#4255FF] text-sm font-semibold">View
                         all</button>
                 </div>
 
                 <div class="overflow-x-auto scrollbar-hide">
-                    <div class="flex gap-3 px-4 pb-2">
+                    <div class="flex gap-3 px-3 pb-2">
                         <div v-for="set in setsStore.expertSets" :key="set.id" @click="openSet(set.id)"
                             class="bg-white rounded-xl shadow-sm active:scale-98 transition cursor-pointer flex-shrink-0 w-72 overflow-hidden">
                             <div class="flex items-stretch">
@@ -134,10 +139,10 @@
                     </div>
                 </div>
             </section>
-            <section class="px-4 py-5">
+            <section class="px-3 py-5">
                 <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-lg font-bold text-gray-800">Achievements</h2>
-                    <button @click="router.push('/profile')" class="text-[#4255FF] text-sm font-semibold">View
+                    <h2 class="text-xl font-bold text-gray-800">Achievements</h2>
+                    <button @click="router.push('/achievements')" class="text-[#4255FF] text-sm font-semibold">View
                         all</button>
                 </div>
 
@@ -170,7 +175,7 @@
                             <span class="text-xs text-green-600 font-medium">✓ Erreicht</span>
                         </div>
                         <div v-else class="mt-2">
-                            <span class="text-xs text-gray-400">🔒 Gesperrt</span>
+                            <span class="text-xs text-gray-400">Gesperrt</span>
                         </div>
                     </div>
                 </div>

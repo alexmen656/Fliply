@@ -74,9 +74,11 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useGoalsStore } from '@/stores/goals'
 
 const router = useRouter()
 const userStore = useUserStore()
+const goalsStore = useGoalsStore()
 
 const userName = ref('Max Mustermann')
 const userEmail = ref('max@example.com')
@@ -87,9 +89,11 @@ const showEmojiPicker = ref(false)
 
 onMounted(async () => {
     await userStore.loadFromStorage()
+    await goalsStore.loadGoals()
     if (userStore.profile.name) userName.value = userStore.profile.name
     if (userStore.profile.email) userEmail.value = userStore.profile.email
     if (userStore.profile.emoji) userEmoji.value = userStore.profile.emoji
+    dailyGoal.value = goalsStore.dailyGoal
 })
 
 const emojiList = ['👤', '😀', '🎓', '📚', '🚀', '⭐', '💪', '🎯', '🔥', '✨', '🌟', '💡', '🎨', '🎮', '🏆']
@@ -109,6 +113,11 @@ const saveProfile = async () => {
         email: userEmail.value,
         emoji: userStore.profile.avatar ? undefined : userEmoji.value,
     })
+
+    // Synchronisiere das Lernziel mit dem globalen Store
+    goalsStore.dailyGoal = dailyGoal.value
+    await goalsStore.saveGoals()
+
     router.back()
 }
 </script>

@@ -4,10 +4,10 @@ export const NotificationHelpers = {
   addStreakNotification(days: number) {
     const store = useNotificationsStore()
     store.addNotification({
-      title: `${days}-Tage-Streak! 🔥`,
+      title: `${days}-Tage-Streak!`,
       message: `Glückwunsch! Du lernst jetzt ${days} Tage am Stück!`,
       time: 'gerade eben',
-      icon: '🔥',
+      icon: 'fire',
       read: false,
       link: '/profile',
     })
@@ -15,10 +15,10 @@ export const NotificationHelpers = {
   addGoalCompletedNotification(cardsLearned: number) {
     const store = useNotificationsStore()
     store.addNotification({
-      title: 'Tagesziel erreicht! ✅',
+      title: 'Tagesziel erreicht!',
       message: `Du hast heute ${cardsLearned} Karten gelernt - gut gemacht!`,
       time: 'gerade eben',
-      icon: '✅',
+      icon: 'check',
       read: false,
       link: '/profile',
     })
@@ -26,10 +26,10 @@ export const NotificationHelpers = {
   addReviewReminderNotification(setTitle: string, setId: number) {
     const store = useNotificationsStore()
     store.addNotification({
-      title: 'Wiederholung fällig ⏰',
+      title: 'Wiederholung fällig',
       message: `Das Set "${setTitle}" sollte wiederholt werden`,
       time: 'gerade eben',
-      icon: '⏰',
+      icon: 'clock',
       read: false,
       link: `/set/${setId}`,
     })
@@ -42,10 +42,10 @@ export const NotificationHelpers = {
         : `Du hast ${badgeCount} neue Badges freigeschaltet!`
 
     store.addNotification({
-      title: 'Neuer Badge! 🎖️',
+      title: 'Neuer Badge!',
       message,
       time: 'gerade eben',
-      icon: '🎖️',
+      icon: 'badge',
       read: false,
       link: '/profile',
     })
@@ -53,10 +53,10 @@ export const NotificationHelpers = {
   addNewRecordNotification(cardsLearned: number) {
     const store = useNotificationsStore()
     store.addNotification({
-      title: 'Neuer Rekord! 🏆',
+      title: 'Neuer Rekord!',
       message: `Du hast heute ${cardsLearned} Karten gelernt - dein bester Tag!`,
       time: 'gerade eben',
-      icon: '🏆',
+      icon: 'trophy',
       read: false,
       link: '/profile',
     })

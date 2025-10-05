@@ -84,7 +84,7 @@ export const useAchievementsStore = defineStore('achievements', () => {
     {
       id: 'sets_5',
       icon: '📚',
-      name: 'Bücherw',
+      name: 'Bücher',
       description: '5 Sets erstellt',
       unlocked: false,
       type: 'sets',

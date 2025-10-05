@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { Preferences } from '@capacitor/preferences'
+import { useCoinHistoryStore } from './coinHistory'
 import axios from '@/axios'
 
 export interface UserProfile {
@@ -114,15 +115,24 @@ export const useUserStore = defineStore('user', () => {
     await Preferences.remove({ key: 'fliply_user' })
   }
 
-  const earnCoins = async (amount: number) => {
+  const earnCoins = async (amount: number, reason: string = 'Münzen verdient') => {
     profile.value.coins += amount
     await saveToStorage()
+
+    const coinHistoryStore = useCoinHistoryStore()
+    await coinHistoryStore.addTransaction(amount, reason, 'earned')
   }
 
-  const spendCoins = async (amount: number): Promise<boolean> => {
+  const spendCoins = async (
+    amount: number,
+    reason: string = 'Münzen ausgegeben',
+  ): Promise<boolean> => {
     if (profile.value.coins >= amount) {
       profile.value.coins -= amount
       await saveToStorage()
+
+      const coinHistoryStore = useCoinHistoryStore()
+      await coinHistoryStore.addTransaction(amount, reason, 'spent')
       return true
     }
     return false
