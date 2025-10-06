@@ -66,8 +66,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useSetsStore } from '@/stores/sets'
 
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const setsStore = useSetsStore()
@@ -133,12 +135,12 @@ const saveChanges = async () => {
     const validCards = cards.value.filter(card => card.front.trim() || card.back.trim())
 
     if (!setTitle.value.trim()) {
-        alert('Bitte gib einen Titel ein')
+        alert(t('editSet.enterTitle'))
         return
     }
 
     if (validCards.length === 0) {
-        alert('Bitte füge mindestens eine Karte hinzu')
+        alert(t('editSet.addAtLeastOneCard'))
         return
     }
 
@@ -154,7 +156,7 @@ const saveChanges = async () => {
         router.back()
     } catch (error) {
         console.error('Error saving changes:', error)
-        alert('Fehler beim Speichern')
+        alert(t('editSet.saveFailed'))
     }
 }
 
@@ -162,7 +164,7 @@ const deleteSet = async () => {
     const setId = route.params.id
     if (!setId || Array.isArray(setId)) return
 
-    if (confirm('Möchtest du dieses Set wirklich löschen?')) {
+    if (confirm(t('editSet.confirmDelete'))) {
         try {
             const success = await setsStore.deleteSet(setId)
             if (success) {
@@ -170,7 +172,7 @@ const deleteSet = async () => {
             }
         } catch (error) {
             console.error('Error deleting set:', error)
-            alert('Fehler beim Löschen')
+            alert(t('editSet.deleteFailed'))
         }
     }
 }

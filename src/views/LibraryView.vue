@@ -46,7 +46,8 @@
                             <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
                             <p class="text-sm text-gray-600 mb-2">{{ set.cards }} {{ $t('common.cards') }}</p>
                             <div class="text-xs text-gray-500">
-                                Erstellt: {{ new Date(set.createdAt || '').toLocaleDateString('de-DE') }}
+                                {{ $t('library.created') }}: {{ new Date(set.createdAt ||
+                                    '').toLocaleDateString('de-DE') }}
                             </div>
                         </div>
                         <div v-if="set.icon && !isUrl(set.icon)"
@@ -83,8 +84,8 @@
                                 d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
                         </svg>
                     </div>
-                    <h3 class="font-bold text-gray-800 mb-2">Noch keine Favoriten</h3>
-                    <p class="text-sm text-gray-600 mb-4">Markiere Sets als Favoriten!</p>
+                    <h3 class="font-bold text-gray-800 mb-2">{{ $t('library.noFavorites') }}</h3>
+                    <p class="text-sm text-gray-600 mb-4">{{ $t('library.noFavoritesDescription') }}</p>
                 </div>
 
                 <div v-else v-for="fav in setsStore.favoriteSets" :key="fav.id" @click="openSet(fav.id)"
@@ -136,8 +137,8 @@
                                 d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
                     </div>
-                    <h3 class="font-bold text-gray-800 mb-2">Noch keine Sets verwendet</h3>
-                    <p class="text-sm text-gray-600 mb-4">Starte ein Set, um es hier zu sehen!</p>
+                    <h3 class="font-bold text-gray-800 mb-2">{{ $t('library.noRecent') }}</h3>
+                    <p class="text-sm text-gray-600 mb-4">{{ $t('library.noRecentDescription') }}</p>
                 </div>
 
                 <div v-else v-for="recent in recentSetsWithDetails" :key="recent.id" @click="openSet(recent.id)"
@@ -154,7 +155,7 @@
                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
                                 </div>
-                                <span class="text-xs text-gray-500">{{ recent.author || 'Unbekannt' }}</span>
+                                <span class="text-xs text-gray-500">{{ recent.author || t('library.unknown') }}</span>
                             </div>
                             <span class="text-xs text-gray-400">{{ formatDate(recent.accessedAt) }}</span>
                         </div>
@@ -187,7 +188,7 @@ const activeTab = ref('mySets')
 
 const tabs = computed(() => [
     { name: 'mySets', label: t('library.mySets') },
-    { name: 'favorites', label: 'Favoriten' },
+    { name: 'favorites', label: t('library.favorites') },
     { name: 'recent', label: t('library.recentlyViewed') }
 ])
 
@@ -224,7 +225,7 @@ const openSet = async (id: string | number | undefined) => {
 const deleteSet = async (id: string | number | undefined) => {
     if (!id) return
 
-    if (confirm('Möchtest du dieses Set wirklich löschen?')) {
+    if (confirm(t('library.confirmDelete'))) {
         const success = await setsStore.deleteSet(id)
         if (success) {
             await setsStore.fetchMySets(true)
@@ -253,15 +254,15 @@ const formatDate = (dateString: string) => {
     const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
 
     if (diffInMinutes < 1) {
-        return 'Gerade eben'
+        return t('library.justNow')
     } else if (diffInMinutes < 60) {
-        return `vor ${diffInMinutes} Min.`
+        return t('library.minutesAgo', { count: diffInMinutes })
     } else if (diffInHours < 24) {
-        return `vor ${diffInHours} Std.`
+        return t('library.hoursAgo', { count: diffInHours })
     } else if (diffInDays === 1) {
-        return 'Gestern'
+        return t('library.yesterday')
     } else if (diffInDays < 7) {
-        return `vor ${diffInDays} Tagen`
+        return t('library.daysAgo', { count: diffInDays })
     } else {
         return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })
     }

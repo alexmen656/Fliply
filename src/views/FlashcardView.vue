@@ -89,12 +89,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useStreakStore } from '@/stores/streak'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
 import { useProgressStore } from '@/stores/progress'
 import { useGoalsStore } from '@/stores/goals'
 
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const streakStore = useStreakStore()
@@ -196,7 +198,7 @@ const finishSession = async () => {
 
 const exitFlashcards = async () => {
     if (viewedCards.value.size > 0) {
-        if (confirm('Möchtest du die Karteikarten wirklich beenden?')) {
+        if (confirm(t('flashcards.confirmExit'))) {
             await goalsStore.updateTodayProgress(viewedCards.value.size)
             router.back()
         }

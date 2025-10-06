@@ -113,9 +113,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useSetsStore } from '@/stores/sets'
 import { useProgressStore } from '@/stores/progress'
 
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const setsStore = useSetsStore()
@@ -236,7 +238,7 @@ const editCard = (card: Card) => {
 }
 
 const deleteCard = (card: Card) => {
-    if (confirm('Möchtest du diese Karte wirklich löschen?')) {
+    if (confirm(t('allCards.confirmDelete'))) {
         const index = cards.value.findIndex(c => c.id === card.id)
         if (index > -1) {
             cards.value.splice(index, 1)

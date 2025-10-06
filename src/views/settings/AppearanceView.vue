@@ -157,7 +157,7 @@ import { useThemesStore } from '@/stores/themes'
 import { useUserStore } from '@/stores/user'
 import type { Theme } from '@/stores/themes'
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const themesStore = useThemesStore()
 const userStore = useUserStore()
 const fontSize = ref(1)
@@ -186,9 +186,9 @@ const selectTheme = async (theme: Theme) => {
         await themesStore.setTheme(theme.id)
     } else {
         if (userStore.profile.coins >= theme.cost) {
-            const confirmed = confirm(`Möchtest du "${theme.name}" für ${theme.cost} Münzen freischalten?`)
+            const confirmed = confirm(t('settings.appearance.confirmUnlockTheme', { name: theme.name, cost: theme.cost }))
             if (confirmed) {
-                const success = await userStore.spendCoins(theme.cost, `Theme "${theme.name}" gekauft`)
+                const success = await userStore.spendCoins(theme.cost, `Theme "${theme.name}" ${t('avatarShop.purchased')}`)
                 if (success) {
                     await themesStore.unlockTheme(theme.id)
                     await themesStore.setTheme(theme.id)
@@ -196,7 +196,7 @@ const selectTheme = async (theme: Theme) => {
             }
         } else {
             const needed = theme.cost - userStore.profile.coins
-            alert(`Du brauchst noch ${needed} Münzen mehr! Lerne weiter, um Münzen zu verdienen. 🎓`)
+            alert(t('avatarShop.notEnoughCoins', { needed }))
         }
     }
 }

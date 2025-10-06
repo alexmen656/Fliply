@@ -258,17 +258,17 @@ const handleVersionClick = () => {
     if (versionClickCount.value === 5) {
         userStore.earnCoins(10000)
         versionClickCount.value = 0
-        alert('Debug Mode aktiviert! +10,000 Münzen!')
+        alert('Debug Mode activated! +10,000 Coins!')
     }
 }
 
 const badges_old = ref([
     { id: 1, icon: '🏆', name: 'Starter' },
-    { id: 2, icon: '🔥', name: '7 Tage' },
-    { id: 3, icon: '⭐', name: 'Top Lerner' },
-    { id: 4, icon: '🎯', name: '100 Karten' },
-    { id: 5, icon: '📚', name: 'Bücher' },
-    { id: 6, icon: '💪', name: 'Fleißig' }
+    { id: 2, icon: '🔥', name: '7 Days' },
+    { id: 3, icon: '⭐', name: 'Top Learner' },
+    { id: 4, icon: '🎯', name: '100 Cards' },
+    { id: 5, icon: '📚', name: 'Books' },
+    { id: 6, icon: '💪', name: 'Diligent' }
 ])
 
 const settings = ref([

@@ -33,12 +33,25 @@
   "library": {
     "title": "Bibliothek",
     "mySets": "Meine Sets",
+    "favorites": "Favoriten",
     "recentlyViewed": "Kürzlich angesehen",
     "createNewSet": "Neues Set erstellen",
     "noSets": "Keine Sets vorhanden",
     "noSetsDescription": "Erstelle dein erstes Lernset!",
     "allCards": "Alle Karten",
-    "noCards": "Keine Karten gefunden"
+    "noCards": "Keine Karten gefunden",
+    "noFavorites": "Noch keine Favoriten",
+    "noFavoritesDescription": "Markiere Sets als Favoriten!",
+    "noRecent": "Noch keine Sets verwendet",
+    "noRecentDescription": "Starte ein Set, um es hier zu sehen!",
+    "created": "Erstellt",
+    "unknown": "Unbekannt",
+    "confirmDelete": "Möchtest du dieses Set wirklich löschen?",
+    "justNow": "Gerade eben",
+    "minutesAgo": "vor {count} Min.",
+    "hoursAgo": "vor {count} Std.",
+    "yesterday": "Gestern",
+    "daysAgo": "vor {count} Tagen"
   },
   "create": {
     "title": "Neues Set erstellen",
@@ -55,7 +68,10 @@
     "cardAdded": "Karte hinzugefügt",
     "card": "Karte",
     "editSet": "Set bearbeiten",
-    "deleteSet": "Set löschen"
+    "deleteSet": "Set löschen",
+    "enterTitle": "Bitte gib einen Titel für das Set ein",
+    "addAtLeastOneCard": "Bitte füge mindestens eine vollständige Karte hinzu",
+    "saveFailed": "Fehler beim Speichern des Sets. Bitte versuche es erneut."
   },
   "profile": {
     "title": "Profil",
@@ -113,7 +129,8 @@
     "completedTitle": "Geschafft!",
     "completedMessage": "Du hast alle Karten durchgearbeitet!",
     "restart": "Neu starten",
-    "backToSet": "Zurück zum Set"
+    "backToSet": "Zurück zum Set",
+    "confirmExit": "Möchtest du die Karteikarten wirklich beenden?"
   },
   "learn": {
     "title": "Lernen",
@@ -129,7 +146,8 @@
     "completedMessage": "Du hast diese Runde abgeschlossen!",
     "accuracy": "Genauigkeit",
     "studied": "Gelernt",
-    "continueStudying": "Weiter lernen"
+    "continueStudying": "Weiter lernen",
+    "confirmExit": "Möchtest du den Lernmodus wirklich beenden?"
   },
   "match": {
     "title": "Zuordnen",
@@ -138,7 +156,8 @@
     "time": "Zeit",
     "perfect": "Perfekt!",
     "allPairsFound": "Du hast alle Paare gefunden",
-    "tryAgain": "Nochmal"
+    "tryAgain": "Nochmal",
+    "confirmExit": "Möchtest du das Spiel wirklich beenden?"
   },
   "quiz": {
     "title": "Quiz",
@@ -150,17 +169,24 @@
     "score": "Punktzahl",
     "correct": "Richtig",
     "incorrect": "Falsch",
-    "tryAgain": "Nochmal versuchen"
+    "tryAgain": "Nochmal versuchen",
+    "confirmExit": "Möchtest du das Quiz wirklich beenden?"
   },
   "allCards": {
     "title": "Alle Karten",
     "searchPlaceholder": "Karten durchsuchen...",
-    "noCards": "Keine Karten gefunden"
+    "noCards": "Keine Karten gefunden",
+    "confirmDelete": "Möchtest du diese Karte wirklich löschen?"
   },
   "editSet": {
     "title": "Set bearbeiten",
     "deleteSet": "Set löschen",
-    "deleteConfirm": "Möchtest du dieses Set wirklich löschen?"
+    "deleteConfirm": "Möchtest du dieses Set wirklich löschen?",
+    "enterTitle": "Bitte gib einen Titel ein",
+    "addAtLeastOneCard": "Bitte füge mindestens eine Karte hinzu",
+    "saveFailed": "Fehler beim Speichern",
+    "confirmDelete": "Möchtest du dieses Set wirklich löschen?",
+    "deleteFailed": "Fehler beim Löschen"
   },
   "achievements": {
     "title": "Errungenschaften",
@@ -187,7 +213,12 @@
     "yourCoins": "Deine Münzen",
     "earnMore": "Verdiene mehr durch Lernen!",
     "unlockable": "Freischaltbar",
-    "changeAvatar": "Avatar ändern"
+    "changeAvatar": "Avatar ändern",
+    "yourAvatars": "Deine Avatare",
+    "yourBanners": "Deine Banner",
+    "confirmUnlock": "Möchtest du \"{name}\" für {cost} Münzen freischalten?",
+    "purchased": "gekauft",
+    "notEnoughCoins": "Du brauchst noch {needed} Münzen mehr! Lerne weiter, um Münzen zu verdienen. 🎓"
   },
   "coinHistory": {
     "title": "Münzen Verlauf",
@@ -198,7 +229,13 @@
     "current": "Aktuell",
     "total": "Gesamt",
     "noTransactions": "Keine Transaktionen",
-    "startLearning": "Beginne zu lernen, um Münzen zu verdienen!"
+    "startLearning": "Beginne zu lernen, um Münzen zu verdienen!",
+    "howToEarn": "So verdienst du Münzen",
+    "earnMethod1": "Lernsets abschließen",
+    "earnMethod2": "Tägliche Streak aufrechterhalten",
+    "earnMethod3": "Errungenschaften freischalten",
+    "earnMethod4": "Quiz & Tests bestehen",
+    "todayAt": "Heute um {time}"
   },
   "expertSets": {
     "title": "Expert Sets",
@@ -261,7 +298,8 @@
     "appearance": {
       "title": "Erscheinungsbild",
       "language": "Sprache",
-      "theme": "Design"
+      "theme": "Design",
+      "confirmUnlockTheme": "Möchtest du \"{name}\" für {cost} Münzen freischalten?"
     }
   }
 }

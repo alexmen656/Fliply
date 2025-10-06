@@ -33,12 +33,25 @@
   "library": {
     "title": "Library",
     "mySets": "My Sets",
+    "favorites": "Favorites",
     "recentlyViewed": "Recently Viewed",
     "createNewSet": "Create New Set",
     "noSets": "No sets available",
     "noSetsDescription": "Create your first study set!",
     "allCards": "All Cards",
-    "noCards": "No cards found"
+    "noCards": "No cards found",
+    "noFavorites": "No favorites yet",
+    "noFavoritesDescription": "Mark sets as favorites!",
+    "noRecent": "No sets used yet",
+    "noRecentDescription": "Start a set to see it here!",
+    "created": "Created",
+    "unknown": "Unknown",
+    "confirmDelete": "Do you really want to delete this set?",
+    "justNow": "Just now",
+    "minutesAgo": "{count} min. ago",
+    "hoursAgo": "{count} hrs. ago",
+    "yesterday": "Yesterday",
+    "daysAgo": "{count} days ago"
   },
   "create": {
     "title": "Create New Set",
@@ -55,7 +68,10 @@
     "cardAdded": "Card added",
     "card": "Card",
     "editSet": "Edit Set",
-    "deleteSet": "Delete Set"
+    "deleteSet": "Delete Set",
+    "enterTitle": "Please enter a title for the set",
+    "addAtLeastOneCard": "Please add at least one complete card",
+    "saveFailed": "Error saving the set. Please try again."
   },
   "profile": {
     "title": "Profile",
@@ -113,7 +129,8 @@
     "completedTitle": "Completed!",
     "completedMessage": "You've completed all cards!",
     "restart": "Restart",
-    "backToSet": "Back to Set"
+    "backToSet": "Back to Set",
+    "confirmExit": "Do you really want to end the flashcards?"
   },
   "learn": {
     "title": "Learn",
@@ -129,7 +146,8 @@
     "completedMessage": "You've completed this round!",
     "accuracy": "Accuracy",
     "studied": "Studied",
-    "continueStudying": "Continue Studying"
+    "continueStudying": "Continue Studying",
+    "confirmExit": "Do you really want to end the learning mode?"
   },
   "match": {
     "title": "Match",
@@ -138,7 +156,8 @@
     "time": "Time",
     "perfect": "Perfect!",
     "allPairsFound": "You found all pairs",
-    "tryAgain": "Try Again"
+    "tryAgain": "Try Again",
+    "confirmExit": "Do you really want to end the game?"
   },
   "quiz": {
     "title": "Quiz",
@@ -150,17 +169,24 @@
     "score": "Score",
     "correct": "Correct",
     "incorrect": "Incorrect",
-    "tryAgain": "Try Again"
+    "tryAgain": "Try Again",
+    "confirmExit": "Do you really want to end the quiz?"
   },
   "allCards": {
     "title": "All Cards",
     "searchPlaceholder": "Search cards...",
-    "noCards": "No cards found"
+    "noCards": "No cards found",
+    "confirmDelete": "Do you really want to delete this card?"
   },
   "editSet": {
     "title": "Edit Set",
     "deleteSet": "Delete Set",
-    "deleteConfirm": "Are you sure you want to delete this set?"
+    "deleteConfirm": "Are you sure you want to delete this set?",
+    "enterTitle": "Please enter a title",
+    "addAtLeastOneCard": "Please add at least one card",
+    "saveFailed": "Error saving",
+    "confirmDelete": "Do you really want to delete this set?",
+    "deleteFailed": "Error deleting"
   },
   "achievements": {
     "title": "Achievements",
@@ -187,7 +213,12 @@
     "yourCoins": "Your Coins",
     "earnMore": "Earn more by learning!",
     "unlockable": "Unlockable",
-    "changeAvatar": "Change Avatar"
+    "changeAvatar": "Change Avatar",
+    "yourAvatars": "Your Avatars",
+    "yourBanners": "Your Banners",
+    "confirmUnlock": "Do you want to unlock \"{name}\" for {cost} coins?",
+    "purchased": "purchased",
+    "notEnoughCoins": "You need {needed} more coins! Keep learning to earn coins. 🎓"
   },
   "coinHistory": {
     "title": "Coin History",
@@ -198,7 +229,13 @@
     "current": "Current",
     "total": "Total",
     "noTransactions": "No transactions",
-    "startLearning": "Start learning to earn coins!"
+    "startLearning": "Start learning to earn coins!",
+    "howToEarn": "How to earn coins",
+    "earnMethod1": "Complete learning sets",
+    "earnMethod2": "Maintain daily streak",
+    "earnMethod3": "Unlock achievements",
+    "earnMethod4": "Pass quizzes & tests",
+    "todayAt": "Today at {time}"
   },
   "expertSets": {
     "title": "Expert Sets",
@@ -261,7 +298,8 @@
     "appearance": {
       "title": "Appearance",
       "language": "Language",
-      "theme": "Theme"
+      "theme": "Theme",
+      "confirmUnlockTheme": "Do you want to unlock \"{name}\" for {cost} coins?"
     }
   }
 }

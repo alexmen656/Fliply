@@ -28,7 +28,7 @@
                 <div v-for="(card, index) in cards" :key="index" class="bg-white rounded-xl p-4 shadow-sm">
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-sm font-semibold text-gray-500">{{ $t('common.card') }} {{ index + 1
-                            }}</span>
+                        }}</span>
                         <button v-if="cards.length > 1" @click="removeCard(index)" class="text-red-500 text-sm">
                             {{ $t('common.delete') }}
                         </button>
@@ -42,7 +42,7 @@
                         </div>
                         <div>
                             <label class="text-xs font-medium text-gray-600 mb-1 block">{{ $t('create.definition')
-                                }}</label>
+                            }}</label>
                             <textarea v-model="card.back" :ref="el => setCardBackRef(el, index)"
                                 :placeholder="$t('create.definitionPlaceholder')" rows="3"
                                 @keydown.enter.exact.prevent="handleBackEnter(index)"
@@ -72,8 +72,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useSetsStore } from '@/stores/sets'
 
+const { t } = useI18n()
 const router = useRouter()
 const setsStore = useSetsStore()
 
@@ -143,14 +145,14 @@ const removeCard = (index: number) => {
 
 const saveSet = async () => {
     if (!setTitle.value.trim()) {
-        alert('Bitte gib einen Titel für das Set ein')
+        alert(t('create.enterTitle'))
         return
     }
 
     const validCards = cards.value.filter(card => card.front.trim() && card.back.trim())
 
     if (validCards.length === 0) {
-        alert('Bitte füge mindestens eine vollständige Karte hinzu')
+        alert(t('create.addAtLeastOneCard'))
         return
     }
 
@@ -170,7 +172,7 @@ const saveSet = async () => {
         router.push('/library')
     } catch (error) {
         console.error('Error saving set:', error)
-        alert('Fehler beim Speichern des Sets. Bitte versuche es erneut.')
+        alert(t('create.saveFailed'))
     } finally {
         isSaving.value = false
     }

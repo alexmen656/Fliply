@@ -144,11 +144,13 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
 import { useProgressStore } from '@/stores/progress'
 import { useGoalsStore } from '@/stores/goals'
 
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
@@ -271,8 +273,7 @@ const restartQuiz = () => {
 }
 
 const exitQuiz = async () => {
-    if (confirm('Möchtest du das Quiz wirklich beenden?')) {
-        // Count answered questions even when exiting early
+    if (confirm(t('quiz.confirmExit'))) {
         if (answerResults.value.length > 0) {
             await goalsStore.updateTodayProgress(answerResults.value.length)
         }

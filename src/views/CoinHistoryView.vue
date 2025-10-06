@@ -73,12 +73,12 @@
                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <div>
-                        <h3 class="font-semibold text-blue-900 mb-1">So verdienst du Münzen</h3>
+                        <h3 class="font-semibold text-blue-900 mb-1">{{ $t('coinHistory.howToEarn') }}</h3>
                         <ul class="text-sm text-blue-800 space-y-1">
-                            <li>• Lernsets abschließen</li>
-                            <li>• Tägliche Streak aufrechterhalten</li>
-                            <li>• Errungenschaften freischalten</li>
-                            <li>• Quiz & Tests bestehen</li>
+                            <li>• {{ $t('coinHistory.earnMethod1') }}</li>
+                            <li>• {{ $t('coinHistory.earnMethod2') }}</li>
+                            <li>• {{ $t('coinHistory.earnMethod3') }}</li>
+                            <li>• {{ $t('coinHistory.earnMethod4') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -89,9 +89,11 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { useCoinHistoryStore } from '@/stores/coinHistory'
 
+const { t } = useI18n()
 const userStore = useUserStore()
 const coinHistoryStore = useCoinHistoryStore()
 
@@ -109,10 +111,10 @@ const formatDate = (dateString: string) => {
     if (diffDays === 0) {
         const hours = date.getHours().toString().padStart(2, '0')
         const minutes = date.getMinutes().toString().padStart(2, '0')
-        return `Heute um ${hours}:${minutes}`
+        return t('coinHistory.todayAt', { time: `${hours}:${minutes}` })
     }
-    if (diffDays === 1) return 'Gestern'
-    if (diffDays < 7) return `vor ${diffDays} Tagen`
+    if (diffDays === 1) return t('library.yesterday')
+    if (diffDays < 7) return t('library.daysAgo', { count: diffDays })
     return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
 </script>

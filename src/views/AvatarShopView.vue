@@ -62,7 +62,7 @@
                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                     clip-rule="evenodd" />
                             </svg>
-                            <span>Deine Avatare</span>
+                            <span>{{ $t('avatarShop.yourAvatars') }}</span>
                         </h2>
                         <div class="grid grid-cols-3 gap-3">
                             <button v-for="avatar in avatarsStore.getUnlockedAvatars()" :key="avatar.id"
@@ -124,7 +124,7 @@
             </div>
             <div v-if="activeTab === 'banners'">
                 <div v-if="isLoading" class="text-center py-8">
-                    <p class="text-gray-500">Lade Banner...</p>
+                    <p class="text-gray-500">{{ $t('common.loading') }}</p>
                 </div>
                 <div v-else>
                     <section v-if="bannersStore.getUnlockedBanners().length > 0" class="mb-6">
@@ -134,7 +134,7 @@
                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                     clip-rule="evenodd" />
                             </svg>
-                            <span>Deine Banner</span>
+                            <span>{{ $t('avatarShop.yourBanners') }}</span>
                         </h2>
                         <div class="space-y-3">
                             <button v-for="banner in bannersStore.getUnlockedBanners()" :key="banner.id"
@@ -204,12 +204,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { useAvatarsStore } from '@/stores/avatars'
 import { useBannersStore } from '@/stores/banners'
 import type { Avatar } from '@/stores/avatars'
 import type { Banner } from '@/stores/banners'
 
+const { t } = useI18n()
 const router = useRouter()
 const userStore = useUserStore()
 const avatarsStore = useAvatarsStore()
@@ -231,9 +233,9 @@ const selectAvatar = async (avatar: Avatar) => {
 
 const unlockAvatar = async (avatar: Avatar) => {
     if (userStore.profile.coins >= avatar.cost) {
-        const confirmed = confirm(`Möchtest du "${avatar.name}" für ${avatar.cost} Münzen freischalten?`)
+        const confirmed = confirm(t('avatarShop.confirmUnlock', { name: avatar.name, cost: avatar.cost }))
         if (confirmed) {
-            const success = await userStore.spendCoins(avatar.cost, `Avatar "${avatar.name}" gekauft`)
+            const success = await userStore.spendCoins(avatar.cost, `Avatar "${avatar.name}" ${t('avatarShop.purchased')}`)
             if (success) {
                 await avatarsStore.unlockAvatar(avatar.id)
                 await userStore.setAvatar(avatar.url)
@@ -241,7 +243,7 @@ const unlockAvatar = async (avatar: Avatar) => {
         }
     } else {
         const needed = avatar.cost - userStore.profile.coins
-        alert(`Du brauchst noch ${needed} Münzen mehr! Lerne weiter, um Münzen zu verdienen. 🎓`)
+        alert(t('avatarShop.notEnoughCoins', { needed }))
     }
 }
 
@@ -251,9 +253,9 @@ const selectBanner = async (banner: Banner) => {
 
 const unlockBanner = async (banner: Banner) => {
     if (userStore.profile.coins >= banner.cost) {
-        const confirmed = confirm(`Möchtest du "${banner.name}" für ${banner.cost} Münzen freischalten?`)
+        const confirmed = confirm(t('avatarShop.confirmUnlock', { name: banner.name, cost: banner.cost }))
         if (confirmed) {
-            const success = await userStore.spendCoins(banner.cost, `Banner "${banner.name}" gekauft`)
+            const success = await userStore.spendCoins(banner.cost, `Banner "${banner.name}" ${t('avatarShop.purchased')}`)
             if (success) {
                 await bannersStore.unlockBanner(banner.id)
                 await bannersStore.setBanner(banner.id)
@@ -261,7 +263,7 @@ const unlockBanner = async (banner: Banner) => {
         }
     } else {
         const needed = banner.cost - userStore.profile.coins
-        alert(`Du brauchst noch ${needed} Münzen mehr! Lerne weiter, um Münzen zu verdienen. 🎓`)
+        alert(t('avatarShop.notEnoughCoins', { needed }))
     }
 }
 </script>

@@ -11,7 +11,7 @@
                 <div class="text-center">
                     <div class="text-sm font-semibold text-gray-800">{{ $t('match.title') }}</div>
                     <div class="text-xs text-gray-500 mt-1">{{ matchedPairs }} / {{ totalPairs }} {{ $t('match.pairs')
-                        }}</div>
+                    }}</div>
                 </div>
                 <div class="text-right">
                     <div class="text-sm font-bold text-primary">{{ formatTime(elapsedTime) }}</div>
@@ -105,11 +105,13 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
 import { useProgressStore } from '@/stores/progress'
 import { useGoalsStore } from '@/stores/goals'
 
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
@@ -317,7 +319,7 @@ const restartMatch = () => {
 
 const exitMatch = async () => {
     if (matchedPairs.value > 0 && !showResults.value) {
-        if (confirm('Möchtest du das Spiel wirklich beenden?')) {
+        if (confirm(t('match.confirmExit'))) {
             // Count matched pairs even when exiting early
             await goalsStore.updateTodayProgress(matchedPairs.value)
             stopTimer()

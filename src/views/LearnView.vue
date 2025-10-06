@@ -189,11 +189,13 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
 import { useProgressStore } from '@/stores/progress'
 import { useGoalsStore } from '@/stores/goals'
 
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
@@ -334,7 +336,7 @@ const restartLearn = () => {
 
 const exitLearn = async () => {
     if (totalAnswers.value > 0 && !showResults.value) {
-        if (confirm('Möchtest du den Lernmodus wirklich beenden?')) {
+        if (confirm(t('learn.confirmExit'))) {
             // Count answered cards even when exiting early
             await goalsStore.updateTodayProgress(totalAnswers.value)
             router.back()
