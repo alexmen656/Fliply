@@ -11,7 +11,8 @@
                     </div>
                 </button>
                 <div class="flex-1 pt-2">
-                    <h1 class="text-2xl font-bold text-white mb-1">{{ userStore.profile.name || 'Dein Name' }}</h1>
+                    <h1 class="text-2xl font-bold text-white mb-1">{{ userStore.profile.name || $t('profile.title') }}
+                    </h1>
                     <p class="text-white opacity-90 text-sm">{{ userStore.profile.email || 'keine E-Mail' }}</p>
                 </div>
             </div>
@@ -30,14 +31,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
-                    <span>Shop</span>
+                    <span>{{ $t('avatarShop.title') }}</span>
                 </button>
             </div>
         </header>
         <div class="px-4 -mt-6 mb-6 flex-shrink-0">
             <div class="bg-white rounded-2xl p-4 shadow-lg">
                 <div v-if="isLoadingStats" class="text-center py-4">
-                    <p class="text-gray-500 text-sm">Lade Statistiken...</p>
+                    <p class="text-gray-500 text-sm">{{ $t('common.loading') }}</p>
                 </div>
                 <div v-else class="grid grid-cols-3 gap-4">
                     <div class="text-center">
@@ -46,11 +47,11 @@
                     </div>
                     <div class="text-center border-l border-r border-gray-200">
                         <div class="text-2xl font-bold text-green-600">{{ totalCards }}</div>
-                        <div class="text-xs text-gray-600 mt-1">Karten</div>
+                        <div class="text-xs text-gray-600 mt-1">{{ $t('common.cards') }}</div>
                     </div>
                     <div class="text-center">
                         <div class="text-2xl font-bold text-orange-600">{{ streakDays }}</div>
-                        <div class="text-xs text-gray-600 mt-1">Tage Streak</div>
+                        <div class="text-xs text-gray-600 mt-1">{{ $t('home.streak') }}</div>
                     </div>
                 </div>
             </div>
@@ -58,9 +59,9 @@
         <main class="flex-1 overflow-y-auto pb-20 px-4">
             <section class="mb-6">
                 <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-lg font-bold text-gray-800">Errungenschaften</h2>
+                    <h2 class="text-lg font-bold text-gray-800">{{ $t('profile.achievements') }}</h2>
                     <button @click="viewAllAchievements" class="text-primary text-sm font-semibold">
-                        Alle ansehen
+                        {{ $t('common.viewAll') }}
                     </button>
                 </div>
                 <div v-if="displayedAchievements.length === 0" class="bg-white rounded-xl p-6 text-center shadow-sm">
@@ -110,7 +111,7 @@
                 </div>
             </section>
             <section class="mb-6">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">Einstellungen</h2>
+                <h2 class="text-lg font-bold text-gray-800 mb-3">{{ $t('profile.settings') }}</h2>
                 <div class="bg-white rounded-xl overflow-hidden shadow-sm">
                     <button v-for="(setting, index) in settings" :key="setting.id" @click="setting.action" :class="[
                         'w-full flex items-center justify-between px-4 py-4 active:bg-gray-50 transition',
@@ -148,6 +149,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import BottomNavigation from '@/components/BottomNavigation.vue'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
@@ -156,6 +158,7 @@ import { useBannersStore } from '@/stores/banners'
 import { Preferences } from '@capacitor/preferences'
 import axios from '@/axios'
 
+const { t } = useI18n()
 const router = useRouter()
 const userStore = useUserStore()
 const setsStore = useSetsStore()
@@ -291,7 +294,7 @@ const settings = ref([
     },*/
     {
         id: 2,
-        name: 'Lernziele',
+        name: t('profile.goals'),
         iconPath: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4',
         iconBg: 'bg-green-100',
         iconColor: 'text-green-600',
@@ -299,7 +302,7 @@ const settings = ref([
     },
     {
         id: 3,
-        name: 'Erscheinungsbild',
+        name: t('profile.appearance'),
         iconPath: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01',
         iconBg: 'bg-purple-100',
         iconColor: 'text-purple-600',
@@ -307,7 +310,7 @@ const settings = ref([
     },
     {
         id: 4,
-        name: 'Hilfe & Support',
+        name: t('profile.help'),
         iconPath: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
         iconBg: 'bg-orange-100',
         iconColor: 'text-orange-600',

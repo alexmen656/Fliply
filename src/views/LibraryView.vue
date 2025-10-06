@@ -2,7 +2,7 @@
     <div class="flex flex-col h-screen bg-gray-50">
         <header class="bg-white border-b border-gray-200 px-4 py-4">
             <div class="flex items-center justify-between mb-4">
-                <h1 class="text-2xl font-bold text-gray-800">Bibliothek</h1>
+                <h1 class="text-2xl font-bold text-gray-800">{{ $t('library.title') }}</h1>
                 <!--<button class="text-primary p-2">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -24,7 +24,7 @@
         <main class="flex-1 overflow-y-auto pb-20 px-4 py-5">
             <div v-if="activeTab === 'mySets'" class="space-y-3">
                 <div v-if="setsStore.isLoading" class="text-center py-8">
-                    <p class="text-gray-500">Lade Sets...</p>
+                    <p class="text-gray-500">{{ $t('common.loading') }}</p>
                 </div>
 
                 <div v-else-if="setsStore.mySets.length === 0" class="text-center py-8">
@@ -35,8 +35,8 @@
                                 d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                         </svg>
                     </div>
-                    <h3 class="font-bold text-gray-800 mb-2">Noch keine eigenen Sets</h3>
-                    <p class="text-sm text-gray-600 mb-4">Erstelle dein erstes Lernset!</p>
+                    <h3 class="font-bold text-gray-800 mb-2">{{ $t('library.noSets') }}</h3>
+                    <p class="text-sm text-gray-600 mb-4">{{ $t('library.noSetsDescription') }}</p>
                 </div>
 
                 <div v-else v-for="set in setsStore.mySets" :key="set.id" @click="openSet(set.id)"
@@ -44,7 +44,7 @@
                     <div class="flex items-stretch">
                         <div class="flex-1 p-4">
                             <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
-                            <p class="text-sm text-gray-600 mb-2">{{ set.cards }} Karten</p>
+                            <p class="text-sm text-gray-600 mb-2">{{ set.cards }} {{ $t('common.cards') }}</p>
                             <div class="text-xs text-gray-500">
                                 Erstellt: {{ new Date(set.createdAt || '').toLocaleDateString('de-DE') }}
                             </div>
@@ -60,19 +60,19 @@
                     <div class="px-4 py-2 border-t border-gray-100">
                         <button @click.stop="deleteSet(set.id)"
                             class="text-red-500 hover:text-red-700 text-xs font-medium">
-                            Löschen
+                            {{ $t('common.delete') }}
                         </button>
                     </div>
                 </div>
 
                 <button @click="createNewSet"
                     class="w-full bg-primary text-white font-semibold py-4 rounded-xl active:scale-98 transition mt-4">
-                    + Neues Set erstellen
+                    + {{ $t('library.createNewSet') }}
                 </button>
             </div>
             <div v-if="activeTab === 'favorites'" class="space-y-3">
                 <div v-if="setsStore.isLoading" class="text-center py-8">
-                    <p class="text-gray-500">Lade Favoriten...</p>
+                    <p class="text-gray-500">{{ $t('common.loading') }}</p>
                 </div>
 
                 <div v-else-if="setsStore.favoriteSets.length === 0" class="text-center py-8">
@@ -92,7 +92,7 @@
                     <div class="flex items-stretch">
                         <div class="flex-1 p-4">
                             <h3 class="font-bold text-gray-800 mb-1">{{ fav.title }}</h3>
-                            <p class="text-sm text-gray-600 mb-2">{{ fav.cards }} Karten</p>
+                            <p class="text-sm text-gray-600 mb-2">{{ fav.cards }} {{ $t('common.cards') }}</p>
                             <div class="flex items-center gap-2">
                                 <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
                                     <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor"
@@ -141,7 +141,7 @@
                     <div class="flex items-stretch">
                         <div class="flex-1 p-4">
                             <h3 class="font-bold text-gray-800 mb-1">{{ recent.title }}</h3>
-                            <p class="text-sm text-gray-600 mb-2">{{ recent.cards }} Karten</p>
+                            <p class="text-sm text-gray-600 mb-2">{{ recent.cards }} {{ $t('common.cards') }}</p>
                             <span class="text-xs text-gray-500">{{ formatDate(recent.accessedAt) }}</span>
                         </div>
                         <div v-if="recent.icon && !isUrl(recent.icon)"
@@ -162,17 +162,19 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import BottomNavigation from '@/components/BottomNavigation.vue'
 import { useSetsStore } from '@/stores/sets'
 
+const { t } = useI18n()
 const router = useRouter()
 const setsStore = useSetsStore()
 const activeTab = ref('mySets')
 
-const tabs = ref([
-    { name: 'mySets', label: 'Meine Sets' },
+const tabs = computed(() => [
+    { name: 'mySets', label: t('library.mySets') },
     { name: 'favorites', label: 'Favoriten' },
-    { name: 'recent', label: 'Zuletzt verwendet' }
+    { name: 'recent', label: t('library.recentlyViewed') }
 ])
 
 const recentSetsWithDetails = ref<any[]>([])

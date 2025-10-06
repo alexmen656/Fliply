@@ -20,12 +20,12 @@
                 </div>
             </div>
             <div v-if="isLoading" class="text-center py-8">
-                <p class="text-gray-500">Lade Set...</p>
+                <p class="text-gray-500">{{ $t('common.loading') }}</p>
             </div>
             <div v-else class="mb-4">
                 <h1 class="text-2xl font-bold text-gray-800 mb-2">{{ setTitle }}</h1>
                 <div class="flex items-center gap-3 text-sm text-gray-600">
-                    <span>{{ totalCards }} Karten</span>
+                    <span>{{ totalCards }} {{ $t('common.cards') }}</span>
                     <span>•</span>
                     <div class="flex items-center gap-2">
                         <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
@@ -51,7 +51,7 @@
         </header>
         <main class="flex-1 overflow-y-auto pb-6 px-4 py-5">
             <section v-if="!isLoading" class="mb-6">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">Lernmodi</h2>
+                <h2 class="text-lg font-bold text-gray-800 mb-3">{{ $t('setDetail.studyModes') }}</h2>
                 <div class="grid grid-cols-2 gap-3">
                     <button @click="startMode('flashcards')"
                         class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition flex flex-col items-center justify-center">
@@ -59,7 +59,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
-                        <span class="font-semibold">Karteikarten</span>
+                        <span class="font-semibold">{{ $t('setDetail.flashcards') }}</span>
                     </button>
                     <button @click="startMode('quiz')"
                         class="bg-gradient-to-br from-purple-500 to-pink-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition flex flex-col items-center justify-center relative">
@@ -78,7 +78,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span class="font-semibold">Quiz</span>
+                        <span class="font-semibold">{{ $t('setDetail.quiz') }}</span>
                     </button>
                     <button @click="startMode('match')"
                         class="bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition flex flex-col items-center justify-center relative">
@@ -97,7 +97,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
-                        <span class="font-semibold">Match</span>
+                        <span class="font-semibold">{{ $t('setDetail.match') }}</span>
                     </button>
                     <button @click="startMode('learn')"
                         class="bg-gradient-to-br from-orange-500 to-red-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition flex flex-col items-center justify-center relative">
@@ -116,20 +116,22 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                         </svg>
-                        <span class="font-semibold">Lernen</span>
+                        <span class="font-semibold">{{ $t('setDetail.learn') }}</span>
                     </button>
                 </div>
             </section>
             <section v-if="!isLoading && cards.length > 0">
                 <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-lg font-bold text-gray-800">Karten ({{ cards.length }})</h2>
-                    <button @click="viewAllCards" class="text-primary text-sm font-semibold">Alle anzeigen</button>
+                    <h2 class="text-lg font-bold text-gray-800">{{ $t('common.cards') }} ({{ cards.length }})</h2>
+                    <button @click="viewAllCards" class="text-primary text-sm font-semibold">{{ $t('common.viewAll')
+                        }}</button>
                 </div>
                 <div class="space-y-3">
                     <div v-for="(card, index) in cards.slice(0, 5)" :key="index"
                         class="bg-white rounded-xl p-4 shadow-sm">
                         <div class="flex items-start justify-between mb-2">
-                            <span class="text-xs font-semibold text-gray-500">Karte {{ index + 1 }}</span>
+                            <span class="text-xs font-semibold text-gray-500">{{ $t('common.cards') }} {{ index + 1
+                                }}</span>
                         </div>
                         <div class="space-y-2">
                             <div class="text-gray-800 font-medium">{{ card.front }}</div>
@@ -139,7 +141,7 @@
                 </div>
             </section>
             <section v-if="!isLoading && cards.length === 0" class="text-center py-8">
-                <p class="text-gray-500">Keine Karten in diesem Set</p>
+                <p class="text-gray-500">{{ $t('allCards.noCards') }}</p>
             </section>
         </main>
         <div v-if="!isLoading"

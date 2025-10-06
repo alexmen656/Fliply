@@ -1,0 +1,223 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "viewAll": "View all",
+    "cards": "Cards",
+    "continue": "Continue"
+  },
+  "nav": {
+    "home": "Home",
+    "library": "Library",
+    "create": "Create",
+    "profile": "Profile"
+  },
+  "home": {
+    "searchPlaceholder": "Search study sets, textbooks...",
+    "expertSets": "Expert sets",
+    "achievements": "Achievements",
+    "streak": "Day Streak"
+  },
+  "library": {
+    "title": "Library",
+    "mySets": "My Sets",
+    "recentlyViewed": "Recently Viewed",
+    "createNewSet": "Create New Set",
+    "noSets": "No sets available",
+    "noSetsDescription": "Create your first study set!"
+  },
+  "create": {
+    "title": "Create New Set",
+    "setTitle": "Set Title",
+    "setTitlePlaceholder": "e.g. German Vocabulary A2",
+    "description": "Description",
+    "descriptionPlaceholder": "Description (optional)",
+    "addCard": "Add Card",
+    "term": "Term",
+    "definition": "Definition",
+    "termPlaceholder": "Enter term",
+    "definitionPlaceholder": "Enter definition",
+    "createSet": "Create Set",
+    "cardAdded": "Card added"
+  },
+  "profile": {
+    "title": "Profile",
+    "stats": "Statistics",
+    "totalCards": "Cards Learned",
+    "studyStreak": "Day Streak",
+    "achievements": "Achievements",
+    "coins": "Coins",
+    "settings": "Settings",
+    "appearance": "Appearance",
+    "notifications": "Notifications",
+    "goals": "Goals",
+    "help": "Help & Support",
+    "editProfile": "Edit Profile",
+    "logout": "Log out"
+  },
+  "editProfile": {
+    "title": "Edit Profile",
+    "username": "Username",
+    "email": "Email",
+    "bio": "About Me",
+    "bioPlaceholder": "Tell something about yourself...",
+    "changeAvatar": "Change Avatar",
+    "changeBanner": "Change Banner",
+    "saveChanges": "Save Changes",
+    "changesSaved": "Changes saved!"
+  },
+  "setDetail": {
+    "terms": "Terms",
+    "studyModes": "Study Modes",
+    "flashcards": "Flashcards",
+    "learn": "Learn",
+    "match": "Match",
+    "quiz": "Quiz",
+    "allCards": "All Cards",
+    "createdBy": "Created by"
+  },
+  "flashcards": {
+    "title": "Flashcards",
+    "showAnswer": "Show Answer",
+    "nextCard": "Next Card",
+    "previousCard": "Previous Card",
+    "completedTitle": "Completed!",
+    "completedMessage": "You've completed all cards!",
+    "restart": "Restart",
+    "backToSet": "Back to Set"
+  },
+  "learn": {
+    "title": "Learn",
+    "question": "Question",
+    "answer": "Answer",
+    "showAnswer": "Show Answer",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "almostCorrect": "Almost Correct",
+    "yourAnswer": "Your Answer",
+    "correctAnswer": "Correct Answer",
+    "completedTitle": "Finished!",
+    "completedMessage": "You've completed this round!",
+    "accuracy": "Accuracy",
+    "studied": "Studied",
+    "continueStudying": "Continue Studying"
+  },
+  "match": {
+    "title": "Match",
+    "instruction": "Select matching pairs",
+    "timeLabel": "Time",
+    "completedTitle": "Completed!",
+    "completedMessage": "You found all pairs!",
+    "yourTime": "Your Time",
+    "playAgain": "Play Again"
+  },
+  "quiz": {
+    "title": "Quiz",
+    "question": "Question",
+    "checkAnswer": "Check Answer",
+    "nextQuestion": "Next Question",
+    "completedTitle": "Quiz Completed!",
+    "completedMessage": "You've finished the quiz!",
+    "score": "Score",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "tryAgain": "Try Again"
+  },
+  "allCards": {
+    "title": "All Cards",
+    "searchPlaceholder": "Search cards...",
+    "noCards": "No cards found"
+  },
+  "editSet": {
+    "title": "Edit Set",
+    "deleteSet": "Delete Set",
+    "deleteConfirm": "Are you sure you want to delete this set?"
+  },
+  "achievements": {
+    "title": "Achievements",
+    "unlocked": "Unlocked",
+    "locked": "Locked",
+    "unlockedCount": "Unlocked",
+    "progress": "Progress"
+  },
+  "avatarShop": {
+    "title": "Avatar Shop",
+    "avatars": "Avatars",
+    "banners": "Banners",
+    "owned": "Owned",
+    "equipped": "Equipped",
+    "purchase": "Purchase",
+    "equip": "Equip",
+    "coins": "Coins",
+    "insufficientCoins": "Insufficient coins",
+    "purchaseSuccess": "Successfully purchased!",
+    "currentAvatar": "Current Avatar",
+    "currentBanner": "Current Banner"
+  },
+  "coinHistory": {
+    "title": "Coin History",
+    "earned": "Earned",
+    "spent": "Spent",
+    "balance": "Balance",
+    "transaction": "Transaction"
+  },
+  "expertSets": {
+    "title": "Expert Sets",
+    "explore": "Explore"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Fliply",
+    "welcomeDescription": "Learn more effectively with smart flashcards",
+    "step1Title": "Create Your Sets",
+    "step1Description": "Create custom study sets for any topic",
+    "step2Title": "Multiple Modes",
+    "step2Description": "Study with flashcards, games, and quizzes",
+    "step3Title": "Track Progress",
+    "step3Description": "Stay motivated with achievements and streaks",
+    "getStarted": "Get Started",
+    "skip": "Skip"
+  },
+  "settings": {
+    "appearance": {
+      "title": "Appearance",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "language": "Language"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "dailyReminder": "Daily Reminder",
+      "achievements": "Achievement Notifications",
+      "time": "Notification Time"
+    },
+    "goals": {
+      "title": "Goals",
+      "dailyGoal": "Daily Goal",
+      "cardsPerDay": "Cards per Day",
+      "setGoal": "Set Goal",
+      "currentStreak": "Current Streak"
+    },
+    "help": {
+      "title": "Help & Support",
+      "faq": "Frequently Asked Questions",
+      "contact": "Contact",
+      "about": "About",
+      "version": "Version",
+      "privacy": "Privacy",
+      "terms": "Terms of Service"
+    }
+  }
+}

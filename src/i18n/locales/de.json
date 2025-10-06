@@ -1,0 +1,223 @@
+{
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "back": "Zurück",
+    "next": "Weiter",
+    "done": "Fertig",
+    "search": "Suchen",
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "viewAll": "Alle anzeigen",
+    "cards": "Karten",
+    "continue": "Weiter"
+  },
+  "nav": {
+    "home": "Start",
+    "library": "Bibliothek",
+    "create": "Erstellen",
+    "profile": "Profil"
+  },
+  "home": {
+    "searchPlaceholder": "Suche Lernsets, Lehrbücher...",
+    "expertSets": "Expert sets",
+    "achievements": "Achievements",
+    "streak": "Tage Streak"
+  },
+  "library": {
+    "title": "Bibliothek",
+    "mySets": "Meine Sets",
+    "recentlyViewed": "Kürzlich angesehen",
+    "createNewSet": "Neues Set erstellen",
+    "noSets": "Keine Sets vorhanden",
+    "noSetsDescription": "Erstelle dein erstes Lernset!"
+  },
+  "create": {
+    "title": "Neues Set erstellen",
+    "setTitle": "Set-Titel",
+    "setTitlePlaceholder": "z.B. Deutsch Vokabeln A2",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Beschreibung (optional)",
+    "addCard": "Karte hinzufügen",
+    "term": "Begriff",
+    "definition": "Definition",
+    "termPlaceholder": "Begriff eingeben",
+    "definitionPlaceholder": "Definition eingeben",
+    "createSet": "Set erstellen",
+    "cardAdded": "Karte hinzugefügt"
+  },
+  "profile": {
+    "title": "Profil",
+    "stats": "Statistiken",
+    "totalCards": "Gelernte Karten",
+    "studyStreak": "Tage Streak",
+    "achievements": "Achievements",
+    "coins": "Münzen",
+    "settings": "Einstellungen",
+    "appearance": "Erscheinungsbild",
+    "notifications": "Benachrichtigungen",
+    "goals": "Ziele",
+    "help": "Hilfe & Support",
+    "editProfile": "Profil bearbeiten",
+    "logout": "Abmelden"
+  },
+  "editProfile": {
+    "title": "Profil bearbeiten",
+    "username": "Benutzername",
+    "email": "E-Mail",
+    "bio": "Über mich",
+    "bioPlaceholder": "Erzähle etwas über dich...",
+    "changeAvatar": "Avatar ändern",
+    "changeBanner": "Banner ändern",
+    "saveChanges": "Änderungen speichern",
+    "changesSaved": "Änderungen gespeichert!"
+  },
+  "setDetail": {
+    "terms": "Begriffe",
+    "studyModes": "Lernmodi",
+    "flashcards": "Karteikarten",
+    "learn": "Lernen",
+    "match": "Zuordnen",
+    "quiz": "Quiz",
+    "allCards": "Alle Karten",
+    "createdBy": "Erstellt von"
+  },
+  "flashcards": {
+    "title": "Karteikarten",
+    "showAnswer": "Antwort zeigen",
+    "nextCard": "Nächste Karte",
+    "previousCard": "Vorherige Karte",
+    "completedTitle": "Geschafft!",
+    "completedMessage": "Du hast alle Karten durchgearbeitet!",
+    "restart": "Neu starten",
+    "backToSet": "Zurück zum Set"
+  },
+  "learn": {
+    "title": "Lernen",
+    "question": "Frage",
+    "answer": "Antwort",
+    "showAnswer": "Antwort zeigen",
+    "correct": "Richtig",
+    "incorrect": "Falsch",
+    "almostCorrect": "Fast richtig",
+    "yourAnswer": "Deine Antwort",
+    "correctAnswer": "Richtige Antwort",
+    "completedTitle": "Fertig!",
+    "completedMessage": "Du hast diese Runde abgeschlossen!",
+    "accuracy": "Genauigkeit",
+    "studied": "Gelernt",
+    "continueStudying": "Weiter lernen"
+  },
+  "match": {
+    "title": "Zuordnen",
+    "instruction": "Wähle passende Paare aus",
+    "timeLabel": "Zeit",
+    "completedTitle": "Geschafft!",
+    "completedMessage": "Du hast alle Paare gefunden!",
+    "yourTime": "Deine Zeit",
+    "playAgain": "Nochmal spielen"
+  },
+  "quiz": {
+    "title": "Quiz",
+    "question": "Frage",
+    "checkAnswer": "Antwort prüfen",
+    "nextQuestion": "Nächste Frage",
+    "completedTitle": "Quiz abgeschlossen!",
+    "completedMessage": "Du hast das Quiz beendet!",
+    "score": "Punktzahl",
+    "correct": "Richtig",
+    "incorrect": "Falsch",
+    "tryAgain": "Nochmal versuchen"
+  },
+  "allCards": {
+    "title": "Alle Karten",
+    "searchPlaceholder": "Karten durchsuchen...",
+    "noCards": "Keine Karten gefunden"
+  },
+  "editSet": {
+    "title": "Set bearbeiten",
+    "deleteSet": "Set löschen",
+    "deleteConfirm": "Möchtest du dieses Set wirklich löschen?"
+  },
+  "achievements": {
+    "title": "Achievements",
+    "unlocked": "Freigeschaltet",
+    "locked": "Gesperrt",
+    "unlockedCount": "Freigeschaltet",
+    "progress": "Fortschritt"
+  },
+  "avatarShop": {
+    "title": "Avatar Shop",
+    "avatars": "Avatare",
+    "banners": "Banner",
+    "owned": "Im Besitz",
+    "equipped": "Ausgerüstet",
+    "purchase": "Kaufen",
+    "equip": "Ausrüsten",
+    "coins": "Münzen",
+    "insufficientCoins": "Nicht genug Münzen",
+    "purchaseSuccess": "Erfolgreich gekauft!",
+    "currentAvatar": "Aktueller Avatar",
+    "currentBanner": "Aktueller Banner"
+  },
+  "coinHistory": {
+    "title": "Münzhistorie",
+    "earned": "Verdient",
+    "spent": "Ausgegeben",
+    "balance": "Guthaben",
+    "transaction": "Transaktion"
+  },
+  "expertSets": {
+    "title": "Expert Sets",
+    "explore": "Entdecken"
+  },
+  "onboarding": {
+    "welcome": "Willkommen bei Fliply",
+    "welcomeDescription": "Lerne effektiver mit intelligenten Karteikarten",
+    "step1Title": "Erstelle deine Sets",
+    "step1Description": "Erstelle benutzerdefinierte Lernsets für jedes Thema",
+    "step2Title": "Verschiedene Modi",
+    "step2Description": "Lerne mit Karteikarten, Spielen und Quizzen",
+    "step3Title": "Verfolge deinen Fortschritt",
+    "step3Description": "Bleibe motiviert mit Achievements und Streaks",
+    "getStarted": "Los geht's",
+    "skip": "Überspringen"
+  },
+  "settings": {
+    "appearance": {
+      "title": "Erscheinungsbild",
+      "theme": "Design",
+      "light": "Hell",
+      "dark": "Dunkel",
+      "system": "System",
+      "language": "Sprache"
+    },
+    "notifications": {
+      "title": "Benachrichtigungen",
+      "enabled": "Aktiviert",
+      "disabled": "Deaktiviert",
+      "dailyReminder": "Tägliche Erinnerung",
+      "achievements": "Achievement-Benachrichtigungen",
+      "time": "Benachrichtigungszeit"
+    },
+    "goals": {
+      "title": "Ziele",
+      "dailyGoal": "Tägliches Ziel",
+      "cardsPerDay": "Karten pro Tag",
+      "setGoal": "Ziel setzen",
+      "currentStreak": "Aktuelle Serie"
+    },
+    "help": {
+      "title": "Hilfe & Support",
+      "faq": "Häufig gestellte Fragen",
+      "contact": "Kontakt",
+      "about": "Über",
+      "version": "Version",
+      "privacy": "Datenschutz",
+      "terms": "Nutzungsbedingungen"
+    }
+  }
+}

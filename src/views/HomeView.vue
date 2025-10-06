@@ -7,8 +7,7 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
                             <div class="flex items-center gap-2 mb-2">
-                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -17,16 +16,15 @@
                                 <span class="text-sm font-medium">Streak</span>
                             </div>
                             <div class="text-3xl font-bold text-gray-800">{{ streakStore.currentStreak }}</div>
-                            <div class="text-xs opacity-90 mt-1">Tage</div>
+                            <div class="text-xs opacity-90 mt-1">{{ $t('home.streak') }}</div>
                         </div>
                         <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
                             <div class="flex items-center gap-2 mb-2">
-                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                                 </svg>
-                                <span class="text-sm font-medium">Ziel</span>
+                                <span class="text-sm font-medium">{{ $t('profile.goals') }}</span>
                             </div>
                             <div class="text-3xl font-bold text-gray-800">{{ goalsStore.todayProgress }}/{{
                                 goalsStore.dailyGoal }}</div>
@@ -40,18 +38,18 @@
                         class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm cursor-pointer active:scale-95 transition">
                         <div class="flex items-center gap-2 mb-2">
                             <span class="text-xl text-primary">🪙</span>
-                            <span class="text-sm font-medium">Münzen</span>
+                            <span class="text-sm font-medium">{{ $t('profile.coins') }}</span>
                         </div>
                         <div class="text-3xl font-bold text-gray-800">{{ userStore.profile.coins }}</div>
-                        <div class="text-xs opacity-90 mt-1">Zum Shop</div>
+                        <div class="text-xs opacity-90 mt-1">{{ $t('avatarShop.title') }}</div>
                     </div>
                 </div>
             </section>
             <section class="py-5">
                 <div class="flex items-center justify-between mb-4 px-3">
-                    <h2 class="text-xl font-bold text-gray-800">My sets</h2>
+                    <h2 class="text-xl font-bold text-gray-800">{{ $t('library.mySets') }}</h2>
                     <button v-if="setsStore.mySets.length > 0" @click="router.push('/library')"
-                        class="text-primary text-sm font-semibold">View all</button>
+                        class="text-primary text-sm font-semibold">{{ $t('common.viewAll') }}</button>
                 </div>
                 <div v-if="setsStore.mySets.length === 0" class="px-3">
                     <div class="bg-white rounded-xl p-6 shadow-sm text-center">
@@ -62,11 +60,11 @@
                                     d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                             </svg>
                         </div>
-                        <h3 class="font-bold text-gray-800 mb-2">Noch keine eigenen Sets</h3>
-                        <p class="text-sm text-gray-600 mb-4">Erstelle dein erstes Lernset und beginne zu lernen!</p>
+                        <h3 class="font-bold text-gray-800 mb-2">{{ $t('library.noSets') }}</h3>
+                        <p class="text-sm text-gray-600 mb-4">{{ $t('library.noSetsDescription') }}</p>
                         <button @click="openCreateView"
                             class="bg-primary text-white px-6 py-2.5 rounded-lg font-semibold active:scale-95 transition">
-                            Erstes Set erstellen
+                            {{ $t('library.createNewSet') }}
                         </button>
                     </div>
                 </div>
@@ -77,7 +75,7 @@
                             <div class="flex items-stretch">
                                 <div class="flex-1 p-4">
                                     <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
-                                    <p class="text-sm text-gray-600 mb-2">{{ set.cards }} Karten</p>
+                                    <p class="text-sm text-gray-600 mb-2">{{ set.cards }} {{ $t('common.cards') }}</p>
                                     <div class="flex items-center gap-2">
                                         <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
                                             <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor"
@@ -103,9 +101,9 @@
             </section>
             <section class="py-5">
                 <div class="flex items-center justify-between mb-4 px-3">
-                    <h2 class="text-xl font-bold text-gray-800">Expert sets</h2>
-                    <button @click="router.push('/expert-sets')" class="text-primary text-sm font-semibold">View
-                        all</button>
+                    <h2 class="text-xl font-bold text-gray-800">{{ $t('home.expertSets') }}</h2>
+                    <button @click="router.push('/expert-sets')" class="text-primary text-sm font-semibold">{{
+                        $t('common.viewAll') }}</button>
                 </div>
 
                 <div class="overflow-x-auto scrollbar-hide">
@@ -115,7 +113,7 @@
                             <div class="flex items-stretch">
                                 <div class="flex-1 p-4">
                                     <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
-                                    <p class="text-sm text-gray-600 mb-2">{{ set.cards }} Karten</p>
+                                    <p class="text-sm text-gray-600 mb-2">{{ set.cards }} {{ $t('common.cards') }}</p>
                                     <div class="flex items-center gap-2">
                                         <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
                                             <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor"
@@ -141,9 +139,9 @@
             </section>
             <section class="px-3 py-5">
                 <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold text-gray-800">Achievements</h2>
-                    <button @click="router.push('/achievements')" class="text-primary text-sm font-semibold">View
-                        all</button>
+                    <h2 class="text-xl font-bold text-gray-800">{{ $t('home.achievements') }}</h2>
+                    <button @click="router.push('/achievements')" class="text-primary text-sm font-semibold">{{
+                        $t('common.viewAll') }}</button>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
@@ -172,10 +170,10 @@
                             {{ achievement.description }}
                         </p>
                         <div v-if="achievement.unlocked && achievement.unlockedAt" class="mt-2">
-                            <span class="text-xs text-green-600 font-medium">✓ Erreicht</span>
+                            <span class="text-xs text-green-600 font-medium">✓ {{ $t('achievements.unlocked') }}</span>
                         </div>
                         <div v-else class="mt-2">
-                            <span class="text-xs text-gray-400">Gesperrt</span>
+                            <span class="text-xs text-gray-400">{{ $t('achievements.locked') }}</span>
                         </div>
                     </div>
                 </div>

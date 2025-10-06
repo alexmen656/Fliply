@@ -8,7 +8,7 @@
                 <div>
                     <span class="text-white text-xl font-bold">Fliply</span>
                     <p v-if="userStore.profile.name" class="text-blue-100 text-sm">
-                        Hallo, {{ userStore.profile.name }}!
+                        {{ $t('onboarding.welcome').split(' ')[0] }}, {{ userStore.profile.name }}!
                     </p>
                 </div>
             </div>
@@ -37,7 +37,7 @@
         <Transition name="search">
             <div v-if="showSearch" class="relative mt-3 mb-4">
                 <input ref="searchInput" v-model="searchQuery" @input="handleSearch" @focus="showSearchResults = true"
-                    type="text" placeholder="Suche Lernsets, Lehrbücher..."
+                    type="text" :placeholder="$t('home.searchPlaceholder')"
                     class="w-full bg-white rounded-lg px-4 py-3 pr-10 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300" />
                 <button @click="closeSearch"
                     class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
@@ -50,7 +50,7 @@
                 <div v-if="showSearchResults && searchQuery.length > 0"
                     class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl max-h-96 overflow-y-auto z-50">
                     <div v-if="isSearching" class="p-4 text-center text-gray-500">
-                        Suche läuft...
+                        {{ $t('common.loading') }}
                     </div>
                     <div v-else-if="searchResults.length > 0" class="py-2">
                         <div v-for="result in searchResults" :key="result.id" @click="selectResult(result)"
@@ -59,14 +59,14 @@
                                 <div class="text-2xl">{{ result.icon }}</div>
                                 <div class="flex-1">
                                     <h4 class="font-semibold text-gray-800">{{ result.title }}</h4>
-                                    <p class="text-sm text-gray-500">{{ result.cards }} Karten</p>
+                                    <p class="text-sm text-gray-500">{{ result.cards }} {{ $t('common.cards') }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div v-else class="p-8 text-center text-gray-500">
-                        <p class="font-medium text-gray-700 mb-1">Keine Ergebnisse</p>
-                        <p class="text-sm">Versuche es mit anderen Suchbegriffen</p>
+                        <p class="font-medium text-gray-700 mb-1">{{ $t('allCards.noCards') }}</p>
+                        <p class="text-sm">{{ $t('home.searchPlaceholder') }}</p>
                     </div>
                 </div>
             </div>
@@ -76,15 +76,15 @@
             <div v-if="showNotifications"
                 class="absolute top-full left-4 right-4 mt-2 bg-white rounded-xl shadow-2xl z-50 max-h-96 overflow-hidden">
                 <div class="flex items-center justify-between p-4 border-b border-gray-200">
-                    <h3 class="font-bold text-gray-800">Benachrichtigungen</h3>
+                    <h3 class="font-bold text-gray-800">{{ $t('profile.notifications') }}</h3>
                     <button @click="markAllAsRead" class="text-primary text-sm font-semibold">
-                        Alle lesen
+                        {{ $t('common.done') }}
                     </button>
                 </div>
 
                 <div class="overflow-y-auto max-h-80">
                     <div v-if="notifications.length === 0" class="p-8 text-center text-gray-500">
-                        <p class="font-medium text-gray-700">Keine Benachrichtigungen</p>
+                        <p class="font-medium text-gray-700">{{ $t('profile.notifications') }}</p>
                     </div>
 
                     <div v-for="notification in notifications" :key="notification.id"
