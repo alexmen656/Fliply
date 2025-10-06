@@ -26,26 +26,26 @@
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-lg font-bold text-gray-800">{{ $t('common.cards') }} ({{ cards.length }})</h2>
                     <button @click="addCard" class="text-primary font-semibold text-sm">{{ $t('create.addCard')
-                        }}</button>
+                    }}</button>
                 </div>
                 <div class="space-y-4">
                     <div v-for="(card, index) in cards" :key="index" class="bg-white rounded-xl p-4 shadow-sm">
                         <div class="flex items-center justify-between mb-3">
                             <span class="text-sm font-semibold text-gray-500">{{ $t('create.card') }} {{ index + 1
-                                }}</span>
+                            }}</span>
                             <button @click="removeCard(index)" class="text-red-500 text-sm">{{ $t('common.delete')
-                                }}</button>
+                            }}</button>
                         </div>
                         <div class="space-y-3">
                             <div>
                                 <label class="text-xs font-medium text-gray-600 mb-1 block">{{ $t('create.term')
-                                    }}</label>
+                                }}</label>
                                 <input v-model="card.front" type="text" :placeholder="$t('create.termPlaceholder')"
                                     class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-primary focus:outline-none" />
                             </div>
                             <div>
                                 <label class="text-xs font-medium text-gray-600 mb-1 block">{{ $t('create.definition')
-                                    }}</label>
+                                }}</label>
                                 <textarea v-model="card.back" :placeholder="$t('create.definitionPlaceholder')" rows="3"
                                     class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-primary focus:outline-none resize-none"></textarea>
                             </div>
@@ -64,23 +64,57 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useSetsStore } from '@/stores/sets'
 
 const router = useRouter()
-const setTitle = ref('Deutsch Vokabeln A2')
-const setDescription = ref('Grundwortschatz für A2 Niveau')
+const route = useRoute()
+const setsStore = useSetsStore()
+
+const setTitle = ref('')
+const setDescription = ref('')
+const isLoading = ref(true)
 
 interface Card {
     front: string
     back: string
 }
 
-const cards = ref<Card[]>([
-    { front: 'Hallo', back: 'Hello' },
-    { front: 'Danke', back: 'Thank you' },
-    { front: 'Bitte', back: 'Please' }
-])
+const cards = ref<Card[]>([])
+
+onMounted(async () => {
+    await loadSetData()
+})
+
+const loadSetData = async () => {
+    const setId = route.params.id
+    if (!setId || Array.isArray(setId)) return
+
+    isLoading.value = true
+    try {
+        const setData = await setsStore.getSetById(setId)
+        if (setData) {
+            setTitle.value = setData.title || ''
+            setDescription.value = setData.description || ''
+
+            if (Array.isArray(setData.cards)) {
+                cards.value = setData.cards.map((card: any) => ({
+                    front: card.front || '',
+                    back: card.back || ''
+                }))
+            }
+
+            if (cards.value.length === 0) {
+                cards.value.push({ front: '', back: '' })
+            }
+        }
+    } catch (error) {
+        console.error('Error loading set data:', error)
+    } finally {
+        isLoading.value = false
+    }
+}
 
 const addCard = () => {
     cards.value.push({ front: '', back: '' })
@@ -92,14 +126,52 @@ const removeCard = (index: number) => {
     }
 }
 
-const saveChanges = () => {
-    console.log('Saving changes:', { setTitle: setTitle.value, setDescription: setDescription.value, cards: cards.value })
-    router.back()
+const saveChanges = async () => {
+    const setId = route.params.id
+    if (!setId || Array.isArray(setId)) return
+
+    const validCards = cards.value.filter(card => card.front.trim() || card.back.trim())
+
+    if (!setTitle.value.trim()) {
+        alert('Bitte gib einen Titel ein')
+        return
+    }
+
+    if (validCards.length === 0) {
+        alert('Bitte füge mindestens eine Karte hinzu')
+        return
+    }
+
+    try {
+        await setsStore.updateSet(setId, {
+            title: setTitle.value,
+            cards: validCards.map((card, index) => ({
+                front: card.front,
+                back: card.back,
+                order: index
+            }))
+        })
+        router.back()
+    } catch (error) {
+        console.error('Error saving changes:', error)
+        alert('Fehler beim Speichern')
+    }
 }
 
-const deleteSet = () => {
+const deleteSet = async () => {
+    const setId = route.params.id
+    if (!setId || Array.isArray(setId)) return
+
     if (confirm('Möchtest du dieses Set wirklich löschen?')) {
-        router.push('/library')
+        try {
+            const success = await setsStore.deleteSet(setId)
+            if (success) {
+                router.push('/library')
+            }
+        } catch (error) {
+            console.error('Error deleting set:', error)
+            alert('Fehler beim Löschen')
+        }
     }
 }
 </script>

@@ -191,11 +191,13 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
+import { useProgressStore } from '@/stores/progress'
 
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 const setsStore = useSetsStore()
+const progressStore = useProgressStore()
 
 interface Card {
     id: number
@@ -216,18 +218,23 @@ const coinsEarned = ref(0)
 const isLoading = ref(true)
 
 onMounted(async () => {
+    await progressStore.loadProgress()
     const setId = route.params.id
     if (setId && !Array.isArray(setId)) {
         isLoading.value = true
         try {
             const setData = await setsStore.getSetById(setId)
             if (setData && Array.isArray(setData.cards)) {
+                const progress = progressStore.getSetProgress(setId)
+
                 cards.value = setData.cards.map((card: any, index: number) => ({
                     id: index,
                     front: card.front,
                     back: card.back,
-                    level: 0
+                    level: progress?.cards[index]?.level || 0
                 }))
+
+                progressStore.initSetProgress(setId, cards.value.length)
             }
         } catch (error) {
             console.error('Error loading cards:', error)
@@ -261,23 +268,29 @@ const checkAnswer = () => {
     }
 }
 
-const rateCard = (difficulty: number) => {
-    // Update card level based on difficulty
+const rateCard = async (difficulty: number) => {
     const card = cards.value[currentCardIndex.value]
     if (!card) return
 
+    const setId = route.params.id
+    if (!setId || Array.isArray(setId)) return
+
+    let newLevel = card.level
+
     if (difficulty === 1) {
-        card.level = 1
+        newLevel = 1
     } else if (difficulty === 2) {
-        card.level = Math.min(card.level + 1, 3)
+        newLevel = Math.min(card.level + 1, 3)
     } else if (difficulty === 3) {
-        card.level = 3
+        newLevel = 3
     }
 
+    card.level = newLevel
+    await progressStore.updateCardLevel(setId, currentCardIndex.value, newLevel, isCorrect.value)
     nextCard()
 }
 
-const nextCard = () => {
+const nextCard = async () => {
     showAnswer.value = false
     userAnswer.value = ''
 
@@ -290,7 +303,11 @@ const nextCard = () => {
     }
 
     if (attempts === cards.value.length) {
-        // Calculate coins earned (5 coins per mastered card)
+        const setId = route.params.id
+        if (setId && !Array.isArray(setId)) {
+            await progressStore.completeSession(setId, 'learn')
+        }
+
         coinsEarned.value = masteredCards.value * 5
         userStore.earnCoins(coinsEarned.value)
         showResults.value = true

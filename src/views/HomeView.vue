@@ -224,7 +224,6 @@ export default {
 
         const openSet = async (id: string | number | undefined) => {
             if (id) {
-                // Hole Set-Details für markAsRecent
                 let set = setsStore.mySets.find(s => s.id === id) ||
                     setsStore.expertSets.find(s => s.id === id)
 

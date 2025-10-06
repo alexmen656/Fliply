@@ -54,8 +54,13 @@
                         <div class="flex items-start justify-between mb-3">
                             <span class="text-xs font-semibold text-gray-500">{{ $t('create.card') }} {{
                                 getCardNumber(index) }}</span>
-                            <button @click="toggleStar(card)" class="text-2xl">
-                                {{ card.starred ? '⭐' : '☆' }}
+                            <button @click="toggleStar(card)" class="transition-transform active:scale-90">
+                                <svg class="w-6 h-6 transition-colors"
+                                    :class="card.starred ? 'text-yellow-500' : 'text-gray-300'" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
                             </button>
                         </div>
                         <div class="mb-3">
@@ -109,10 +114,12 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useSetsStore } from '@/stores/sets'
+import { useProgressStore } from '@/stores/progress'
 
 const router = useRouter()
 const route = useRoute()
 const setsStore = useSetsStore()
+const progressStore = useProgressStore()
 
 interface Card {
     id?: number
@@ -140,6 +147,7 @@ const filters = ref([
 const cards = ref<Card[]>([])
 
 onMounted(async () => {
+    await progressStore.loadProgress()
     await loadCards()
 })
 
@@ -152,15 +160,26 @@ const loadCards = async () => {
         const setData = await setsStore.getSetById(setId)
         if (setData) {
             setTitle.value = setData.title
+            const progressData = progressStore.getSetProgress(setId)
+
             if (Array.isArray(setData.cards)) {
-                cards.value = setData.cards.map((card: any, index: number) => ({
-                    id: index,
-                    front: card.front,
-                    back: card.back,
-                    order: card.order || index,
-                    starred: false,
-                    progress: 0
-                }))
+                cards.value = setData.cards.map((card: any, index: number) => {
+                    const cardProgress = progressData?.cards[index]
+                    let progress = 0
+
+                    if (cardProgress) {
+                        progress = Math.round((cardProgress.level / 3) * 100)
+                    }
+
+                    return {
+                        id: index,
+                        front: card.front,
+                        back: card.back,
+                        order: card.order || index,
+                        starred: false,
+                        progress
+                    }
+                })
             }
         }
     } catch (error) {

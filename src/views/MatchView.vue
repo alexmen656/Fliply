@@ -11,7 +11,7 @@
                 <div class="text-center">
                     <div class="text-sm font-semibold text-gray-800">{{ $t('match.title') }}</div>
                     <div class="text-xs text-gray-500 mt-1">{{ matchedPairs }} / {{ totalPairs }} {{ $t('match.pairs')
-                        }}</div>
+                    }}</div>
                 </div>
                 <div class="text-right">
                     <div class="text-sm font-bold text-primary">{{ formatTime(elapsedTime) }}</div>
@@ -68,7 +68,8 @@
                             <div>
                                 <div class="text-lg font-bold text-yellow-800">{{ $t('profile.coinsEarned', {
                                     count:
-                                    coinsEarned }) }}</div>
+                                        coinsEarned
+                                }) }}</div>
                                 <div class="text-sm text-yellow-700">{{ $t('coinHistory.total') }}: {{
                                     userStore.profile.coins }} {{ $t('profile.coins') }}</div>
                             </div>
@@ -106,11 +107,13 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
+import { useProgressStore } from '@/stores/progress'
 
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 const setsStore = useSetsStore()
+const progressStore = useProgressStore()
 
 interface MatchItem {
     id: number
@@ -135,22 +138,27 @@ const isLoading = ref(true)
 interface Pair {
     term: string
     definition: string
+    cardIndex: number
 }
 
 const pairs = ref<Pair[]>([])
 
 onMounted(async () => {
+    await progressStore.loadProgress()
     const setId = route.params.id
     if (setId && !Array.isArray(setId)) {
         isLoading.value = true
         try {
             const setData = await setsStore.getSetById(setId)
             if (setData && Array.isArray(setData.cards)) {
-                pairs.value = setData.cards.map((card: any) => ({
+                pairs.value = setData.cards.map((card: any, index: number) => ({
                     term: card.front,
-                    definition: card.back
+                    definition: card.back,
+                    cardIndex: index
                 }))
                 initializeGame()
+
+                progressStore.initSetProgress(setId, pairs.value.length)
             }
         } catch (error) {
             console.error('Error loading match pairs:', error)
@@ -272,11 +280,21 @@ const formatTime = (seconds: number) => {
     return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-const finishGame = () => {
+const finishGame = async () => {
     finalTime.value = elapsedTime.value
     stopTimer()
 
-    // Calculate coins earned (7 coins per pair)
+    const setId = route.params.id
+    if (setId && !Array.isArray(setId)) {
+        const cardResults = pairs.value.map((pair) => ({
+            cardIndex: pair.cardIndex,
+            isCorrect: true
+        }))
+
+        console.log('🎮 Match finished, cardResults:', cardResults)
+        await progressStore.completeSession(setId, 'match', cardResults)
+    }
+
     coinsEarned.value = totalPairs.value * 7
     userStore.earnCoins(coinsEarned.value)
 

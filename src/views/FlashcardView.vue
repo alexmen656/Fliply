@@ -92,17 +92,20 @@ import { useRouter, useRoute } from 'vue-router'
 import { useStreakStore } from '@/stores/streak'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
+import { useProgressStore } from '@/stores/progress'
 
 const router = useRouter()
 const route = useRoute()
 const streakStore = useStreakStore()
 const userStore = useUserStore()
 const setsStore = useSetsStore()
+const progressStore = useProgressStore()
 
 const currentCardIndex = ref(0)
 const isFlipped = ref(false)
 const isReallyFlipped = ref(false)
 const isLoading = ref(true)
+const viewedCards = ref<Set<number>>(new Set())
 
 interface Card {
     id: number
@@ -114,6 +117,7 @@ interface Card {
 const cards = ref<Card[]>([])
 
 onMounted(async () => {
+    await progressStore.loadProgress()
     const setId = route.params.id
     if (setId && !Array.isArray(setId)) {
         isLoading.value = true
@@ -140,6 +144,10 @@ const currentCard = computed(() => cards.value[currentCardIndex.value] as { fron
 
 const flipCard = () => {
     isFlipped.value = !isFlipped.value
+
+    if (isFlipped.value) {
+        viewedCards.value.add(currentCardIndex.value)
+    }
 
     setTimeout(() => {
         isReallyFlipped.value = !isReallyFlipped.value
@@ -169,7 +177,17 @@ const shuffleCards = () => {
     isReallyFlipped.value = false
 }
 
-const finishSession = () => {
+const finishSession = async () => {
+    const setId = route.params.id
+    if (setId && !Array.isArray(setId)) {
+        const cardResults = Array.from(viewedCards.value).map(cardIndex => ({
+            cardIndex,
+            isCorrect: true
+        }))
+
+        await progressStore.completeSession(setId, 'flashcards', cardResults)
+    }
+
     streakStore.recordStudySession()
     router.push('/home')
 }

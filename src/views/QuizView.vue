@@ -146,11 +146,13 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
+import { useProgressStore } from '@/stores/progress'
 
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 const setsStore = useSetsStore()
+const progressStore = useProgressStore()
 
 const currentQuestionIndex = ref(0)
 const selectedAnswer = ref<string | null>(null)
@@ -158,26 +160,27 @@ const score = ref(0)
 const showResults = ref(false)
 const coinsEarned = ref(0)
 const isLoading = ref(true)
+const answerResults = ref<{ cardIndex: number; isCorrect: boolean }[]>([])
 
 interface QuizQuestion {
     question: string
     options: string[]
     correct: string
     explanation: string
+    cardIndex: number
 }
 
 const questions = ref<QuizQuestion[]>([])
 
 onMounted(async () => {
+    await progressStore.loadProgress()
     const setId = route.params.id
     if (setId && !Array.isArray(setId)) {
         isLoading.value = true
         try {
             const setData = await setsStore.getSetById(setId)
             if (setData && Array.isArray(setData.cards)) {
-                // Generate quiz questions from cards
-                questions.value = setData.cards.map((card: any) => {
-                    // Generate wrong answers from other cards
+                questions.value = setData.cards.map((card: any, cardIndex: number) => {
                     const wrongAnswers = setData.cards
                         .filter((c: any) => c.back !== card.back)
                         .map((c: any) => c.back)
@@ -190,9 +193,12 @@ onMounted(async () => {
                         question: `Was bedeutet "${card.front}"?`,
                         options: allOptions,
                         correct: card.back,
-                        explanation: `"${card.front}" bedeutet "${card.back}".`
+                        explanation: `"${card.front}" bedeutet "${card.back}".`,
+                        cardIndex
                     }
                 })
+
+                progressStore.initSetProgress(setId, questions.value.length)
             }
         } catch (error) {
             console.error('Error loading quiz questions:', error)
@@ -209,9 +215,15 @@ const selectAnswer = (option: string) => {
     if (!currentQuestion.value) return
 
     selectedAnswer.value = option
-    if (option === currentQuestion.value.correct) {
+    const isCorrect = option === currentQuestion.value.correct
+    if (isCorrect) {
         score.value++
     }
+
+    answerResults.value.push({
+        cardIndex: currentQuestion.value.cardIndex,
+        isCorrect
+    })
 }
 
 const getOptionClass = (option: string) => {
@@ -230,12 +242,16 @@ const getOptionClass = (option: string) => {
     return 'bg-gray-50 border-2 border-gray-200 text-gray-500'
 }
 
-const nextQuestion = () => {
+const nextQuestion = async () => {
     if (currentQuestionIndex.value < questions.value.length - 1) {
         currentQuestionIndex.value++
         selectedAnswer.value = null
     } else {
-        // Calculate coins earned (10 coins per correct answer)
+        const setId = route.params.id
+        if (setId && !Array.isArray(setId)) {
+            await progressStore.completeSession(setId, 'quiz', answerResults.value)
+        }
+
         coinsEarned.value = score.value * 10
         userStore.earnCoins(coinsEarned.value)
         showResults.value = true
@@ -248,6 +264,7 @@ const restartQuiz = () => {
     score.value = 0
     showResults.value = false
     coinsEarned.value = 0
+    answerResults.value = []
 }
 
 const exitQuiz = () => {
