@@ -1,5 +1,5 @@
 <template>
-    <header class="bg-[#4255FF] px-4 pt-3 relative">
+    <header class="bg-primary px-4 pt-3 relative">
         <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-3">
                 <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -77,7 +77,7 @@
                 class="absolute top-full left-4 right-4 mt-2 bg-white rounded-xl shadow-2xl z-50 max-h-96 overflow-hidden">
                 <div class="flex items-center justify-between p-4 border-b border-gray-200">
                     <h3 class="font-bold text-gray-800">Benachrichtigungen</h3>
-                    <button @click="markAllAsRead" class="text-[#4255FF] text-sm font-semibold">
+                    <button @click="markAllAsRead" class="text-primary text-sm font-semibold">
                         Alle lesen
                     </button>
                 </div>
@@ -99,7 +99,7 @@
                                 <p class="text-sm text-gray-600 mb-1">{{ notification.message }}</p>
                                 <p class="text-xs text-gray-400">{{ notification.time }}</p>
                             </div>
-                            <div v-if="!notification.read" class="w-2 h-2 bg-[#4255FF] rounded-full mt-2"></div>
+                            <div v-if="!notification.read" class="w-2 h-2 bg-primary rounded-full mt-2"></div>
                         </div>
                     </div>
                 </div>

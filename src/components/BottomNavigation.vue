@@ -3,7 +3,7 @@
         <div class="flex items-center justify-around px-2 pt-2">
             <button v-for="item in navItems" :key="item.name" :class="[
                 'flex flex-col items-center gap-1 px-3 pt-2 rounded-xl transition flex-1',
-                item.active ? 'text-[#4255FF]' : 'text-gray-400'
+                item.active ? 'text-primary' : 'text-gray-400'
             ]" @click="navigate(item.name)">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="item.iconPath" />

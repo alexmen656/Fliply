@@ -80,7 +80,11 @@
             <div class="max-w-2xl mx-auto text-center">
                 <div class="bg-white rounded-2xl shadow-lg p-8 mb-6">
                     <div class="text-6xl mb-4">
-                        {{ getResultEmoji() }}
+                        <svg class="w-24 h-24 mx-auto" :class="getResultColor()" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                :d="getResultIcon()" />
+                        </svg>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-800 mb-2">Quiz abgeschlossen!</h2>
                     <p class="text-gray-600 mb-6">Du hast {{ score }} von {{ questions.length }} Fragen richtig
@@ -113,7 +117,7 @@
 
                     <div class="flex gap-3">
                         <button @click="restartQuiz"
-                            class="flex-1 bg-[#4255FF] text-white py-3 rounded-xl font-semibold active:scale-95 transition">
+                            class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold active:scale-95 transition">
                             Nochmal
                         </button>
                         <button @click="$router.back()"
@@ -127,59 +131,72 @@
         <div v-if="selectedAnswer && !showResults"
             class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 safe-area-inset">
             <button @click="nextQuestion"
-                class="w-full bg-[#4255FF] text-white py-4 rounded-xl font-semibold active:scale-95 transition">
+                class="w-full bg-primary text-white py-4 rounded-xl font-semibold active:scale-95 transition">
                 {{ currentQuestionIndex < questions.length - 1 ? 'Weiter →' : 'Ergebnisse anzeigen' }} </button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useSetsStore } from '@/stores/sets'
 
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
+const setsStore = useSetsStore()
 
 const currentQuestionIndex = ref(0)
 const selectedAnswer = ref<string | null>(null)
 const score = ref(0)
 const showResults = ref(false)
 const coinsEarned = ref(0)
+const isLoading = ref(true)
 
-const questions = ref([
-    {
-        question: 'Was bedeutet "Hello" auf Deutsch?',
-        options: ['Hallo', 'Tschüss', 'Danke', 'Bitte'],
-        correct: 'Hallo',
-        explanation: '"Hello" bedeutet "Hallo" auf Deutsch.'
-    },
-    {
-        question: 'Was ist die richtige Übersetzung von "Goodbye"?',
-        options: ['Guten Tag', 'Auf Wiedersehen', 'Gute Nacht', 'Bis bald'],
-        correct: 'Auf Wiedersehen',
-        explanation: '"Goodbye" wird als "Auf Wiedersehen" übersetzt.'
-    },
-    {
-        question: 'Wie sagt man "Thank you" auf Deutsch?',
-        options: ['Bitte', 'Danke', 'Entschuldigung', 'Hallo'],
-        correct: 'Danke',
-        explanation: '"Thank you" bedeutet "Danke" auf Deutsch.'
-    },
-    {
-        question: 'Was bedeutet "Please" auf Deutsch?',
-        options: ['Danke', 'Hallo', 'Bitte', 'Tschüss'],
-        correct: 'Bitte',
-        explanation: '"Please" wird mit "Bitte" übersetzt.'
-    },
-    {
-        question: 'Wie übersetzt man "Good morning"?',
-        options: ['Guten Abend', 'Gute Nacht', 'Guten Morgen', 'Guten Tag'],
-        correct: 'Guten Morgen',
-        explanation: '"Good morning" bedeutet "Guten Morgen".'
+interface QuizQuestion {
+    question: string
+    options: string[]
+    correct: string
+    explanation: string
+}
+
+const questions = ref<QuizQuestion[]>([])
+
+onMounted(async () => {
+    const setId = route.params.id
+    if (setId && !Array.isArray(setId)) {
+        isLoading.value = true
+        try {
+            const setData = await setsStore.getSetById(setId)
+            if (setData && Array.isArray(setData.cards)) {
+                // Generate quiz questions from cards
+                questions.value = setData.cards.map((card: any) => {
+                    // Generate wrong answers from other cards
+                    const wrongAnswers = setData.cards
+                        .filter((c: any) => c.back !== card.back)
+                        .map((c: any) => c.back)
+                        .sort(() => Math.random() - 0.5)
+                        .slice(0, 3)
+
+                    const allOptions = [card.back, ...wrongAnswers].sort(() => Math.random() - 0.5)
+
+                    return {
+                        question: `Was bedeutet "${card.front}"?`,
+                        options: allOptions,
+                        correct: card.back,
+                        explanation: `"${card.front}" bedeutet "${card.back}".`
+                    }
+                })
+            }
+        } catch (error) {
+            console.error('Error loading quiz questions:', error)
+        } finally {
+            isLoading.value = false
+        }
     }
-])
+})
 
 const currentQuestion = computed(() => questions.value[currentQuestionIndex.value])
 
@@ -239,12 +256,20 @@ const getPercentage = () => {
     return Math.round((score.value / questions.value.length) * 100)
 }
 
-const getResultEmoji = () => {
+const getResultIcon = () => {
     const percentage = getPercentage()
-    if (percentage >= 90) return '🎉'
-    if (percentage >= 70) return '😊'
-    if (percentage >= 50) return '🙂'
-    return '😔'
+    if (percentage >= 90) return 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' // Check circle
+    if (percentage >= 70) return 'M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' // Happy
+    if (percentage >= 50) return 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' // Document
+    return 'M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' // Sad
+}
+
+const getResultColor = () => {
+    const percentage = getPercentage()
+    if (percentage >= 90) return 'text-green-500'
+    if (percentage >= 70) return 'text-blue-500'
+    if (percentage >= 50) return 'text-yellow-500'
+    return 'text-red-500'
 }
 </script>
 

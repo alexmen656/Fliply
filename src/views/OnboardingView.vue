@@ -22,7 +22,7 @@
                 <button @click="nextStep" :disabled="!userName.trim()" :class="[
                     'w-full py-4 rounded-xl font-bold text-lg transition',
                     userName.trim()
-                        ? 'bg-white text-[#4255FF] active:scale-95'
+                        ? 'bg-white text-primary active:scale-95'
                         : 'bg-white/30 text-white/50 cursor-not-allowed'
                 ]">
                     Weiter
@@ -63,7 +63,7 @@
 
                 <div class="space-y-3">
                     <button @click="saveProfile"
-                        class="w-full bg-white text-[#4255FF] py-4 rounded-xl font-bold text-lg active:scale-95 transition">
+                        class="w-full bg-white text-primary py-4 rounded-xl font-bold text-lg active:scale-95 transition">
                         Weiter
                     </button>
                     <button @click="skipProfile"
@@ -113,7 +113,7 @@
             </div>
             <div class="px-6 pb-8">
                 <button @click="nextStep"
-                    class="w-full bg-white text-[#4255FF] py-4 rounded-xl font-bold text-lg active:scale-95 transition">
+                    class="w-full bg-white text-primary py-4 rounded-xl font-bold text-lg active:scale-95 transition">
                     Weiter
                 </button>
             </div>
@@ -150,7 +150,7 @@
             </div>
             <div class="px-6 pb-8">
                 <button @click="nextStep"
-                    class="w-full bg-white text-[#4255FF] py-4 rounded-xl font-bold text-lg active:scale-95 transition">
+                    class="w-full bg-white text-primary py-4 rounded-xl font-bold text-lg active:scale-95 transition">
                     Weiter
                 </button>
             </div>
@@ -204,7 +204,7 @@
             </div>
             <div class="px-6 pb-8">
                 <button @click="finishOnboarding"
-                    class="w-full bg-white text-[#4255FF] py-4 rounded-xl font-bold text-lg active:scale-95 transition flex items-center justify-center gap-2">
+                    class="w-full bg-white text-primary py-4 rounded-xl font-bold text-lg active:scale-95 transition flex items-center justify-center gap-2">
                     <span>Los geht's!</span>
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

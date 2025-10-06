@@ -8,24 +8,24 @@
                     </svg>
                 </button>
                 <h1 class="text-xl font-bold text-gray-800">Set bearbeiten</h1>
-                <button @click="saveChanges" class="text-[#4255FF] font-semibold">Speichern</button>
+                <button @click="saveChanges" class="text-primary font-semibold">Speichern</button>
             </div>
         </header>
         <main class="flex-1 overflow-y-auto pb-20 px-4 py-5">
             <div class="mb-6">
                 <label class="text-sm font-medium text-gray-700 mb-2 block">Set-Titel</label>
                 <input v-model="setTitle" type="text"
-                    class="w-full text-xl font-bold text-gray-800 bg-white rounded-xl px-4 py-4 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
+                    class="w-full text-xl font-bold text-gray-800 bg-white rounded-xl px-4 py-4 border-2 border-gray-200 focus:border-primary focus:outline-none" />
             </div>
             <div class="mb-6">
                 <label class="text-sm font-medium text-gray-700 mb-2 block">Beschreibung</label>
                 <textarea v-model="setDescription" rows="3"
-                    class="w-full text-gray-700 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none resize-none"></textarea>
+                    class="w-full text-gray-700 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-primary focus:outline-none resize-none"></textarea>
             </div>
             <div class="mb-4">
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-lg font-bold text-gray-800">Karten ({{ cards.length }})</h2>
-                    <button @click="addCard" class="text-[#4255FF] font-semibold text-sm">+ Hinzufügen</button>
+                    <button @click="addCard" class="text-primary font-semibold text-sm">+ Hinzufügen</button>
                 </div>
                 <div class="space-y-4">
                     <div v-for="(card, index) in cards" :key="index" class="bg-white rounded-xl p-4 shadow-sm">
@@ -37,12 +37,12 @@
                             <div>
                                 <label class="text-xs font-medium text-gray-600 mb-1 block">Vorderseite</label>
                                 <input v-model="card.front" type="text" placeholder="Begriff oder Frage"
-                                    class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-[#4255FF] focus:outline-none" />
+                                    class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-primary focus:outline-none" />
                             </div>
                             <div>
                                 <label class="text-xs font-medium text-gray-600 mb-1 block">Rückseite</label>
                                 <textarea v-model="card.back" placeholder="Definition oder Antwort" rows="3"
-                                    class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-[#4255FF] focus:outline-none resize-none"></textarea>
+                                    class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-primary focus:outline-none resize-none"></textarea>
                             </div>
                         </div>
                     </div>

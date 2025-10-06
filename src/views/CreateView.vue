@@ -8,19 +8,21 @@
                     </svg>
                 </button>
                 <h1 class="text-xl font-bold text-gray-800">Neues Set</h1>
-                <button @click="saveSet" class="text-[#4255FF] font-semibold" :disabled="isSaving">
+                <button @click="saveSet" class="text-primary font-semibold" :disabled="isSaving">
                     {{ isSaving ? 'Speichert...' : 'Fertig' }}
                 </button>
             </div>
         </header>
         <main class="flex-1 overflow-y-auto pb-20 px-4 py-5">
             <div class="mb-6">
-                <input v-model="setTitle" type="text" placeholder="Titel des Sets eingeben"
-                    class="w-full text-xl font-bold text-gray-800 bg-white rounded-xl px-4 py-4 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
+                <input v-model="setTitle" @keydown.enter="focusFirstCardFront" type="text"
+                    placeholder="Titel des Sets eingeben"
+                    class="w-full text-xl font-bold text-gray-800 bg-white rounded-xl px-4 py-4 border-2 border-gray-200 focus:border-primary focus:outline-none" />
             </div>
             <div class="mb-6">
                 <textarea v-model="setDescription" placeholder="Beschreibung (optional)" rows="3"
-                    class="w-full text-gray-700 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none resize-none"></textarea>
+                    @keydown.enter.prevent="focusFirstCardFront"
+                    class="w-full text-gray-700 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-primary focus:outline-none resize-none"></textarea>
             </div>
             <div class="space-y-4">
                 <div v-for="(card, index) in cards" :key="index" class="bg-white rounded-xl p-4 shadow-sm">
@@ -33,13 +35,16 @@
                     <div class="space-y-3">
                         <div>
                             <label class="text-xs font-medium text-gray-600 mb-1 block">Vorderseite</label>
-                            <input v-model="card.front" type="text" placeholder="Begriff oder Frage"
-                                class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-[#4255FF] focus:outline-none" />
+                            <input v-model="card.front" :ref="el => setCardFrontRef(el, index)" type="text"
+                                placeholder="Begriff oder Frage" @keydown.enter="focusCardBack(index)"
+                                class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-primary focus:outline-none" />
                         </div>
                         <div>
                             <label class="text-xs font-medium text-gray-600 mb-1 block">Rückseite</label>
-                            <textarea v-model="card.back" placeholder="Definition oder Antwort" rows="3"
-                                class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-[#4255FF] focus:outline-none resize-none"></textarea>
+                            <textarea v-model="card.back" :ref="el => setCardBackRef(el, index)"
+                                placeholder="Definition oder Antwort" rows="3"
+                                @keydown.enter.exact.prevent="handleBackEnter(index)"
+                                class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-primary focus:outline-none resize-none"></textarea>
                         </div>
                     </div>
                 </div>
@@ -54,7 +59,7 @@
         </main>
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4 safe-area-inset">
             <button @click="saveSet" :disabled="isSaving"
-                class="w-full bg-[#4255FF] text-white font-bold py-4 rounded-xl active:scale-98 transition disabled:opacity-50">
+                class="w-full bg-primary text-white font-bold py-4 rounded-xl active:scale-98 transition disabled:opacity-50">
                 {{ isSaving ? 'Speichert...' : `Set speichern (${cards.length} Karten)` }}
             </button>
         </div>
@@ -82,6 +87,49 @@ const cards = ref<Card[]>([
     { front: '', back: '' },
     { front: '', back: '' }
 ])
+
+// Refs für Inputs
+const cardFrontRefs = ref<(HTMLInputElement | null)[]>([])
+const cardBackRefs = ref<(HTMLTextAreaElement | null)[]>([])
+
+const setCardFrontRef = (el: any, index: number) => {
+    if (el) {
+        cardFrontRefs.value[index] = el as HTMLInputElement
+    }
+}
+
+const setCardBackRef = (el: any, index: number) => {
+    if (el) {
+        cardBackRefs.value[index] = el as HTMLTextAreaElement
+    }
+}
+
+const focusFirstCardFront = () => {
+    setTimeout(() => {
+        cardFrontRefs.value[0]?.focus()
+    }, 100)
+}
+
+const focusCardBack = (index: number) => {
+    setTimeout(() => {
+        cardBackRefs.value[index]?.focus()
+    }, 100)
+}
+
+const handleBackEnter = (index: number) => {
+    if (index === cards.value.length - 1) {
+        // Letzte Karte: neue Karte hinzufügen
+        addCard()
+        setTimeout(() => {
+            cardFrontRefs.value[index + 1]?.focus()
+        }, 100)
+    } else {
+        // Nicht letzte Karte: zur nächsten Vorderseite springen
+        setTimeout(() => {
+            cardFrontRefs.value[index + 1]?.focus()
+        }, 100)
+    }
+}
 
 const addCard = () => {
     cards.value.push({ front: '', back: '' })

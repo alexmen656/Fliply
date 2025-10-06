@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-col min-h-screen bg-gray-50">
-        <header :class="['px-4 py-8', currentBannerGradient]">
+    <div class="flex flex-col h-screen bg-gray-50">
+        <header :class="['px-4 py-8 flex-shrink-0', currentBannerGradient]">
             <div class="flex items-start gap-4 mb-4">
                 <button @click="editProfile"
                     class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-4xl shadow-lg relative group overflow-hidden flex-shrink-0">
@@ -25,7 +25,7 @@
                     <span class="font-bold">{{ userStore.profile.coins }}</span>
                 </button>
                 <button @click="openAvatarShop"
-                    class="flex-1 bg-white text-[#4255FF] px-4 py-3 rounded-xl font-semibold text-sm active:scale-95 transition flex items-center justify-center gap-2">
+                    class="flex-1 bg-white text-primary px-4 py-3 rounded-xl font-semibold text-sm active:scale-95 transition flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -34,14 +34,14 @@
                 </button>
             </div>
         </header>
-        <div class="px-4 -mt-6 mb-6">
+        <div class="px-4 -mt-6 mb-6 flex-shrink-0">
             <div class="bg-white rounded-2xl p-4 shadow-lg">
                 <div v-if="isLoadingStats" class="text-center py-4">
                     <p class="text-gray-500 text-sm">Lade Statistiken...</p>
                 </div>
                 <div v-else class="grid grid-cols-3 gap-4">
                     <div class="text-center">
-                        <div class="text-2xl font-bold text-[#4255FF]">{{ totalSets }}</div>
+                        <div class="text-2xl font-bold text-primary">{{ totalSets }}</div>
                         <div class="text-xs text-gray-600 mt-1">Sets</div>
                     </div>
                     <div class="text-center border-l border-r border-gray-200">
@@ -55,11 +55,11 @@
                 </div>
             </div>
         </div>
-        <main class="flex-1 pb-20 px-4">
+        <main class="flex-1 overflow-y-auto pb-20 px-4">
             <section class="mb-6">
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-lg font-bold text-gray-800">Errungenschaften</h2>
-                    <button @click="viewAllAchievements" class="text-[#4255FF] text-sm font-semibold">
+                    <button @click="viewAllAchievements" class="text-primary text-sm font-semibold">
                         Alle ansehen
                     </button>
                 </div>
@@ -135,7 +135,7 @@
             </section>
             <section>
                 <div class="bg-white rounded-xl p-4 shadow-sm text-center">
-                    <p class="text-sm text-gray-600 mb-2">Fliply Version 1.0.0</p>
+                    <p class="text-sm text-gray-600 mb-2" @click="handleVersionClick">Fliply Version 1.0.0</p>
                     <p class="text-xs text-gray-500">Made with ❤️ for learners</p>
                 </div>
             </section>
@@ -161,6 +161,9 @@ const userStore = useUserStore()
 const setsStore = useSetsStore()
 const achievementsStore = useAchievementsStore()
 const bannersStore = useBannersStore()
+
+const versionClickCount = ref(0)
+const versionClickTimer = ref<number | null>(null)
 
 const currentBannerGradient = computed(() => {
     const banner = bannersStore.getCurrentBanner()
@@ -246,6 +249,26 @@ const viewAllAchievements = () => {
 
 const openCoinHistory = () => {
     router.push('/coin-history')
+}
+
+const handleVersionClick = () => {
+    versionClickCount.value++
+
+    // Reset nach 2 Sekunden
+    if (versionClickTimer.value) {
+        clearTimeout(versionClickTimer.value)
+    }
+    versionClickTimer.value = window.setTimeout(() => {
+        versionClickCount.value = 0
+    }, 2000)
+
+    // Nach 5 Klicks -> 10000 Coins
+    if (versionClickCount.value === 5) {
+        userStore.earnCoins(10000)
+        versionClickCount.value = 0
+        // Visuelle Bestätigung
+        alert('🎉 Debug Mode aktiviert! +10,000 Münzen!')
+    }
 }
 
 const badges_old = ref([

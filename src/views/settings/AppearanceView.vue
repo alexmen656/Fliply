@@ -27,7 +27,7 @@
                 <div class="space-y-3">
                     <button v-for="theme in themesStore.themes" :key="theme.id" @click="selectTheme(theme)" :class="[
                         'w-full flex items-center justify-between p-4 rounded-xl border-2 transition',
-                        themesStore.currentTheme === theme.id ? 'border-[#4255FF] bg-blue-50' : 'border-gray-200 bg-white',
+                        themesStore.currentTheme === theme.id ? 'border-primary bg-blue-50' : 'border-gray-200 bg-white',
                         !theme.unlocked && 'opacity-60'
                     ]">
                         <div class="flex items-center gap-3">
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <svg v-if="themesStore.currentTheme === theme.id && theme.unlocked"
-                            class="w-6 h-6 text-[#4255FF]" fill="currentColor" viewBox="0 0 20 20">
+                            class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd" />
@@ -88,7 +88,7 @@
                             <div class="text-sm text-gray-500 mt-1">Reduziere Bewegungen</div>
                         </div>
                         <button @click="toggleAnimations"
-                            :class="['w-12 h-7 rounded-full transition', animations ? 'bg-[#4255FF]' : 'bg-gray-300']">
+                            :class="['w-12 h-7 rounded-full transition', animations ? 'bg-primary' : 'bg-gray-300']">
                             <div
                                 :class="['w-5 h-5 bg-white rounded-full shadow transition-transform', animations ? 'translate-x-6' : 'translate-x-1']">
                             </div>
@@ -100,7 +100,7 @@
                             <div class="text-sm text-gray-500 mt-1">Mehr Inhalt auf dem Bildschirm</div>
                         </div>
                         <button @click="toggleCompact"
-                            :class="['w-12 h-7 rounded-full transition', compactMode ? 'bg-[#4255FF]' : 'bg-gray-300']">
+                            :class="['w-12 h-7 rounded-full transition', compactMode ? 'bg-primary' : 'bg-gray-300']">
                             <div
                                 :class="['w-5 h-5 bg-white rounded-full shadow transition-transform', compactMode ? 'translate-x-6' : 'translate-x-1']">
                             </div>

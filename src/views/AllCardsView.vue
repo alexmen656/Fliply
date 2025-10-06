@@ -17,13 +17,13 @@
             </div>
             <div v-if="searchMode" class="mb-4 animate-slide-down">
                 <input v-model="searchQuery" type="text" placeholder="Karten durchsuchen..."
-                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-[#4255FF]" />
+                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary" />
             </div>
             <div class="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
                 <button v-for="filter in filters" :key="filter.id" @click="activeFilter = filter.id" :class="[
                     'px-4 py-2 rounded-full font-semibold text-sm whitespace-nowrap transition-all',
                     activeFilter === filter.id
-                        ? 'bg-[#4255FF] text-white'
+                        ? 'bg-primary text-white'
                         : 'bg-gray-100 text-gray-600'
                 ]">
                     {{ filter.label }}
@@ -86,7 +86,7 @@
                     </div>
                     <div v-if="card.progress !== undefined" class="bg-gray-50 px-4 py-2 flex items-center gap-2">
                         <div class="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-[#4255FF] rounded-full transition-all"
+                            <div class="h-full bg-primary rounded-full transition-all"
                                 :style="{ width: card.progress + '%' }">
                             </div>
                         </div>
@@ -96,7 +96,7 @@
             </div>
         </main>
         <button @click="addCard"
-            class="fixed bottom-6 right-6 w-14 h-14 bg-[#4255FF] text-white rounded-full shadow-lg active:scale-95 transition flex items-center justify-center">
+            class="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg active:scale-95 transition flex items-center justify-center">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>

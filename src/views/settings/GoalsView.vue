@@ -8,7 +8,7 @@
                     </svg>
                 </button>
                 <h1 class="text-xl font-bold text-gray-800">Lernziele</h1>
-                <button @click="saveGoals" class="text-[#4255FF] font-semibold">Speichern</button>
+                <button @click="saveGoals" class="text-primary font-semibold">Speichern</button>
             </div>
         </header>
         <main class="flex-1 overflow-y-auto px-4 py-5">
@@ -16,7 +16,7 @@
                 <h3 class="font-bold text-gray-800 mb-3">Tägliches Ziel</h3>
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-gray-600">Karten pro Tag</span>
-                    <span class="text-2xl font-bold text-[#4255FF]">{{ dailyGoal }}</span>
+                    <span class="text-2xl font-bold text-primary">{{ dailyGoal }}</span>
                 </div>
                 <input v-model.number="dailyGoal" type="range" min="5" max="100" step="5"
                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
@@ -41,7 +41,7 @@
             <div class="bg-white rounded-xl p-5 shadow-sm">
                 <h3 class="font-bold text-gray-800 mb-3">Bevorzugte Lernzeit</h3>
                 <select v-model="studyTime"
-                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-[#4255FF]">
+                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-primary">
                     <option value="morning">Morgens (6-12 Uhr)</option>
                     <option value="afternoon">Nachmittags (12-18 Uhr)</option>
                     <option value="evening">Abends (18-24 Uhr)</option>

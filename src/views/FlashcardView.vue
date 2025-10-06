@@ -20,13 +20,24 @@
             </div>
             <div class="mt-4">
                 <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div class="h-full bg-[#4255FF] rounded-full transition-all"
+                    <div class="h-full bg-primary rounded-full transition-all"
                         :style="{ width: ((currentCardIndex + 1) / cards.length * 100) + '%' }">
                     </div>
                 </div>
             </div>
         </header>
-        <main class="flex-1 flex items-center justify-center px-6 py-8">
+        <main v-if="isLoading" class="flex-1 flex items-center justify-center px-6 py-8">
+            <div class="text-center">
+                <div class="text-gray-500 mb-2">Lade Karten...</div>
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            </div>
+        </main>
+        <main v-else-if="!currentCard" class="flex-1 flex items-center justify-center px-6 py-8">
+            <div class="text-center text-gray-500">
+                <p>Keine Karten gefunden</p>
+            </div>
+        </main>
+        <main v-else class="flex-1 flex items-center justify-center px-6 py-8">
             <div class="w-full max-w-md">
                 <div @click="flipCard" class="flashcard-container" :class="{ 'flipped': isFlipped }">
                     <div
@@ -51,7 +62,8 @@
                 </div>
             </div>
         </main>
-        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 safe-area-inset">
+        <div v-if="!isLoading && currentCard"
+            class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 safe-area-inset">
             <div class="flex items-center justify-between gap-4">
                 <button @click="previousCard" :disabled="currentCardIndex === 0" :class="[
                     'flex-1 py-4 rounded-xl font-semibold transition',
@@ -62,7 +74,7 @@
                     ← Zurück
                 </button>
                 <button v-if="currentCardIndex < cards.length - 1" @click="nextCard"
-                    class="flex-1 bg-[#4255FF] text-white py-4 rounded-xl font-semibold active:scale-95 transition">
+                    class="flex-1 bg-primary text-white py-4 rounded-xl font-semibold active:scale-95 transition">
                     Weiter →
                 </button>
                 <button v-else @click="finishSession"
@@ -75,27 +87,54 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useStreakStore } from '@/stores/streak'
 import { useUserStore } from '@/stores/user'
+import { useSetsStore } from '@/stores/sets'
 
 const router = useRouter()
+const route = useRoute()
 const streakStore = useStreakStore()
 const userStore = useUserStore()
+const setsStore = useSetsStore()
 
 const currentCardIndex = ref(0)
 const isFlipped = ref(false)
 const isReallyFlipped = ref(false)
+const isLoading = ref(true)
 
-const cards = ref([
-    { front: 'Hello', back: 'Hallo' },
-    { front: 'Goodbye', back: 'Auf Wiedersehen' },
-    { front: 'Thank you', back: 'Danke' },
-    { front: 'Please', back: 'Bitte' },
-    { front: 'Yes', back: 'Ja' },
-    { front: 'No', back: 'Nein' }
-])
+interface Card {
+    id: number
+    front: string
+    back: string
+    level: number
+}
+
+const cards = ref<Card[]>([])
+
+onMounted(async () => {
+    const setId = route.params.id
+    if (setId && !Array.isArray(setId)) {
+        isLoading.value = true
+        try {
+            const setData = await setsStore.getSetById(setId)
+            if (setData && Array.isArray(setData.cards)) {
+                cards.value = setData.cards.map((card: any, index: number) => ({
+                    id: index,
+                    front: card.front,
+                    back: card.back,
+                    level: 0
+                }))
+            }
+        } catch (error) {
+            console.error('Error loading cards:', error)
+        } finally {
+            isLoading.value = false
+        }
+    }
+})
+
 
 const currentCard = computed(() => cards.value[currentCardIndex.value] as { front: string; back: string })
 
@@ -131,11 +170,7 @@ const shuffleCards = () => {
 }
 
 const finishSession = () => {
-    // Record study session when user finishes
     streakStore.recordStudySession()
-    // Award 3 coins per card reviewed
-    const coinsEarned = cards.value.length * 3
-    userStore.earnCoins(coinsEarned)
     router.push('/home')
 }
 </script>

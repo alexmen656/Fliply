@@ -61,9 +61,9 @@
                         <span class="font-semibold text-gray-800">2025.10.04</span>
                     </div>
                     <div class="pt-3 border-t border-gray-100">
-                        <a href="#" class="text-[#4255FF] text-sm font-semibold">Nutzungsbedingungen</a>
+                        <a href="#" class="text-primary text-sm font-semibold">Nutzungsbedingungen</a>
                         <span class="text-gray-400 mx-2">•</span>
-                        <a href="#" class="text-[#4255FF] text-sm font-semibold">Datenschutz</a>
+                        <a href="#" class="text-primary text-sm font-semibold">Datenschutz</a>
                     </div>
                 </div>
             </div>

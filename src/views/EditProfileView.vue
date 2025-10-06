@@ -8,7 +8,7 @@
                     </svg>
                 </button>
                 <h1 class="text-xl font-bold text-gray-800">Profil bearbeiten</h1>
-                <button @click="saveProfile" class="text-[#4255FF] font-semibold">Fertig</button>
+                <button @click="saveProfile" class="text-primary font-semibold">Fertig</button>
             </div>
         </header>
         <main class="flex-1 overflow-y-auto px-4 py-6">
@@ -28,29 +28,29 @@
                         </svg>
                     </button>
                 </div>
-                <button @click="$router.push('/avatar-shop')" class="mt-3 text-sm text-[#4255FF] font-semibold">Avatar
+                <button @click="$router.push('/avatar-shop')" class="mt-3 text-sm text-primary font-semibold">Avatar
                     ändern</button>
             </div>
             <div class="space-y-4">
                 <div>
                     <label class="text-sm font-medium text-gray-700 mb-2 block">Name</label>
                     <input v-model="userName" type="text"
-                        class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
+                        class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-primary focus:outline-none" />
                 </div>
                 <div>
                     <label class="text-sm font-medium text-gray-700 mb-2 block">E-Mail</label>
                     <input v-model="userEmail" type="email"
-                        class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
+                        class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-primary focus:outline-none" />
                 </div>
                 <div>
                     <label class="text-sm font-medium text-gray-700 mb-2 block">Bio</label>
                     <textarea v-model="userBio" rows="4" placeholder="Erzähle etwas über dich..."
-                        class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none resize-none"></textarea>
+                        class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-primary focus:outline-none resize-none"></textarea>
                 </div>
                 <div>
                     <label class="text-sm font-medium text-gray-700 mb-2 block">Lernziel (Karten pro Tag)</label>
                     <input v-model.number="dailyGoal" type="number" min="1" max="100"
-                        class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-[#4255FF] focus:outline-none" />
+                        class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-primary focus:outline-none" />
                 </div>
             </div>
             <div v-if="showEmojiPicker"

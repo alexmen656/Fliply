@@ -13,7 +13,7 @@
                     <div class="text-xs text-gray-500 mt-1">{{ matchedPairs }} / {{ totalPairs }} Paare</div>
                 </div>
                 <div class="text-right">
-                    <div class="text-sm font-bold text-[#4255FF]">{{ formatTime(elapsedTime) }}</div>
+                    <div class="text-sm font-bold text-primary">{{ formatTime(elapsedTime) }}</div>
                 </div>
             </div>
         </header>
@@ -45,9 +45,32 @@
         <main v-else class="flex-1 overflow-y-auto px-6 py-8">
             <div class="max-w-2xl mx-auto text-center">
                 <div class="bg-white rounded-2xl shadow-lg p-8 mb-6">
-                    <div class="text-6xl mb-4">⚡</div>
+                    <div class="mb-4">
+                        <svg class="w-24 h-24 mx-auto text-green-500" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
                     <h2 class="text-2xl font-bold text-gray-800 mb-2">Perfekt!</h2>
                     <p class="text-gray-600 mb-6">Du hast alle Paare gefunden</p>
+
+                    <div v-if="coinsEarned > 0" class="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-4 mb-6">
+                        <div class="flex items-center justify-center gap-2">
+                            <svg class="w-8 h-8 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <div>
+                                <div class="text-lg font-bold text-yellow-800">+{{ coinsEarned }} Münzen verdient!</div>
+                                <div class="text-sm text-yellow-700">Gesamt: {{ userStore.profile.coins }} Münzen</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="bg-blue-50 rounded-xl p-4">
                             <div class="text-2xl font-bold text-blue-600">{{ formatTime(finalTime) }}</div>
@@ -60,7 +83,7 @@
                     </div>
                     <div class="flex gap-3">
                         <button @click="restartMatch"
-                            class="flex-1 bg-[#4255FF] text-white py-3 rounded-xl font-semibold active:scale-95 transition">
+                            class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold active:scale-95 transition">
                             Nochmal
                         </button>
                         <button @click="$router.back()"
@@ -76,9 +99,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import { useSetsStore } from '@/stores/sets'
 
 const router = useRouter()
+const route = useRoute()
+const userStore = useUserStore()
+const setsStore = useSetsStore()
 
 interface MatchItem {
     id: number
@@ -97,27 +125,48 @@ const showResults = ref(false)
 const elapsedTime = ref(0)
 const finalTime = ref(0)
 const timerInterval = ref<number | null>(null)
+const coinsEarned = ref(0)
+const isLoading = ref(true)
 
-const pairs = [
-    { term: 'Hello', definition: 'Hallo' },
-    { term: 'Goodbye', definition: 'Auf Wiedersehen' },
-    { term: 'Thank you', definition: 'Danke' },
-    { term: 'Please', definition: 'Bitte' },
-    { term: 'Good morning', definition: 'Guten Morgen' },
-    { term: 'Good night', definition: 'Gute Nacht' }
-]
+interface Pair {
+    term: string
+    definition: string
+}
+
+const pairs = ref<Pair[]>([])
+
+onMounted(async () => {
+    const setId = route.params.id
+    if (setId && !Array.isArray(setId)) {
+        isLoading.value = true
+        try {
+            const setData = await setsStore.getSetById(setId)
+            if (setData && Array.isArray(setData.cards)) {
+                pairs.value = setData.cards.map((card: any) => ({
+                    term: card.front,
+                    definition: card.back
+                }))
+                initializeGame()
+            }
+        } catch (error) {
+            console.error('Error loading match pairs:', error)
+        } finally {
+            isLoading.value = false
+        }
+    }
+})
 
 const initializeGame = () => {
-    totalPairs.value = pairs.length
+    totalPairs.value = pairs.value.length
 
-    const leftItemsTemp = pairs.map((pair, index) => ({
+    const leftItemsTemp = pairs.value.map((pair, index) => ({
         id: index * 2,
         text: pair.term,
         pairId: index,
         matched: false
     }))
 
-    const rightItemsTemp = pairs.map((pair, index) => ({
+    const rightItemsTemp = pairs.value.map((pair, index) => ({
         id: index * 2 + 1,
         text: pair.definition,
         pairId: index,
@@ -193,7 +242,7 @@ const getItemClass = (item: MatchItem, side: 'left' | 'right') => {
             selectedLeft.value.pairId !== selectedRight.value.pairId) {
             return 'bg-red-100 border-2 border-red-500 text-red-800 animate-shake'
         }
-        return 'bg-[#4255FF] border-2 border-[#4255FF] text-white'
+        return 'bg-primary border-2 border-primary text-white'
     }
 
     return 'bg-white border-2 border-gray-200 text-gray-800 active:scale-95 hover:border-gray-300'
@@ -222,6 +271,11 @@ const formatTime = (seconds: number) => {
 const finishGame = () => {
     finalTime.value = elapsedTime.value
     stopTimer()
+
+    // Calculate coins earned (7 coins per pair)
+    coinsEarned.value = totalPairs.value * 7
+    userStore.earnCoins(coinsEarned.value)
+
     setTimeout(() => {
         showResults.value = true
     }, 1000)
@@ -232,6 +286,7 @@ const restartMatch = () => {
     showResults.value = false
     selectedLeft.value = null
     selectedRight.value = null
+    coinsEarned.value = 0
     stopTimer()
     initializeGame()
 }
@@ -247,10 +302,6 @@ const exitMatch = () => {
         router.back()
     }
 }
-
-onMounted(() => {
-    initializeGame()
-})
 
 onUnmounted(() => {
     stopTimer()

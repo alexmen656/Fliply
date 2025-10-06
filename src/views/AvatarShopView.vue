@@ -29,7 +29,7 @@
             <div class="flex gap-2 mt-4">
                 <button @click="activeTab = 'avatars'" :class="[
                     'flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition flex items-center justify-center gap-2',
-                    activeTab === 'avatars' ? 'bg-[#4255FF] text-white' : 'bg-gray-100 text-gray-600'
+                    activeTab === 'avatars' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600'
                 ]">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -39,7 +39,7 @@
                 </button>
                 <button @click="activeTab = 'banners'" :class="[
                     'flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition flex items-center justify-center gap-2',
-                    activeTab === 'banners' ? 'bg-[#4255FF] text-white' : 'bg-gray-100 text-gray-600'
+                    activeTab === 'banners' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600'
                 ]">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -74,7 +74,7 @@
                                     class="w-full aspect-square rounded-lg object-cover mb-2" />
                                 <div class="text-xs font-medium text-gray-700 text-center">{{ avatar.name }}</div>
                                 <div v-if="userStore.profile.avatar === avatar.url"
-                                    class="absolute top-1 right-1 bg-[#4255FF] text-white rounded-full w-6 h-6 flex items-center justify-center">
+                                    class="absolute top-1 right-1 bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center">
                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -149,7 +149,7 @@
                                 <div class="text-sm font-medium text-gray-700">{{ banner.name }}</div>
                                 <div class="text-xs text-gray-500">{{ banner.description }}</div>
                                 <div v-if="bannersStore.currentBanner === banner.id"
-                                    class="absolute top-2 right-2 bg-[#4255FF] text-white rounded-full w-8 h-8 flex items-center justify-center">
+                                    class="absolute top-2 right-2 bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center">
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
