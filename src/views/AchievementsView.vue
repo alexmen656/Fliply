@@ -7,7 +7,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <h1 class="text-xl font-bold text-gray-800">Errungenschaften</h1>
+                <h1 class="text-xl font-bold text-gray-800">{{ $t('achievements.title') }}</h1>
                 <div class="w-6"></div>
             </div>
         </header>
@@ -22,7 +22,7 @@
                         {{ achievementsStore.unlockedAchievements.length }} / {{ achievementsStore.achievements.length
                         }}
                     </h2>
-                    <p class="text-white text-sm opacity-90">Errungenschaften freigeschaltet</p>
+                    <p class="text-white text-sm opacity-90">{{ $t('achievements.unlocked') }}</p>
                 </div>
                 <div class="bg-white bg-opacity-20 rounded-full h-3 overflow-hidden">
                     <div class="bg-white h-full transition-all duration-500" :style="{
@@ -37,7 +37,7 @@
                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                             clip-rule="evenodd" />
                     </svg>
-                    <span>Freigeschaltet</span>
+                    <span>{{ $t('achievements.unlocked') }}</span>
                 </h2>
                 <div class="space-y-3">
                     <div v-for="achievement in achievementsStore.unlockedAchievements" :key="achievement.id"
@@ -53,7 +53,8 @@
                                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                             clip-rule="evenodd" />
                                     </svg>
-                                    <span class="text-xs text-green-600 font-semibold">Freigeschaltet</span>
+                                    <span class="text-xs text-green-600 font-semibold">{{ $t('achievements.unlocked')
+                                        }}</span>
                                     <span v-if="achievement.unlockedAt" class="text-xs text-gray-400">
                                         {{ formatDate(achievement.unlockedAt) }}
                                     </span>
@@ -70,7 +71,7 @@
                             d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
                             clip-rule="evenodd" />
                     </svg>
-                    <span>Noch zu erreichen</span>
+                    <span>{{ $t('achievements.locked') }}</span>
                 </h2>
                 <div class="space-y-3">
                     <div v-for="achievement in achievementsStore.lockedAchievements" :key="achievement.id"
@@ -95,8 +96,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Keine Errungenschaften</h3>
-                <p class="text-gray-500">Beginne zu lernen, um Erfolge zu sammeln!</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $t('achievements.noAchievements') }}</h3>
+                <p class="text-gray-500">{{ $t('achievements.startLearning') }}</p>
             </div>
         </main>
     </div>

@@ -7,7 +7,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <h1 class="text-xl font-bold text-gray-800">Münzen Verlauf</h1>
+                <h1 class="text-xl font-bold text-gray-800">{{ $t('coinHistory.title') }}</h1>
                 <div class="w-6"></div>
             </div>
         </header>
@@ -15,21 +15,21 @@
             <div class="grid grid-cols-3 gap-3 mb-6">
                 <div class="bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl p-4 text-center">
                     <div class="text-2xl font-bold text-white mb-1">{{ userStore.profile.coins }}</div>
-                    <div class="text-xs text-white opacity-90">Aktuell</div>
+                    <div class="text-xs text-white opacity-90">{{ $t('coinHistory.current') }}</div>
                 </div>
                 <div class="bg-gradient-to-br from-green-400 to-green-500 rounded-xl p-4 text-center">
                     <div class="text-2xl font-bold text-white mb-1">{{ coinHistoryStore.getTotalEarned() }}</div>
-                    <div class="text-xs text-white opacity-90">Verdient</div>
+                    <div class="text-xs text-white opacity-90">{{ $t('coinHistory.earned') }}</div>
                 </div>
                 <div class="bg-gradient-to-br from-red-400 to-red-500 rounded-xl p-4 text-center">
                     <div class="text-2xl font-bold text-white mb-1">{{ coinHistoryStore.getTotalSpent() }}</div>
-                    <div class="text-xs text-white opacity-90">Ausgegeben</div>
+                    <div class="text-xs text-white opacity-90">{{ $t('coinHistory.spent') }}</div>
                 </div>
             </div>
             <div v-if="coinHistoryStore.transactions.length === 0" class="text-center py-12">
                 <div class="text-6xl mb-4">💰</div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Keine Transaktionen</h3>
-                <p class="text-gray-500">Beginne zu lernen, um Münzen zu verdienen!</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $t('coinHistory.noTransactions') }}</h3>
+                <p class="text-gray-500">{{ $t('coinHistory.startLearning') }}</p>
             </div>
             <div v-else class="space-y-3">
                 <div v-for="transaction in coinHistoryStore.transactions" :key="transaction.id"

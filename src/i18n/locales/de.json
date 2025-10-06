@@ -25,7 +25,9 @@
     "searchPlaceholder": "Suche Lernsets, Lehrbücher...",
     "expertSets": "Expert sets",
     "achievements": "Achievements",
-    "streak": "Tage Streak"
+    "streak": "Tage Streak",
+    "noExpertSets": "Keine Expert Sets verfügbar",
+    "checkBackLater": "Schau später wieder vorbei!"
   },
   "library": {
     "title": "Bibliothek",
@@ -33,7 +35,9 @@
     "recentlyViewed": "Kürzlich angesehen",
     "createNewSet": "Neues Set erstellen",
     "noSets": "Keine Sets vorhanden",
-    "noSetsDescription": "Erstelle dein erstes Lernset!"
+    "noSetsDescription": "Erstelle dein erstes Lernset!",
+    "allCards": "Alle Karten",
+    "noCards": "Keine Karten gefunden"
   },
   "create": {
     "title": "Neues Set erstellen",
@@ -41,13 +45,16 @@
     "setTitlePlaceholder": "z.B. Deutsch Vokabeln A2",
     "description": "Beschreibung",
     "descriptionPlaceholder": "Beschreibung (optional)",
-    "addCard": "Karte hinzufügen",
-    "term": "Begriff",
-    "definition": "Definition",
-    "termPlaceholder": "Begriff eingeben",
-    "definitionPlaceholder": "Definition eingeben",
+    "addCard": "+ Hinzufügen",
+    "term": "Vorderseite",
+    "definition": "Rückseite",
+    "termPlaceholder": "Begriff oder Frage",
+    "definitionPlaceholder": "Definition oder Antwort",
     "createSet": "Set erstellen",
-    "cardAdded": "Karte hinzugefügt"
+    "cardAdded": "Karte hinzugefügt",
+    "card": "Karte",
+    "editSet": "Set bearbeiten",
+    "deleteSet": "Set löschen"
   },
   "profile": {
     "title": "Profil",
@@ -62,7 +69,14 @@
     "goals": "Ziele",
     "help": "Hilfe & Support",
     "editProfile": "Profil bearbeiten",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "name": "Name",
+    "email": "E-Mail",
+    "bio": "Bio",
+    "bioPlaceholder": "Erzähle etwas über dich...",
+    "dailyGoal": "Lernziel (Karten pro Tag)",
+    "chooseEmoji": "Wähle ein Emoji",
+    "coinsEarned": "+{count} Münzen verdient!"
   },
   "editProfile": {
     "title": "Profil bearbeiten",
@@ -113,12 +127,12 @@
   },
   "match": {
     "title": "Zuordnen",
-    "instruction": "Wähle passende Paare aus",
-    "timeLabel": "Zeit",
-    "completedTitle": "Geschafft!",
-    "completedMessage": "Du hast alle Paare gefunden!",
-    "yourTime": "Deine Zeit",
-    "playAgain": "Nochmal spielen"
+    "instructions": "Ordne die Begriffe ihren Übersetzungen zu",
+    "pairs": "Paare",
+    "time": "Zeit",
+    "perfect": "Perfekt!",
+    "allPairsFound": "Du hast alle Paare gefunden",
+    "tryAgain": "Nochmal"
   },
   "quiz": {
     "title": "Quiz",
@@ -143,14 +157,16 @@
     "deleteConfirm": "Möchtest du dieses Set wirklich löschen?"
   },
   "achievements": {
-    "title": "Achievements",
+    "title": "Errungenschaften",
     "unlocked": "Freigeschaltet",
-    "locked": "Gesperrt",
+    "locked": "Noch zu erreichen",
     "unlockedCount": "Freigeschaltet",
-    "progress": "Fortschritt"
+    "progress": "Fortschritt",
+    "noAchievements": "Keine Errungenschaften",
+    "startLearning": "Beginne zu lernen, um Erfolge zu sammeln!"
   },
   "avatarShop": {
-    "title": "Avatar Shop",
+    "title": "Shop",
     "avatars": "Avatare",
     "banners": "Banner",
     "owned": "Im Besitz",
@@ -161,63 +177,76 @@
     "insufficientCoins": "Nicht genug Münzen",
     "purchaseSuccess": "Erfolgreich gekauft!",
     "currentAvatar": "Aktueller Avatar",
-    "currentBanner": "Aktueller Banner"
+    "currentBanner": "Aktueller Banner",
+    "yourCoins": "Deine Münzen",
+    "earnMore": "Verdiene mehr durch Lernen!",
+    "unlockable": "Freischaltbar",
+    "changeAvatar": "Avatar ändern"
   },
   "coinHistory": {
-    "title": "Münzhistorie",
+    "title": "Münzen Verlauf",
     "earned": "Verdient",
     "spent": "Ausgegeben",
     "balance": "Guthaben",
-    "transaction": "Transaktion"
+    "transaction": "Transaktion",
+    "current": "Aktuell",
+    "total": "Gesamt",
+    "noTransactions": "Keine Transaktionen",
+    "startLearning": "Beginne zu lernen, um Münzen zu verdienen!"
   },
   "expertSets": {
     "title": "Expert Sets",
     "explore": "Entdecken"
   },
   "onboarding": {
-    "welcome": "Willkommen bei Fliply",
-    "welcomeDescription": "Lerne effektiver mit intelligenten Karteikarten",
-    "step1Title": "Erstelle deine Sets",
-    "step1Description": "Erstelle benutzerdefinierte Lernsets für jedes Thema",
-    "step2Title": "Verschiedene Modi",
-    "step2Description": "Lerne mit Karteikarten, Spielen und Quizzen",
-    "step3Title": "Verfolge deinen Fortschritt",
-    "step3Description": "Bleibe motiviert mit Achievements und Streaks",
-    "getStarted": "Los geht's",
-    "skip": "Überspringen"
+    "welcome": "Willkommen bei Fliply!",
+    "getToKnow": "Lass uns dich kennenlernen",
+    "whatToCallYou": "Wie sollen wir dich nennen?",
+    "yourName": "Dein Name",
+    "continue": "Weiter",
+    "setupProfile": "Profil einrichten",
+    "addEmailOptional": "Optional: Füge deine E-Mail hinzu",
+    "emailOptional": "E-Mail (optional)",
+    "yourEmail": "deine@email.de",
+    "emailReason": "Für Fortschrittssicherung und Erinnerungen",
+    "avatarsTitle": "Profilbilder",
+    "avatarsDescription": "Schalte einzigartige Avatare im Shop frei!",
+    "expertSetsTitle": "Expert Sets",
+    "expertSetsDescription": "Professionell erstellte Inhalte",
+    "createSets": "Sets erstellen",
+    "createSetsDescription": "Erstelle deine eigenen Flashcard-Sets! Füge Karten mit Frage und Antwort hinzu.",
+    "step1": "Titel für dein Set eingeben",
+    "step2": "Karten hinzufügen (Vorder- & Rückseite)",
+    "step3": "Set speichern und mit dem Lernen beginnen!",
+    "learnAndStreak": "Lernen & Streak",
+    "learnAndStreakDescription": "Übe täglich und baue deinen Streak auf! Je länger du am Ball bleibst, desto besser.",
+    "dailyStreak": "Täglicher Streak",
+    "dailyStreakDescription": "Übe jeden Tag und erhalte Belohnungen",
+    "flashcardsTitle": "Flashcards",
+    "flashcardsDescription": "Tippe auf Karten zum Umdrehen",
+    "achievementsTitle": "Achievements",
+    "achievementsDescription": "Sammle Erfolge und sieh deinen Fortschritt",
+    "getStarted": "Los geht's!"
   },
   "settings": {
-    "appearance": {
-      "title": "Erscheinungsbild",
-      "theme": "Design",
-      "light": "Hell",
-      "dark": "Dunkel",
-      "system": "System",
-      "language": "Sprache"
-    },
-    "notifications": {
-      "title": "Benachrichtigungen",
-      "enabled": "Aktiviert",
-      "disabled": "Deaktiviert",
-      "dailyReminder": "Tägliche Erinnerung",
-      "achievements": "Achievement-Benachrichtigungen",
-      "time": "Benachrichtigungszeit"
-    },
-    "goals": {
-      "title": "Ziele",
-      "dailyGoal": "Tägliches Ziel",
-      "cardsPerDay": "Karten pro Tag",
-      "setGoal": "Ziel setzen",
-      "currentStreak": "Aktuelle Serie"
-    },
-    "help": {
-      "title": "Hilfe & Support",
-      "faq": "Häufig gestellte Fragen",
-      "contact": "Kontakt",
-      "about": "Über",
-      "version": "Version",
-      "privacy": "Datenschutz",
-      "terms": "Nutzungsbedingungen"
-    }
+    "appearance": "Erscheinungsbild",
+    "notifications": "Benachrichtigungen",
+    "goals": "Lernziele",
+    "help": "Hilfe & Support",
+    "faq": "Häufige Fragen",
+    "contact": "Kontakt",
+    "emailSupport": "E-Mail Support",
+    "appInfo": "App-Info",
+    "version": "Version",
+    "build": "Build",
+    "dailyGoal": "Tägliches Ziel",
+    "cardsPerDay": "Karten pro Tag",
+    "weeklyGoal": "Wöchentliches Ziel",
+    "daysPerWeek": "Lerntage pro Woche",
+    "preferredStudyTime": "Bevorzugte Lernzeit",
+    "morning": "Morgens (6-12 Uhr)",
+    "afternoon": "Nachmittags (12-18 Uhr)",
+    "evening": "Abends (18-24 Uhr)",
+    "anytime": "Keine Präferenz"
   }
 }

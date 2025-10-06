@@ -9,9 +9,11 @@
                     </svg>
                 </button>
                 <div class="text-center">
-                    <div class="text-sm text-gray-600">Frage {{ currentQuestionIndex + 1 }} / {{ questions.length }}
+                    <div class="text-sm text-gray-600">{{ $t('quiz.question') }} {{ currentQuestionIndex + 1 }} / {{
+                        questions.length }}
                     </div>
-                    <div class="text-xs text-gray-500 mt-1">Punkte: {{ score }} / {{ questions.length }}</div>
+                    <div class="text-xs text-gray-500 mt-1">{{ $t('quiz.score') }}: {{ score }} / {{ questions.length }}
+                    </div>
                 </div>
                 <div class="w-6"></div>
             </div>
@@ -26,7 +28,8 @@
         <main v-if="!showResults && currentQuestion" class="flex-1 overflow-y-auto px-6 py-8">
             <div class="max-w-2xl mx-auto">
                 <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
-                    <div class="text-sm text-gray-500 mb-3">Frage {{ currentQuestionIndex + 1 }}</div>
+                    <div class="text-sm text-gray-500 mb-3">{{ $t('quiz.question') }} {{ currentQuestionIndex + 1 }}
+                    </div>
                     <h2 class="text-xl font-bold text-gray-800 mb-6">{{ currentQuestion.question }}</h2>
                     <div class="space-y-3">
                         <button v-for="(option, index) in currentQuestion.options" :key="index"
@@ -86,16 +89,17 @@
                                 :d="getResultIcon()" />
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Quiz abgeschlossen!</h2>
-                    <p class="text-gray-600 mb-6">Du hast {{ score }} von {{ questions.length }} Fragen richtig
-                        beantwortet</p>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ $t('quiz.completedTitle') }}</h2>
+                    <p class="text-gray-600 mb-6">{{ $t('quiz.completedMessage') }}</p>
 
                     <div v-if="coinsEarned > 0" class="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-4 mb-6">
                         <div class="flex items-center justify-center gap-2">
                             <span class="text-3xl">🪙</span>
                             <div>
-                                <div class="text-lg font-bold text-yellow-800">+{{ coinsEarned }} Münzen verdient!</div>
-                                <div class="text-sm text-yellow-700">Gesamt: {{ userStore.profile.coins }} Münzen</div>
+                                <div class="text-lg font-bold text-yellow-800">+{{ coinsEarned }} {{ $t('profile.coins')
+                                    }}</div>
+                                <div class="text-sm text-yellow-700">{{ $t('coinHistory.balance') }}: {{
+                                    userStore.profile.coins }} {{ $t('profile.coins') }}</div>
                             </div>
                         </div>
                     </div>
@@ -103,26 +107,26 @@
                     <div class="grid grid-cols-3 gap-4 mb-6">
                         <div class="bg-green-50 rounded-xl p-4">
                             <div class="text-2xl font-bold text-green-600">{{ score }}</div>
-                            <div class="text-xs text-gray-600">Richtig</div>
+                            <div class="text-xs text-gray-600">{{ $t('quiz.correct') }}</div>
                         </div>
                         <div class="bg-red-50 rounded-xl p-4">
                             <div class="text-2xl font-bold text-red-600">{{ questions.length - score }}</div>
-                            <div class="text-xs text-gray-600">Falsch</div>
+                            <div class="text-xs text-gray-600">{{ $t('quiz.incorrect') }}</div>
                         </div>
                         <div class="bg-blue-50 rounded-xl p-4">
                             <div class="text-2xl font-bold text-blue-600">{{ getPercentage() }}%</div>
-                            <div class="text-xs text-gray-600">Genauigkeit</div>
+                            <div class="text-xs text-gray-600">{{ $t('learn.accuracy') }}</div>
                         </div>
                     </div>
 
                     <div class="flex gap-3">
                         <button @click="restartQuiz"
                             class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold active:scale-95 transition">
-                            Nochmal
+                            {{ $t('quiz.tryAgain') }}
                         </button>
                         <button @click="$router.back()"
                             class="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-semibold active:scale-95 transition">
-                            Zurück
+                            {{ $t('common.back') }}
                         </button>
                     </div>
                 </div>

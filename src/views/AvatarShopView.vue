@@ -7,7 +7,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <h1 class="text-xl font-bold text-gray-800">Shop</h1>
+                <h1 class="text-xl font-bold text-gray-800">{{ $t('avatarShop.title') }}</h1>
                 <div class="w-6"></div>
             </div>
             <div
@@ -18,12 +18,12 @@
                             d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z" />
                     </svg>
                     <div>
-                        <div class="text-sm text-yellow-900 font-semibold">Deine Münzen</div>
+                        <div class="text-sm text-yellow-900 font-semibold">{{ $t('avatarShop.yourCoins') }}</div>
                         <div class="text-2xl text-yellow-900 font-bold">{{ userStore.profile.coins }}</div>
                     </div>
                 </div>
                 <div class="text-xs text-yellow-900">
-                    Verdiene mehr durch Lernen!
+                    {{ $t('avatarShop.earnMore') }}
                 </div>
             </div>
             <div class="flex gap-2 mt-4">
@@ -35,7 +35,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <span>Avatare</span>
+                    <span>{{ $t('avatarShop.avatars') }}</span>
                 </button>
                 <button @click="activeTab = 'banners'" :class="[
                     'flex-1 py-2 px-4 rounded-lg font-semibold text-sm transition flex items-center justify-center gap-2',
@@ -45,14 +45,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                     </svg>
-                    <span>Banner</span>
+                    <span>{{ $t('avatarShop.banners') }}</span>
                 </button>
             </div>
         </header>
         <main class="flex-1 overflow-y-auto px-4 py-5 pb-6">
             <div v-if="activeTab === 'avatars'">
                 <div v-if="isLoading" class="text-center py-8">
-                    <p class="text-gray-500">Lade Avatare...</p>
+                    <p class="text-gray-500">{{ $t('common.loading') }}</p>
                 </div>
                 <div v-else>
                     <section v-if="avatarsStore.getUnlockedAvatars().length > 0" class="mb-6">
@@ -91,7 +91,7 @@
                                     d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
                                     clip-rule="evenodd" />
                             </svg>
-                            <span>Freischaltbar</span>
+                            <span>{{ $t('avatarShop.unlockable') }}</span>
                         </h2>
                         <div class="grid grid-cols-3 gap-3">
                             <button v-for="avatar in avatarsStore.getLockedAvatars()" :key="avatar.id"

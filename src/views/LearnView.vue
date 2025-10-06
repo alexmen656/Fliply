@@ -9,8 +9,9 @@
                     </svg>
                 </button>
                 <div class="text-center">
-                    <div class="text-sm text-gray-600">Lernmodus</div>
-                    <div class="text-xs text-gray-500 mt-1">{{ masteredCards }} / {{ cards.length }} gemeistert</div>
+                    <div class="text-sm text-gray-600">{{ $t('setDetail.learn') }}</div>
+                    <div class="text-xs text-gray-500 mt-1">{{ masteredCards }} / {{ cards.length }} {{
+                        $t('learn.studied') }}</div>
                 </div>
                 <div class="w-6"></div>
             </div>
@@ -25,11 +26,11 @@
         <main v-if="!showResults && currentCard" class="flex-1 overflow-y-auto px-6 py-8">
             <div class="max-w-2xl mx-auto">
                 <div class="bg-white rounded-2xl shadow-lg p-8 mb-6">
-                    <div class="text-sm text-gray-500 mb-3">Übersetze</div>
+                    <div class="text-sm text-gray-500 mb-3">{{ $t('learn.question') }}</div>
                     <h2 class="text-2xl font-bold text-gray-800 mb-8">{{ currentCard.front }}</h2>
                     <div class="mb-4">
                         <input v-model="userAnswer" @keyup.enter="checkAnswer" type="text"
-                            placeholder="Deine Antwort..." :disabled="showAnswer"
+                            :placeholder="$t('learn.yourAnswer')" :disabled="showAnswer"
                             class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:border-primary text-lg"
                             :class="{
                                 'border-green-500 bg-green-50': showAnswer && isCorrect,
@@ -53,11 +54,11 @@
                                     'font-bold',
                                     isCorrect ? 'text-green-800' : 'text-red-800'
                                 ]">
-                                    {{ isCorrect ? 'Richtig!' : 'Nicht ganz richtig' }}
+                                    {{ isCorrect ? $t('learn.correct') : $t('learn.incorrect') }}
                                 </span>
                             </div>
                             <div v-if="!isCorrect" class="text-sm text-gray-700">
-                                Korrekte Antwort: <span class="font-bold">{{ currentCard.back }}</span>
+                                {{ $t('learn.correctAnswer') }}: <span class="font-bold">{{ currentCard.back }}</span>
                             </div>
                         </div>
                         <div class="space-y-2">

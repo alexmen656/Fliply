@@ -7,15 +7,15 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <h1 class="text-xl font-bold text-gray-800">Lernziele</h1>
-                <button @click="saveGoals" class="text-primary font-semibold">Speichern</button>
+                <h1 class="text-xl font-bold text-gray-800">{{ $t('settings.goals') }}</h1>
+                <button @click="saveGoals" class="text-primary font-semibold">{{ $t('common.save') }}</button>
             </div>
         </header>
         <main class="flex-1 overflow-y-auto px-4 py-5">
             <div class="bg-white rounded-xl p-5 shadow-sm mb-4">
-                <h3 class="font-bold text-gray-800 mb-3">Tägliches Ziel</h3>
+                <h3 class="font-bold text-gray-800 mb-3">{{ $t('settings.dailyGoal') }}</h3>
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-gray-600">Karten pro Tag</span>
+                    <span class="text-gray-600">{{ $t('settings.cardsPerDay') }}</span>
                     <span class="text-2xl font-bold text-primary">{{ dailyGoal }}</span>
                 </div>
                 <input v-model.number="dailyGoal" type="range" min="5" max="100" step="5"
@@ -26,9 +26,9 @@
                 </div>
             </div>
             <div class="bg-white rounded-xl p-5 shadow-sm mb-4">
-                <h3 class="font-bold text-gray-800 mb-3">Wöchentliches Ziel</h3>
+                <h3 class="font-bold text-gray-800 mb-3">{{ $t('settings.weeklyGoal') }}</h3>
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-gray-600">Lerntage pro Woche</span>
+                    <span class="text-gray-600">{{ $t('settings.daysPerWeek') }}</span>
                     <span class="text-2xl font-bold text-green-600">{{ weeklyGoal }}</span>
                 </div>
                 <input v-model.number="weeklyGoal" type="range" min="1" max="7" step="1"
@@ -39,13 +39,13 @@
                 </div>
             </div>
             <div class="bg-white rounded-xl p-5 shadow-sm">
-                <h3 class="font-bold text-gray-800 mb-3">Bevorzugte Lernzeit</h3>
+                <h3 class="font-bold text-gray-800 mb-3">{{ $t('settings.preferredStudyTime') }}</h3>
                 <select v-model="studyTime"
                     class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-800 focus:outline-none focus:border-primary">
-                    <option value="morning">Morgens (6-12 Uhr)</option>
-                    <option value="afternoon">Nachmittags (12-18 Uhr)</option>
-                    <option value="evening">Abends (18-24 Uhr)</option>
-                    <option value="anytime">Keine Präferenz</option>
+                    <option value="morning">{{ $t('settings.morning') }}</option>
+                    <option value="afternoon">{{ $t('settings.afternoon') }}</option>
+                    <option value="evening">{{ $t('settings.evening') }}</option>
+                    <option value="anytime">{{ $t('settings.anytime') }}</option>
                 </select>
             </div>
         </main>

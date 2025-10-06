@@ -7,14 +7,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <h1 class="text-xl font-bold text-gray-800">Expert Sets</h1>
+                <h1 class="text-xl font-bold text-gray-800">{{ $t('home.expertSets') }}</h1>
                 <div class="w-6"></div>
             </div>
         </header>
 
         <main class="flex-1 overflow-y-auto pb-20 px-4 py-5">
             <div v-if="setsStore.isLoading" class="text-center py-8">
-                <p class="text-gray-500">Lade Expert Sets...</p>
+                <p class="text-gray-500">{{ $t('common.loading') }}</p>
             </div>
 
             <div v-else-if="setsStore.expertSets.length === 0" class="text-center py-8">
@@ -25,8 +25,8 @@
                             d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
                     </svg>
                 </div>
-                <h3 class="font-bold text-gray-800 mb-2">Keine Expert Sets verfügbar</h3>
-                <p class="text-sm text-gray-600 mb-4">Schau später wieder vorbei!</p>
+                <h3 class="font-bold text-gray-800 mb-2">{{ $t('home.noExpertSets') }}</h3>
+                <p class="text-sm text-gray-600 mb-4">{{ $t('home.checkBackLater') }}</p>
             </div>
 
             <div v-else class="space-y-3">
@@ -35,7 +35,7 @@
                     <div class="flex items-stretch">
                         <div class="flex-1 p-4">
                             <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
-                            <p class="text-sm text-gray-600 mb-2">{{ set.cards }} Karten</p>
+                            <p class="text-sm text-gray-600 mb-2">{{ set.cards }} {{ $t('common.cards') }}</p>
                             <div class="flex items-center gap-2">
                                 <div v-if="isUrl(set.avatar || '')" class="w-5 h-5 rounded-full overflow-hidden">
                                     <img :src="set.avatar" class="w-full h-full object-cover" alt="avatar" />

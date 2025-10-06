@@ -28,13 +28,13 @@
         </header>
         <main v-if="isLoading" class="flex-1 flex items-center justify-center px-6 py-8">
             <div class="text-center">
-                <div class="text-gray-500 mb-2">Lade Karten...</div>
+                <div class="text-gray-500 mb-2">{{ $t('common.loading') }}</div>
                 <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
             </div>
         </main>
         <main v-else-if="!currentCard" class="flex-1 flex items-center justify-center px-6 py-8">
             <div class="text-center text-gray-500">
-                <p>Keine Karten gefunden</p>
+                <p>{{ $t('allCards.noCards') }}</p>
             </div>
         </main>
         <main v-else class="flex-1 flex items-center justify-center px-6 py-8">
@@ -44,13 +44,13 @@
                         class="flashcard bg-white rounded-3xl shadow-2xl p-8 min-h-[400px] flex items-center justify-center cursor-pointer">
                         <div class="flashcard-front" v-show="!isFlipped">
                             <div v-show="!isReallyFlipped" class="text-center">
-                                <div class="text-sm text-gray-500 mb-4">Vorderseite</div>
+                                <div class="text-sm text-gray-500 mb-4">{{ $t('create.term') }}</div>
                                 <div class="text-2xl font-bold text-gray-800">{{ currentCard.front }}</div>
                             </div>
                         </div>
                         <div class="flashcard-back" v-show="isFlipped">
                             <div v-show="isReallyFlipped" class="text-center">
-                                <div class="text-sm text-gray-500 mb-4">Rückseite</div>
+                                <div class="text-sm text-gray-500 mb-4">{{ $t('create.definition') }}</div>
                                 <div class="text-xl text-gray-800">{{ currentCard.back }}</div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="text-center mt-6 text-sm text-gray-500">
-                    Tippe auf die Karte zum Umdrehen
+                    {{ $t('flashcards.showAnswer') }}
                 </div>
             </div>
         </main>
@@ -71,15 +71,15 @@
                         ? 'bg-gray-200 text-gray-400'
                         : 'bg-gray-100 text-gray-800 active:scale-95'
                 ]">
-                    ← Zurück
+                    ← {{ $t('flashcards.previousCard') }}
                 </button>
                 <button v-if="currentCardIndex < cards.length - 1" @click="nextCard"
                     class="flex-1 bg-primary text-white py-4 rounded-xl font-semibold active:scale-95 transition">
-                    Weiter →
+                    {{ $t('flashcards.nextCard') }} →
                 </button>
                 <button v-else @click="finishSession"
                     class="flex-1 bg-green-500 text-white py-4 rounded-xl font-semibold active:scale-95 transition">
-                    ✓ Fertig
+                    ✓ {{ $t('common.done') }}
                 </button>
             </div>
         </div>

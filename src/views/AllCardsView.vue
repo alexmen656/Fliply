@@ -7,7 +7,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <h1 class="text-lg font-bold text-gray-800">Alle Karten</h1>
+                <h1 class="text-lg font-bold text-gray-800">{{ $t('library.allCards') }}</h1>
                 <button @click="toggleSearchMode" class="text-gray-600">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -16,7 +16,7 @@
                 </button>
             </div>
             <div v-if="searchMode" class="mb-4 animate-slide-down">
-                <input v-model="searchQuery" type="text" placeholder="Karten durchsuchen..."
+                <input v-model="searchQuery" type="text" :placeholder="$t('home.searchPlaceholder')"
                     class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary" />
             </div>
             <div class="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
@@ -33,7 +33,7 @@
         </header>
         <main class="flex-1 overflow-y-auto px-4 py-4">
             <div v-if="isLoading" class="text-center py-12">
-                <p class="text-gray-500">Lade Karten...</p>
+                <p class="text-gray-500">{{ $t('common.loading') }}</p>
             </div>
 
             <div v-else class="max-w-2xl mx-auto space-y-3">
@@ -45,25 +45,26 @@
                                 d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
                     </div>
-                    <p class="text-gray-600">Keine Karten gefunden</p>
+                    <p class="text-gray-600">{{ $t('library.noCards') }}</p>
                 </div>
 
                 <div v-for="(card, index) in filteredCards" :key="card.id"
                     class="bg-white rounded-xl shadow-sm overflow-hidden">
                     <div class="p-4">
                         <div class="flex items-start justify-between mb-3">
-                            <span class="text-xs font-semibold text-gray-500">Karte {{ getCardNumber(index) }}</span>
+                            <span class="text-xs font-semibold text-gray-500">{{ $t('create.card') }} {{
+                                getCardNumber(index) }}</span>
                             <button @click="toggleStar(card)" class="text-2xl">
                                 {{ card.starred ? '⭐' : '☆' }}
                             </button>
                         </div>
                         <div class="mb-3">
-                            <div class="text-xs text-gray-500 mb-1">Vorderseite</div>
+                            <div class="text-xs text-gray-500 mb-1">{{ $t('create.term') }}</div>
                             <div class="text-gray-800 font-medium">{{ card.front }}</div>
                         </div>
                         <div class="border-t border-gray-200 my-3"></div>
                         <div>
-                            <div class="text-xs text-gray-500 mb-1">Rückseite</div>
+                            <div class="text-xs text-gray-500 mb-1">{{ $t('create.definition') }}</div>
                             <div class="text-sm text-gray-600">{{ card.back }}</div>
                         </div>
                         <div class="flex gap-2 mt-4">
@@ -73,7 +74,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
-                                Bearbeiten
+                                {{ $t('common.edit') }}
                             </button>
                             <button @click="deleteCard(card)"
                                 class="py-2 px-3 bg-red-50 text-red-600 rounded-lg text-sm font-medium active:scale-95 transition">

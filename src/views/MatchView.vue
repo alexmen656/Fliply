@@ -9,8 +9,9 @@
                     </svg>
                 </button>
                 <div class="text-center">
-                    <div class="text-sm font-semibold text-gray-800">Match</div>
-                    <div class="text-xs text-gray-500 mt-1">{{ matchedPairs }} / {{ totalPairs }} Paare</div>
+                    <div class="text-sm font-semibold text-gray-800">{{ $t('match.title') }}</div>
+                    <div class="text-xs text-gray-500 mt-1">{{ matchedPairs }} / {{ totalPairs }} {{ $t('match.pairs')
+                        }}</div>
                 </div>
                 <div class="text-right">
                     <div class="text-sm font-bold text-primary">{{ formatTime(elapsedTime) }}</div>
@@ -20,7 +21,7 @@
         <main v-if="!showResults" class="flex-1 overflow-y-auto px-4 py-6">
             <div class="max-w-2xl mx-auto">
                 <div class="text-center mb-6">
-                    <p class="text-gray-600 text-sm">Ordne die Begriffe ihren Übersetzungen zu</p>
+                    <p class="text-gray-600 text-sm">{{ $t('match.instructions') }}</p>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div class="space-y-3">
@@ -52,8 +53,8 @@
                                 d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Perfekt!</h2>
-                    <p class="text-gray-600 mb-6">Du hast alle Paare gefunden</p>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ $t('match.perfect') }}</h2>
+                    <p class="text-gray-600 mb-6">{{ $t('match.allPairsFound') }}</p>
 
                     <div v-if="coinsEarned > 0" class="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-4 mb-6">
                         <div class="flex items-center justify-center gap-2">
@@ -65,8 +66,11 @@
                                     clip-rule="evenodd" />
                             </svg>
                             <div>
-                                <div class="text-lg font-bold text-yellow-800">+{{ coinsEarned }} Münzen verdient!</div>
-                                <div class="text-sm text-yellow-700">Gesamt: {{ userStore.profile.coins }} Münzen</div>
+                                <div class="text-lg font-bold text-yellow-800">{{ $t('profile.coinsEarned', {
+                                    count:
+                                    coinsEarned }) }}</div>
+                                <div class="text-sm text-yellow-700">{{ $t('coinHistory.total') }}: {{
+                                    userStore.profile.coins }} {{ $t('profile.coins') }}</div>
                             </div>
                         </div>
                     </div>
@@ -74,21 +78,21 @@
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="bg-blue-50 rounded-xl p-4">
                             <div class="text-2xl font-bold text-blue-600">{{ formatTime(finalTime) }}</div>
-                            <div class="text-xs text-gray-600">Zeit</div>
+                            <div class="text-xs text-gray-600">{{ $t('match.time') }}</div>
                         </div>
                         <div class="bg-green-50 rounded-xl p-4">
                             <div class="text-2xl font-bold text-green-600">{{ totalPairs }}</div>
-                            <div class="text-xs text-gray-600">Paare</div>
+                            <div class="text-xs text-gray-600">{{ $t('match.pairs') }}</div>
                         </div>
                     </div>
                     <div class="flex gap-3">
                         <button @click="restartMatch"
                             class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold active:scale-95 transition">
-                            Nochmal
+                            {{ $t('match.tryAgain') }}
                         </button>
                         <button @click="$router.back()"
                             class="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-semibold active:scale-95 transition">
-                            Zurück
+                            {{ $t('common.back') }}
                         </button>
                     </div>
                 </div>

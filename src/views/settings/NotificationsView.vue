@@ -7,7 +7,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <h1 class="text-xl font-bold text-gray-800">Benachrichtigungen</h1>
+                <h1 class="text-xl font-bold text-gray-800">{{ $t('settings.notifications') }}</h1>
                 <div class="w-6"></div>
             </div>
         </header>

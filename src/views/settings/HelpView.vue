@@ -7,13 +7,13 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </button>
-                <h1 class="text-xl font-bold text-gray-800">Hilfe & Support</h1>
+                <h1 class="text-xl font-bold text-gray-800">{{ $t('settings.help') }}</h1>
                 <div class="w-6"></div>
             </div>
         </header>
         <main class="flex-1 overflow-y-auto px-4 py-5">
             <div class="mb-6">
-                <h3 class="font-bold text-gray-800 mb-3">Häufige Fragen</h3>
+                <h3 class="font-bold text-gray-800 mb-3">{{ $t('settings.faq') }}</h3>
                 <div class="space-y-2">
                     <button v-for="faq in faqs" :key="faq.id" @click="toggleFaq(faq.id)"
                         class="w-full bg-white rounded-xl p-4 shadow-sm text-left">
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="mb-6">
-                <h3 class="font-bold text-gray-800 mb-3">Kontakt</h3>
+                <h3 class="font-bold text-gray-800 mb-3">{{ $t('settings.contact') }}</h3>
                 <div class="space-y-3">
                     <a href="mailto:support@fliply.app"
                         class="w-full bg-white rounded-xl p-4 shadow-sm flex items-center gap-3 active:bg-gray-50">
@@ -43,21 +43,21 @@
                             </svg>
                         </div>
                         <div>
-                            <div class="font-semibold text-gray-800">E-Mail Support</div>
+                            <div class="font-semibold text-gray-800">{{ $t('settings.emailSupport') }}</div>
                             <div class="text-sm text-gray-500">support.fliply@control-center.eu</div>
                         </div>
                     </a>
                 </div>
             </div>
             <div>
-                <h3 class="font-bold text-gray-800 mb-3">App-Info</h3>
+                <h3 class="font-bold text-gray-800 mb-3">{{ $t('settings.appInfo') }}</h3>
                 <div class="bg-white rounded-xl p-4 shadow-sm space-y-3">
                     <div class="flex justify-between">
-                        <span class="text-gray-600">Version</span>
+                        <span class="text-gray-600">{{ $t('settings.version') }}</span>
                         <span class="font-semibold text-gray-800">1.0.0</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-gray-600">Build</span>
+                        <span class="text-gray-600">{{ $t('settings.build') }}</span>
                         <span class="font-semibold text-gray-800">2025.10.04</span>
                     </div>
                     <div class="pt-3 border-t border-gray-100">

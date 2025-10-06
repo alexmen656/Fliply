@@ -25,7 +25,9 @@
     "searchPlaceholder": "Search study sets, textbooks...",
     "expertSets": "Expert sets",
     "achievements": "Achievements",
-    "streak": "Day Streak"
+    "streak": "Day Streak",
+    "noExpertSets": "No expert sets available",
+    "checkBackLater": "Check back later!"
   },
   "library": {
     "title": "Library",
@@ -33,7 +35,9 @@
     "recentlyViewed": "Recently Viewed",
     "createNewSet": "Create New Set",
     "noSets": "No sets available",
-    "noSetsDescription": "Create your first study set!"
+    "noSetsDescription": "Create your first study set!",
+    "allCards": "All Cards",
+    "noCards": "No cards found"
   },
   "create": {
     "title": "Create New Set",
@@ -41,13 +45,16 @@
     "setTitlePlaceholder": "e.g. German Vocabulary A2",
     "description": "Description",
     "descriptionPlaceholder": "Description (optional)",
-    "addCard": "Add Card",
-    "term": "Term",
-    "definition": "Definition",
-    "termPlaceholder": "Enter term",
-    "definitionPlaceholder": "Enter definition",
+    "addCard": "+ Add",
+    "term": "Front",
+    "definition": "Back",
+    "termPlaceholder": "Term or question",
+    "definitionPlaceholder": "Definition or answer",
     "createSet": "Create Set",
-    "cardAdded": "Card added"
+    "cardAdded": "Card added",
+    "card": "Card",
+    "editSet": "Edit Set",
+    "deleteSet": "Delete Set"
   },
   "profile": {
     "title": "Profile",
@@ -62,7 +69,14 @@
     "goals": "Goals",
     "help": "Help & Support",
     "editProfile": "Edit Profile",
-    "logout": "Log out"
+    "logout": "Log out",
+    "name": "Name",
+    "email": "Email",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell something about yourself...",
+    "dailyGoal": "Learning Goal (Cards per Day)",
+    "chooseEmoji": "Choose an emoji",
+    "coinsEarned": "+{count} Coins earned!"
   },
   "editProfile": {
     "title": "Edit Profile",
@@ -113,12 +127,12 @@
   },
   "match": {
     "title": "Match",
-    "instruction": "Select matching pairs",
-    "timeLabel": "Time",
-    "completedTitle": "Completed!",
-    "completedMessage": "You found all pairs!",
-    "yourTime": "Your Time",
-    "playAgain": "Play Again"
+    "instructions": "Match terms with their translations",
+    "pairs": "Pairs",
+    "time": "Time",
+    "perfect": "Perfect!",
+    "allPairsFound": "You found all pairs",
+    "tryAgain": "Try Again"
   },
   "quiz": {
     "title": "Quiz",
@@ -145,12 +159,14 @@
   "achievements": {
     "title": "Achievements",
     "unlocked": "Unlocked",
-    "locked": "Locked",
+    "locked": "Yet to achieve",
     "unlockedCount": "Unlocked",
-    "progress": "Progress"
+    "progress": "Progress",
+    "noAchievements": "No achievements",
+    "startLearning": "Start learning to collect achievements!"
   },
   "avatarShop": {
-    "title": "Avatar Shop",
+    "title": "Shop",
     "avatars": "Avatars",
     "banners": "Banners",
     "owned": "Owned",
@@ -161,63 +177,76 @@
     "insufficientCoins": "Insufficient coins",
     "purchaseSuccess": "Successfully purchased!",
     "currentAvatar": "Current Avatar",
-    "currentBanner": "Current Banner"
+    "currentBanner": "Current Banner",
+    "yourCoins": "Your Coins",
+    "earnMore": "Earn more by learning!",
+    "unlockable": "Unlockable",
+    "changeAvatar": "Change Avatar"
   },
   "coinHistory": {
     "title": "Coin History",
     "earned": "Earned",
     "spent": "Spent",
     "balance": "Balance",
-    "transaction": "Transaction"
+    "transaction": "Transaction",
+    "current": "Current",
+    "total": "Total",
+    "noTransactions": "No transactions",
+    "startLearning": "Start learning to earn coins!"
   },
   "expertSets": {
     "title": "Expert Sets",
     "explore": "Explore"
   },
   "onboarding": {
-    "welcome": "Welcome to Fliply",
-    "welcomeDescription": "Learn more effectively with smart flashcards",
-    "step1Title": "Create Your Sets",
-    "step1Description": "Create custom study sets for any topic",
-    "step2Title": "Multiple Modes",
-    "step2Description": "Study with flashcards, games, and quizzes",
-    "step3Title": "Track Progress",
-    "step3Description": "Stay motivated with achievements and streaks",
-    "getStarted": "Get Started",
-    "skip": "Skip"
+    "welcome": "Welcome to Fliply!",
+    "getToKnow": "Let's get to know you",
+    "whatToCallYou": "What should we call you?",
+    "yourName": "Your Name",
+    "continue": "Continue",
+    "setupProfile": "Setup Profile",
+    "addEmailOptional": "Optional: Add your email",
+    "emailOptional": "Email (optional)",
+    "yourEmail": "your@email.com",
+    "emailReason": "For progress saving and reminders",
+    "avatarsTitle": "Profile Pictures",
+    "avatarsDescription": "Unlock unique avatars in the shop!",
+    "expertSetsTitle": "Expert Sets",
+    "expertSetsDescription": "Professionally created content",
+    "createSets": "Create Sets",
+    "createSetsDescription": "Create your own flashcard sets! Add cards with questions and answers.",
+    "step1": "Enter a title for your set",
+    "step2": "Add cards (front & back)",
+    "step3": "Save the set and start learning!",
+    "learnAndStreak": "Learn & Streak",
+    "learnAndStreakDescription": "Practice daily and build your streak! The longer you stay consistent, the better.",
+    "dailyStreak": "Daily Streak",
+    "dailyStreakDescription": "Practice every day and get rewards",
+    "flashcardsTitle": "Flashcards",
+    "flashcardsDescription": "Tap cards to flip them",
+    "achievementsTitle": "Achievements",
+    "achievementsDescription": "Collect achievements and see your progress",
+    "getStarted": "Let's Go!"
   },
   "settings": {
-    "appearance": {
-      "title": "Appearance",
-      "theme": "Theme",
-      "light": "Light",
-      "dark": "Dark",
-      "system": "System",
-      "language": "Language"
-    },
-    "notifications": {
-      "title": "Notifications",
-      "enabled": "Enabled",
-      "disabled": "Disabled",
-      "dailyReminder": "Daily Reminder",
-      "achievements": "Achievement Notifications",
-      "time": "Notification Time"
-    },
-    "goals": {
-      "title": "Goals",
-      "dailyGoal": "Daily Goal",
-      "cardsPerDay": "Cards per Day",
-      "setGoal": "Set Goal",
-      "currentStreak": "Current Streak"
-    },
-    "help": {
-      "title": "Help & Support",
-      "faq": "Frequently Asked Questions",
-      "contact": "Contact",
-      "about": "About",
-      "version": "Version",
-      "privacy": "Privacy",
-      "terms": "Terms of Service"
-    }
+    "appearance": "Appearance",
+    "notifications": "Notifications",
+    "goals": "Learning Goals",
+    "help": "Help & Support",
+    "faq": "Frequently Asked Questions",
+    "contact": "Contact",
+    "emailSupport": "Email Support",
+    "appInfo": "App Info",
+    "version": "Version",
+    "build": "Build",
+    "dailyGoal": "Daily Goal",
+    "cardsPerDay": "Cards per Day",
+    "weeklyGoal": "Weekly Goal",
+    "daysPerWeek": "Study days per week",
+    "preferredStudyTime": "Preferred Study Time",
+    "morning": "Morning (6 AM - 12 PM)",
+    "afternoon": "Afternoon (12 PM - 6 PM)",
+    "evening": "Evening (6 PM - 12 AM)",
+    "anytime": "No preference"
   }
 }
