@@ -13,7 +13,7 @@
                 </button>
             </div>
         </header>
-        <main class="flex-1 overflow-y-auto pb-20 px-3 py-5">
+        <main class="flex-1 overflow-y-auto pb-30 px-3 py-5">
             <div class="mb-2">
                 <input v-model="setTitle" @keydown.enter="focusFirstCardFront" type="text"
                     :placeholder="$t('create.setTitlePlaceholder')"
@@ -165,6 +165,8 @@ const saveSet = async () => {
             icon: '📚'
         })
 
+        await setsStore.fetchMySets(true)
+
         router.push('/library')
     } catch (error) {
         console.error('Error saving set:', error)
@@ -186,5 +188,9 @@ const saveSet = async () => {
 
 header {
     padding-top: env(safe-area-inset-top);
+}
+
+.pb-30 {
+    padding-bottom: 120px;
 }
 </style>

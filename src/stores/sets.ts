@@ -220,13 +220,11 @@ export const useSetsStore = defineStore('sets', () => {
     }
   }
 
-  // Favoriten laden
   const loadFavorites = async () => {
     try {
       const { value } = await Preferences.get({ key: 'fliply_favorites' })
       if (value) {
         const favoriteIds: (string | number)[] = JSON.parse(value)
-        // Lade die Details für jedes Favoriten-Set
         const promises = favoriteIds.map((id) => getSetById(id))
         const results = await Promise.all(promises)
         favoriteSets.value = results
@@ -241,7 +239,6 @@ export const useSetsStore = defineStore('sets', () => {
     }
   }
 
-  // Favoriten speichern
   const saveFavorites = async () => {
     try {
       const favoriteIds = favoriteSets.value.map((set) => set.id).filter((id) => id !== undefined)
@@ -254,14 +251,11 @@ export const useSetsStore = defineStore('sets', () => {
     }
   }
 
-  // Favorit hinzufügen/entfernen
   const toggleFavorite = async (setId: string | number) => {
     const index = favoriteSets.value.findIndex((set) => set.id === setId)
     if (index !== -1) {
-      // Entfernen
       favoriteSets.value.splice(index, 1)
     } else {
-      // Hinzufügen
       const set = await getSetById(setId)
       if (set) {
         favoriteSets.value.push({
@@ -273,12 +267,10 @@ export const useSetsStore = defineStore('sets', () => {
     await saveFavorites()
   }
 
-  // Prüfen ob ein Set ein Favorit ist
   const isFavorite = (setId: string | number) => {
     return favoriteSets.value.some((set) => set.id === setId)
   }
 
-  // Zuletzt verwendete Sets laden
   const loadRecentSets = async () => {
     try {
       const { value } = await Preferences.get({ key: 'fliply_recent_sets' })
@@ -290,13 +282,10 @@ export const useSetsStore = defineStore('sets', () => {
     }
   }
 
-  // Set als "zuletzt verwendet" markieren
   const markAsRecent = async (setId: string | number, title: string, cards: number) => {
     try {
-      // Entferne das Set falls es schon existiert
       recentSets.value = recentSets.value.filter((set) => set.setId !== setId)
 
-      // Füge es am Anfang hinzu
       recentSets.value.unshift({
         setId,
         title,
@@ -304,12 +293,10 @@ export const useSetsStore = defineStore('sets', () => {
         accessedAt: new Date().toISOString(),
       })
 
-      // Behalte nur die letzten 10
       if (recentSets.value.length > 10) {
         recentSets.value = recentSets.value.slice(0, 10)
       }
 
-      // Speichern
       await Preferences.set({
         key: 'fliply_recent_sets',
         value: JSON.stringify(recentSets.value),
@@ -319,18 +306,15 @@ export const useSetsStore = defineStore('sets', () => {
     }
   }
 
-  // Zuletzt verwendete Sets mit Details abrufen
   const getRecentSetsWithDetails = async () => {
     await loadRecentSets()
     const setsWithDetails = []
 
     for (const recent of recentSets.value) {
-      // Versuche, das Set aus mySets oder expertSets zu finden
       let set =
         mySets.value.find((s) => s.id === recent.setId) ||
         expertSets.value.find((s) => s.id === recent.setId)
 
-      // Falls nicht gefunden, hole von API
       if (!set) {
         set = await getSetById(recent.setId)
       }

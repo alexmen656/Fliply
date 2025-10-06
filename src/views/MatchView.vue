@@ -11,7 +11,7 @@
                 <div class="text-center">
                     <div class="text-sm font-semibold text-gray-800">{{ $t('match.title') }}</div>
                     <div class="text-xs text-gray-500 mt-1">{{ matchedPairs }} / {{ totalPairs }} {{ $t('match.pairs')
-                    }}</div>
+                        }}</div>
                 </div>
                 <div class="text-right">
                     <div class="text-sm font-bold text-primary">{{ formatTime(elapsedTime) }}</div>
@@ -108,12 +108,14 @@ import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
 import { useProgressStore } from '@/stores/progress'
+import { useGoalsStore } from '@/stores/goals'
 
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 const setsStore = useSetsStore()
 const progressStore = useProgressStore()
+const goalsStore = useGoalsStore()
 
 interface MatchItem {
     id: number
@@ -291,8 +293,8 @@ const finishGame = async () => {
             isCorrect: true
         }))
 
-        console.log('🎮 Match finished, cardResults:', cardResults)
         await progressStore.completeSession(setId, 'match', cardResults)
+        await goalsStore.updateTodayProgress(pairs.value.length)
     }
 
     coinsEarned.value = totalPairs.value * 7
@@ -313,9 +315,11 @@ const restartMatch = () => {
     initializeGame()
 }
 
-const exitMatch = () => {
+const exitMatch = async () => {
     if (matchedPairs.value > 0 && !showResults.value) {
         if (confirm('Möchtest du das Spiel wirklich beenden?')) {
+            // Count matched pairs even when exiting early
+            await goalsStore.updateTodayProgress(matchedPairs.value)
             stopTimer()
             router.back()
         }

@@ -53,7 +53,7 @@
                         <div class="absolute inset-0 bg-white opacity-20 animate-shimmer"></div>
                     </div>
                 </div>
-                <div v-if="stats.mastered > 0 || stats.learning > 0"
+                <!-- <div v-if="stats.mastered > 0 || stats.learning > 0"
                     class="flex items-center justify-between mt-2 text-xs">
                     <div class="flex items-center gap-1">
                         <span class="w-2 h-2 rounded-full bg-green-500"></span>
@@ -67,10 +67,10 @@
                         <span class="w-2 h-2 rounded-full bg-gray-400"></span>
                         <span class="text-gray-600">{{ stats.notSeen }} neu</span>
                     </div>
-                </div>
+                </div>-->
             </div>
         </header>
-        <main class="flex-1 overflow-y-auto pb-6 px-4 py-5">
+        <main class="flex-1 overflow-y-auto pb-30 px-4 py-5">
             <section v-if="!isLoading" class="mb-6">
                 <h2 class="text-lg font-bold text-gray-800 mb-3">{{ $t('setDetail.studyModes') }}</h2>
                 <div class="grid grid-cols-2 gap-3">
@@ -127,7 +127,7 @@
                         </svg>
                         <span class="font-semibold">{{ $t('setDetail.match') }}</span>
                         <span v-if="stats.matchCompleted > 0" class="text-xs mt-1 opacity-90">{{ stats.matchCompleted
-                        }}x gespielt</span>
+                            }}x gespielt</span>
                     </button>
                     <button @click="startMode('learn')"
                         class="bg-gradient-to-br from-orange-500 to-red-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition-all duration-200 flex flex-col items-center justify-center relative hover:shadow-xl transform hover:-translate-y-1">
@@ -149,7 +149,7 @@
                         </svg>
                         <span class="font-semibold">{{ $t('setDetail.learn') }}</span>
                         <span v-if="stats.learnCompleted > 0" class="text-xs mt-1 opacity-90">{{ stats.learnCompleted
-                        }}x gespielt</span>
+                            }}x gespielt</span>
                     </button>
                 </div>
             </section>
@@ -157,14 +157,14 @@
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-lg font-bold text-gray-800">{{ $t('common.cards') }} ({{ cards.length }})</h2>
                     <button @click="viewAllCards" class="text-primary text-sm font-semibold">{{ $t('common.viewAll')
-                    }}</button>
+                        }}</button>
                 </div>
                 <div class="space-y-3">
                     <div v-for="(card, index) in cards.slice(0, 5)" :key="index"
                         class="bg-white rounded-xl p-4 shadow-sm">
                         <div class="flex items-start justify-between mb-2">
                             <span class="text-xs font-semibold text-gray-500">{{ $t('common.cards') }} {{ index + 1
-                            }}</span>
+                                }}</span>
                         </div>
                         <div class="space-y-2">
                             <div class="text-gray-800 font-medium">{{ card.front }}</div>
@@ -326,5 +326,9 @@ const viewAllCards = () => {
 
 header {
     padding-top: env(safe-area-inset-top);
+}
+
+.pb-30 {
+    padding-bottom: 120px;
 }
 </style>

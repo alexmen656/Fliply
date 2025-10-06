@@ -97,7 +97,7 @@
                             <span class="text-3xl">🪙</span>
                             <div>
                                 <div class="text-lg font-bold text-yellow-800">+{{ coinsEarned }} {{ $t('profile.coins')
-                                    }}</div>
+                                }}</div>
                                 <div class="text-sm text-yellow-700">{{ $t('coinHistory.balance') }}: {{
                                     userStore.profile.coins }} {{ $t('profile.coins') }}</div>
                             </div>
@@ -147,12 +147,14 @@ import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
 import { useProgressStore } from '@/stores/progress'
+import { useGoalsStore } from '@/stores/goals'
 
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 const setsStore = useSetsStore()
 const progressStore = useProgressStore()
+const goalsStore = useGoalsStore()
 
 const currentQuestionIndex = ref(0)
 const selectedAnswer = ref<string | null>(null)
@@ -250,6 +252,7 @@ const nextQuestion = async () => {
         const setId = route.params.id
         if (setId && !Array.isArray(setId)) {
             await progressStore.completeSession(setId, 'quiz', answerResults.value)
+            await goalsStore.updateTodayProgress(questions.value.length)
         }
 
         coinsEarned.value = score.value * 10
@@ -267,8 +270,12 @@ const restartQuiz = () => {
     answerResults.value = []
 }
 
-const exitQuiz = () => {
+const exitQuiz = async () => {
     if (confirm('Möchtest du das Quiz wirklich beenden?')) {
+        // Count answered questions even when exiting early
+        if (answerResults.value.length > 0) {
+            await goalsStore.updateTodayProgress(answerResults.value.length)
+        }
         router.back()
     }
 }

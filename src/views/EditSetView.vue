@@ -11,7 +11,7 @@
                 <button @click="saveChanges" class="text-primary font-semibold">{{ $t('common.save') }}</button>
             </div>
         </header>
-        <main class="flex-1 overflow-y-auto pb-20 px-4 py-5">
+        <main class="flex-1 overflow-y-auto pb-30 px-4 py-5">
             <div class="mb-6">
                 <label class="text-sm font-medium text-gray-700 mb-2 block">{{ $t('create.title') }}</label>
                 <input v-model="setTitle" type="text"
@@ -187,5 +187,9 @@ const deleteSet = async () => {
 
 header {
     padding-top: env(safe-area-inset-top);
+}
+
+.pb-30 {
+    padding-bottom: 120px;
 }
 </style>

@@ -13,7 +13,7 @@
                 <div class="flex-1 pt-2">
                     <h1 class="text-2xl font-bold text-white mb-1">{{ userStore.profile.name || $t('profile.title') }}
                     </h1>
-                    <p class="text-white opacity-90 text-sm">{{ userStore.profile.email || 'keine E-Mail' }}</p>
+                    <p class="text-white opacity-90 text-sm">{{ userStore.profile.email || $t('profile.noEmail') }}</p>
                 </div>
             </div>
             <div class="flex gap-2">
@@ -56,7 +56,7 @@
                 </div>
             </div>
         </div>
-        <main class="flex-1 overflow-y-auto pb-20 px-4">
+        <main class="flex-1 overflow-y-auto pb-30 px-4">
             <section class="mb-6">
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-lg font-bold text-gray-800">{{ $t('profile.achievements') }}</h2>
@@ -65,9 +65,9 @@
                     </button>
                 </div>
                 <div v-if="displayedAchievements.length === 0" class="bg-white rounded-xl p-6 text-center shadow-sm">
-                    <p class="text-gray-500 text-sm">Noch keine Errungenschaften freigeschaltet.</p>
+                    <p class="text-gray-500 text-sm">{{ $t('profile.noAchievements') }}</p>
                     <p class="text-gray-400 text-xs mt-1 flex items-center justify-center gap-1">
-                        <span>Lerne weiter, um Erfolge zu sammeln!</span>
+                        <span>{{ $t('profile.keepLearning') }}</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -137,7 +137,7 @@
             <section>
                 <div class="bg-white rounded-xl p-4 shadow-sm text-center">
                     <p class="text-sm text-gray-600 mb-2" @click="handleVersionClick">Fliply Version 1.0.0</p>
-                    <p class="text-xs text-gray-500">Made with ❤️ for learners</p>
+                    <p class="text-xs text-gray-500">{{ $t('profile.madeWithLove') }}</p>
                 </div>
             </section>
         </main>
@@ -177,14 +177,10 @@ const totalSets = computed(() => setsStore.mySets.length)
 const totalCards = ref(0)
 const streakDays = ref(0)
 const isLoadingStats = ref(true)
-const avatarLoaded = ref(false)
 
-// Nur freigeschaltete und gesperrte Achievements anzeigen (max 3 pro Zeile)
 const displayedAchievements = computed(() => {
     const unlocked = achievementsStore.unlockedAchievements
     const locked = achievementsStore.lockedAchievements
-
-    // Berechne wie viele gesperrte wir brauchen um auf ein Vielfaches von 3 zu kommen
     const unlockedCount = unlocked.length
     const remainder = unlockedCount % 3
     const lockedNeeded = remainder === 0 ? 0 : 3 - remainder
@@ -241,11 +237,6 @@ onMounted(async () => {
     isLoadingStats.value = false
 })
 
-const updateTotalCards = async (count: number) => {
-    totalCards.value = count
-    await Preferences.set({ key: 'fliply_total_cards', value: count.toString() })
-}
-
 const viewAllAchievements = () => {
     router.push('/achievements')
 }
@@ -257,7 +248,6 @@ const openCoinHistory = () => {
 const handleVersionClick = () => {
     versionClickCount.value++
 
-    // Reset nach 2 Sekunden
     if (versionClickTimer.value) {
         clearTimeout(versionClickTimer.value)
     }
@@ -265,12 +255,10 @@ const handleVersionClick = () => {
         versionClickCount.value = 0
     }, 2000)
 
-    // Nach 5 Klicks -> 10000 Coins
     if (versionClickCount.value === 5) {
         userStore.earnCoins(10000)
         versionClickCount.value = 0
-        // Visuelle Bestätigung
-        alert('🎉 Debug Mode aktiviert! +10,000 Münzen!')
+        alert('Debug Mode aktiviert! +10,000 Münzen!')
     }
 }
 
@@ -318,7 +306,7 @@ const settings = ref([
     },
     {
         id: 5,
-        name: 'Abmelden',
+        name: t('profile.logout'),
         iconPath: 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1',
         iconBg: 'bg-red-100',
         iconColor: 'text-red-600',
@@ -335,7 +323,7 @@ const openAvatarShop = () => {
 }
 
 const logout = () => {
-    if (confirm('Möchtest du dich wirklich abmelden?')) {
+    if (confirm(t('profile.logoutConfirm'))) {
         console.log('Logging out...')
         router.push('/home')
     }
@@ -357,5 +345,9 @@ header {
 
 .grayscale {
     filter: grayscale(100%);
+}
+
+.pb-30 {
+    padding-bottom: 120px;
 }
 </style>

@@ -56,7 +56,12 @@
                         <div v-for="result in searchResults" :key="result.id" @click="selectResult(result)"
                             class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0">
                             <div class="flex items-start gap-3">
-                                <div class="text-2xl">{{ result.icon }}</div>
+                                <div v-if="result.icon && !isUrl(result.icon)" class="text-2xl">{{ result.icon }}</div>
+                                <img v-else-if="result.icon" :src="result.icon" alt="Set Icon"
+                                    class="w-10 h-10 rounded object-cover" />
+                                <div v-else
+                                    class="w-10 h-10 bg-gray-200 rounded flex items-center justify-center text-xl">📚
+                                </div>
                                 <div class="flex-1">
                                     <h4 class="font-semibold text-gray-800">{{ result.title }}</h4>
                                     <p class="text-sm text-gray-500">{{ result.cards }} {{ $t('common.cards') }}</p>
@@ -116,9 +121,10 @@ import { ref, computed, onMounted, onUnmounted, getCurrentInstance, nextTick } f
 import { useRouter } from 'vue-router'
 import { useNotificationsStore, type Notification as NotificationType } from '@/stores/notifications'
 import { useUserStore } from '@/stores/user'
+import { useSetsStore } from '@/stores/sets'
 
 interface SearchResult {
-    id: number
+    id: string | number
     title: string
     cards: number
     author: string
@@ -142,10 +148,32 @@ export default {
         const isSearching = ref(false)
         const searchResults = ref<SearchResult[]>([])
         const allSets = ref<SearchResult[]>([])
+        const setsStore = useSetsStore()
 
-        $axios.get('/api/expert-sets').then((response: any) => {
-            allSets.value = response.data
-        })
+        const loadAllSetsForSearch = async () => {
+            await setsStore.fetchMySets()
+            await setsStore.fetchExpertSets()
+
+            const combined = [
+                ...setsStore.mySets.map(set => ({
+                    id: set.id!,
+                    title: set.title,
+                    cards: typeof set.cards === 'number' ? set.cards : set.cards.length,
+                    author: set.author,
+                    icon: set.icon
+                })),
+                ...setsStore.expertSets.map(set => ({
+                    id: set.id!,
+                    title: set.title,
+                    cards: typeof set.cards === 'number' ? set.cards : set.cards.length,
+                    author: set.author,
+                    icon: set.icon
+                }))
+            ]
+            allSets.value = combined
+        }
+
+        loadAllSetsForSearch()
 
         const showNotifications = ref(false)
         const notifications = computed(() => notificationsStore.notifications)
@@ -219,6 +247,10 @@ export default {
             showSearchResults.value = false
         }
 
+        const isUrl = (str: string) => {
+            return str && (str.startsWith('http://') || str.startsWith('https://'))
+        }
+
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
                 closeDropdowns()
@@ -253,7 +285,8 @@ export default {
             toggleNotifications,
             markAllAsRead,
             handleNotificationClick,
-            closeDropdowns
+            closeDropdowns,
+            isUrl
         }
     }
 }

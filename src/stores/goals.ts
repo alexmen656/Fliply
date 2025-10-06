@@ -8,9 +8,30 @@ export const useGoalsStore = defineStore('goals', () => {
   const studyTime = ref('evening')
   const todayProgress = ref(0)
   const weekProgress = ref(0)
+  const lastResetDate = ref<string>('')
+
+  const checkAndResetDaily = async () => {
+    try {
+      const today = new Date().toDateString()
+      const { value: lastReset } = await Preferences.get({ key: 'fliply_last_reset_date' })
+
+      if (lastReset !== today) {
+        todayProgress.value = 0
+        lastResetDate.value = today
+        await Preferences.set({ key: 'fliply_today_progress', value: '0' })
+        await Preferences.set({ key: 'fliply_last_reset_date', value: today })
+      } else {
+        lastResetDate.value = lastReset || today
+      }
+    } catch (error) {
+      console.error('Error checking daily reset:', error)
+    }
+  }
 
   const loadGoals = async () => {
     try {
+      await checkAndResetDaily()
+
       const { value: dailyValue } = await Preferences.get({ key: 'fliply_daily_goal' })
       const { value: weeklyValue } = await Preferences.get({ key: 'fliply_weekly_goal' })
       const { value: timeValue } = await Preferences.get({ key: 'fliply_study_time' })
@@ -65,10 +86,12 @@ export const useGoalsStore = defineStore('goals', () => {
     studyTime,
     todayProgress,
     weekProgress,
+    lastResetDate,
     loadGoals,
     saveGoals,
     updateTodayProgress,
     updateWeekProgress,
     getDailyProgressPercentage,
+    checkAndResetDaily,
   }
 })

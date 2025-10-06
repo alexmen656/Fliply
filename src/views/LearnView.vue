@@ -192,12 +192,14 @@ import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
 import { useProgressStore } from '@/stores/progress'
+import { useGoalsStore } from '@/stores/goals'
 
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 const setsStore = useSetsStore()
 const progressStore = useProgressStore()
+const goalsStore = useGoalsStore()
 
 interface Card {
     id: number
@@ -306,6 +308,9 @@ const nextCard = async () => {
         const setId = route.params.id
         if (setId && !Array.isArray(setId)) {
             await progressStore.completeSession(setId, 'learn')
+
+            // Update today's progress with number of cards answered
+            await goalsStore.updateTodayProgress(totalAnswers.value)
         }
 
         coinsEarned.value = masteredCards.value * 5
@@ -327,9 +332,11 @@ const restartLearn = () => {
     coinsEarned.value = 0
 }
 
-const exitLearn = () => {
+const exitLearn = async () => {
     if (totalAnswers.value > 0 && !showResults.value) {
         if (confirm('Möchtest du den Lernmodus wirklich beenden?')) {
+            // Count answered cards even when exiting early
+            await goalsStore.updateTodayProgress(totalAnswers.value)
             router.back()
         }
     } else {

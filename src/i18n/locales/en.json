@@ -77,7 +77,12 @@
     "bioPlaceholder": "Tell something about yourself...",
     "dailyGoal": "Learning Goal (Cards per Day)",
     "chooseEmoji": "Choose an emoji",
-    "coinsEarned": "+{count} Coins earned!"
+    "coinsEarned": "+{count} Coins earned!",
+    "noEmail": "No email",
+    "noAchievements": "No achievements unlocked yet.",
+    "keepLearning": "Keep learning to collect achievements!",
+    "madeWithLove": "Made with ❤️ for learners",
+    "logoutConfirm": "Do you really want to log out?"
   },
   "editProfile": {
     "title": "Edit Profile",
@@ -205,10 +210,11 @@
     "whatToCallYou": "What should we call you?",
     "yourName": "Your Name",
     "continue": "Continue",
+    "skip": "Skip",
     "setupProfile": "Setup Profile",
     "addEmailOptional": "Optional: Add your email",
     "emailOptional": "Email (optional)",
-    "yourEmail": "your@email.com",
+    "yourEmail": "Email",
     "emailReason": "For progress saving and reminders",
     "avatarsTitle": "Profile Pictures",
     "avatarsDescription": "Unlock unique avatars in the shop!",
@@ -227,10 +233,13 @@
     "flashcardsDescription": "Tap cards to flip them",
     "achievementsTitle": "Achievements",
     "achievementsDescription": "Collect achievements and see your progress",
-    "getStarted": "Let's Go!"
+    "getStarted": "Let's Go!",
+    "homeTitle": "Your Home",
+    "homeDescription": "Here you'll find your own study sets and sets created by experts. Scroll horizontally to see all sets!",
+    "mySetsTitle": "My Sets",
+    "mySetsDescription": "Your self-created study sets"
   },
   "settings": {
-    "appearance": "Appearance",
     "notifications": "Notifications",
     "goals": "Learning Goals",
     "help": "Help & Support",
@@ -248,6 +257,11 @@
     "morning": "Morning (6 AM - 12 PM)",
     "afternoon": "Afternoon (12 PM - 6 PM)",
     "evening": "Evening (6 PM - 12 AM)",
-    "anytime": "No preference"
+    "anytime": "No preference",
+    "appearance": {
+      "title": "Appearance",
+      "language": "Language",
+      "theme": "Theme"
+    }
   }
 }

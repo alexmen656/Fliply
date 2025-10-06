@@ -61,8 +61,8 @@
     "title": "Profil",
     "stats": "Statistiken",
     "totalCards": "Gelernte Karten",
-    "studyStreak": "Tage Streak",
-    "achievements": "Achievements",
+    "studyStreak": "Tages-Streak",
+    "achievements": "Erfolge",
     "coins": "Münzen",
     "settings": "Einstellungen",
     "appearance": "Erscheinungsbild",
@@ -73,11 +73,16 @@
     "logout": "Abmelden",
     "name": "Name",
     "email": "E-Mail",
-    "bio": "Bio",
+    "bio": "Über mich",
     "bioPlaceholder": "Erzähle etwas über dich...",
     "dailyGoal": "Lernziel (Karten pro Tag)",
     "chooseEmoji": "Wähle ein Emoji",
-    "coinsEarned": "+{count} Münzen verdient!"
+    "coinsEarned": "+{count} Münzen verdient!",
+    "noEmail": "Keine E-Mail",
+    "noAchievements": "Noch keine Errungenschaften freigeschaltet.",
+    "keepLearning": "Lerne weiter, um Erfolge zu sammeln!",
+    "madeWithLove": "Mit ❤️ für Lernende gemacht",
+    "logoutConfirm": "Möchtest du dich wirklich abmelden?"
   },
   "editProfile": {
     "title": "Profil bearbeiten",
@@ -205,10 +210,11 @@
     "whatToCallYou": "Wie sollen wir dich nennen?",
     "yourName": "Dein Name",
     "continue": "Weiter",
+    "skip": "Überspringen",
     "setupProfile": "Profil einrichten",
     "addEmailOptional": "Optional: Füge deine E-Mail hinzu",
     "emailOptional": "E-Mail (optional)",
-    "yourEmail": "deine@email.de",
+    "yourEmail": "Email",
     "emailReason": "Für Fortschrittssicherung und Erinnerungen",
     "avatarsTitle": "Profilbilder",
     "avatarsDescription": "Schalte einzigartige Avatare im Shop frei!",
@@ -227,10 +233,13 @@
     "flashcardsDescription": "Tippe auf Karten zum Umdrehen",
     "achievementsTitle": "Achievements",
     "achievementsDescription": "Sammle Erfolge und sieh deinen Fortschritt",
-    "getStarted": "Los geht's!"
+    "getStarted": "Los geht's!",
+    "homeTitle": "Deine Startseite",
+    "homeDescription": "Hier findest du deine eigenen Lernsets und von Experten erstellte Sets. Scrolle horizontal, um alle Sets zu sehen!",
+    "mySetsTitle": "My Sets",
+    "mySetsDescription": "Deine selbst erstellten Lernsets"
   },
   "settings": {
-    "appearance": "Erscheinungsbild",
     "notifications": "Benachrichtigungen",
     "goals": "Lernziele",
     "help": "Hilfe & Support",
@@ -248,6 +257,11 @@
     "morning": "Morgens (6-12 Uhr)",
     "afternoon": "Nachmittags (12-18 Uhr)",
     "evening": "Abends (18-24 Uhr)",
-    "anytime": "Keine Präferenz"
+    "anytime": "Keine Präferenz",
+    "appearance": {
+      "title": "Erscheinungsbild",
+      "language": "Sprache",
+      "theme": "Design"
+    }
   }
 }

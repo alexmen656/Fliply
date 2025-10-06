@@ -2,7 +2,7 @@
     <div class="flex flex-col h-screen bg-gray-50">
         <header class="bg-white border-b border-gray-200 px-4 py-4">
             <div class="flex items-center justify-between">
-                <button @click="$router.back()" class="text-gray-600">
+                <button @click="exitFlashcards" class="text-gray-600">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
@@ -93,13 +93,14 @@ import { useStreakStore } from '@/stores/streak'
 import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
 import { useProgressStore } from '@/stores/progress'
+import { useGoalsStore } from '@/stores/goals'
 
 const router = useRouter()
 const route = useRoute()
 const streakStore = useStreakStore()
-const userStore = useUserStore()
 const setsStore = useSetsStore()
 const progressStore = useProgressStore()
+const goalsStore = useGoalsStore()
 
 const currentCardIndex = ref(0)
 const isFlipped = ref(false)
@@ -186,10 +187,22 @@ const finishSession = async () => {
         }))
 
         await progressStore.completeSession(setId, 'flashcards', cardResults)
+        await goalsStore.updateTodayProgress(viewedCards.value.size)
     }
 
     streakStore.recordStudySession()
     router.push('/home')
+}
+
+const exitFlashcards = async () => {
+    if (viewedCards.value.size > 0) {
+        if (confirm('Möchtest du die Karteikarten wirklich beenden?')) {
+            await goalsStore.updateTodayProgress(viewedCards.value.size)
+            router.back()
+        }
+    } else {
+        router.back()
+    }
 }
 </script>
 

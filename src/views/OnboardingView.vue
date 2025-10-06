@@ -3,11 +3,6 @@
         <div v-if="currentStep === 0" class="flex-1 flex flex-col items-center justify-center px-6 text-white">
             <div class="w-full max-w-md">
                 <div class="text-center mb-8">
-                    <svg class="w-24 h-24 mx-auto mb-6 text-white" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
-                    </svg>
                     <h1 class="text-4xl font-bold mb-4">{{ $t('onboarding.welcome') }}</h1>
                     <p class="text-lg text-blue-100">{{ $t('onboarding.getToKnow') }}</p>
                 </div>
@@ -64,15 +59,17 @@
                 <div class="space-y-3">
                     <button @click="saveProfile"
                         class="w-full bg-white text-primary py-4 rounded-xl font-bold text-lg active:scale-95 transition">
-                        Weiter
+                        {{ $t('common.continue') }}
                     </button>
                     <button @click="skipProfile"
                         class="w-full bg-white/20 text-white py-3 rounded-xl font-semibold active:scale-95 transition">
-                        Überspringen
+                        {{ $t('onboarding.skip') }}
                     </button>
                 </div>
             </div>
         </div>
+
+        <!-- Step 2: Home Explanation -->
         <div v-if="currentStep === 2" class="flex-1 flex flex-col">
             <div class="flex-1 flex flex-col items-center justify-center px-6 text-white">
                 <div class="w-full max-w-md text-center">
@@ -81,10 +78,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    <h2 class="text-3xl font-bold mb-4">Deine Startseite</h2>
+                    <h2 class="text-3xl font-bold mb-4">{{ $t('onboarding.homeTitle') }}</h2>
                     <p class="text-lg text-blue-100 mb-8">
-                        Hier findest du deine eigenen Lernsets und von Experten erstellte Sets.
-                        Scrolle horizontal, um alle Sets zu sehen!
+                        {{ $t('onboarding.homeDescription') }}
                     </p>
                     <div class="bg-white/10 backdrop-blur-lg rounded-xl p-4 text-left">
                         <div class="flex items-start gap-3 mb-3">
@@ -94,8 +90,8 @@
                                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                             <div>
-                                <h4 class="font-semibold">My Sets</h4>
-                                <p class="text-sm text-blue-100">Deine selbst erstellten Lernsets</p>
+                                <h4 class="font-semibold">{{ $t('onboarding.mySetsTitle') }}</h4>
+                                <p class="text-sm text-blue-100">{{ $t('onboarding.mySetsDescription') }}</p>
                             </div>
                         </div>
                         <div class="flex items-start gap-3">
@@ -103,26 +99,6 @@
                                 <path
                                     d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
                             </svg>
-                            <div>
-                                <h4 class="font-semibold">Expert Sets</h4>
-                                <p class="text-sm text-blue-100">Professionell erstellte Inhalte</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="px-6 pb-8">
-                <button @click="nextStep"
-                    class="w-full bg-white text-primary py-4 rounded-xl font-bold text-lg active:scale-95 transition">
-                    {{ $t('onboarding.continue') }}
-                </button>
-            </div>
-        </div>
-        <div v-if="currentStep === 2" class="flex-1 flex flex-col">
-            <div class="flex-1 flex flex-col items-center justify-center px-6 text-white">
-                <div class="w-full max-w-md text-center">
-                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-6 space-y-4">
-                        <div class="flex items-start gap-3">
                             <div>
                                 <h4 class="font-semibold">{{ $t('onboarding.expertSetsTitle') }}</h4>
                                 <p class="text-sm text-blue-100">{{ $t('onboarding.expertSetsDescription') }}</p>
@@ -138,6 +114,8 @@
                 </button>
             </div>
         </div>
+
+        <!-- Step 3: Create Sets -->
         <div v-if="currentStep === 3" class="flex-1 flex flex-col">
             <div class="flex-1 flex flex-col items-center justify-center px-6 text-white">
                 <div class="w-full max-w-md text-center">
@@ -175,6 +153,8 @@
                 </button>
             </div>
         </div>
+
+        <!-- Step 4: Learn & Streak -->
         <div v-if="currentStep === 4" class="flex-1 flex flex-col">
             <div class="flex-1 flex flex-col items-center justify-center px-6 text-white">
                 <div class="w-full max-w-md text-center">
