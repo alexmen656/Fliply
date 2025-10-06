@@ -29,15 +29,12 @@ export const useProgressStore = defineStore('progress', () => {
       const { value } = await Preferences.get({ key: 'fliply_progress' })
       if (value) {
         const data = JSON.parse(value)
-        // Konvertiere Object zurück zu Map
         const entries = Object.entries(data).map(([key, value]) => {
-          // Stelle sicher, dass der Key als String oder Number korrekt ist
           const numKey = Number(key)
           const finalKey = isNaN(numKey) ? key : numKey
           return [finalKey, value]
         })
         progressData.value = new Map(entries as [string | number, SetProgress][])
-        console.log('Progress loaded:', progressData.value.size, 'sets')
       }
     } catch (error) {
       console.error('Error loading progress:', error)
@@ -51,18 +48,6 @@ export const useProgressStore = defineStore('progress', () => {
         key: 'fliply_progress',
         value: JSON.stringify(data),
       })
-      console.log('✅ Progress saved:', progressData.value.size, 'sets')
-      // Zeige Details des ersten Sets
-      const firstSet = Array.from(progressData.value.values())[0]
-      if (firstSet) {
-        console.log('First set details:', {
-          setId: firstSet.setId,
-          totalCards: firstSet.cards.length,
-          masteredCards: firstSet.cards.filter((c) => c.level === 3).length,
-          quizCompleted: firstSet.quizCompleted,
-          matchCompleted: firstSet.matchCompleted,
-        })
-      }
     } catch (error) {
       console.error('Error saving progress:', error)
     }
@@ -97,7 +82,6 @@ export const useProgressStore = defineStore('progress', () => {
       }
       progressData.value.set(setId, newProgress)
       await saveProgress()
-      console.log('Progress initialized for set:', setId)
     }
   }
 
@@ -129,11 +113,9 @@ export const useProgressStore = defineStore('progress', () => {
     mode: 'flashcards' | 'quiz' | 'match' | 'learn',
     cardResults?: { cardIndex: number; isCorrect: boolean }[],
   ) => {
-    console.log(`🎬 completeSession called:`, { setId, mode, cardResults })
-
     let progress = getSetProgress(setId)
     if (!progress) {
-      console.error('❌ No progress found for setId:', setId)
+      console.error('no prog')
       return
     }
 
@@ -151,25 +133,17 @@ export const useProgressStore = defineStore('progress', () => {
     }
 
     if (cardResults) {
-      console.log(`📝 Processing ${cardResults.length} card results`)
       cardResults.forEach(({ cardIndex, isCorrect }) => {
         const card = progress!.cards[cardIndex]
         if (card) {
-          const oldLevel = card.level
           card.lastStudied = new Date().toISOString()
           if (isCorrect) {
             card.correctCount++
-            // Schnelleres Level-Up: +2 pro korrekter Antwort
-            // Nach 2 richtigen Antworten = Level 3 = gemeistert
             card.level = Math.min(3, card.level + 2)
           } else {
             card.incorrectCount++
-            // Senke das Level bei falschen Antworten um 1
             card.level = Math.max(0, card.level - 1)
           }
-          console.log(
-            `  Card ${cardIndex}: Level ${oldLevel} → ${card.level} (${isCorrect ? '✅' : '❌'})`,
-          )
         } else {
           console.warn(`  ⚠️ Card ${cardIndex} not found in progress`)
         }
@@ -182,20 +156,12 @@ export const useProgressStore = defineStore('progress', () => {
   const calculateProgress = (setId: string | number): number => {
     const progress = getSetProgress(setId)
     if (!progress || progress.cards.length === 0) {
-      console.log('⚠️ No progress found for set:', setId)
       return 0
     }
 
     const totalCards = progress.cards.length
     const masteredCards = progress.cards.filter((c) => c.level === 3).length
-
     const percentage = Math.round((masteredCards / totalCards) * 100)
-    console.log(`📊 Progress for set ${setId}:`, {
-      totalCards,
-      masteredCards,
-      percentage,
-      cardLevels: progress.cards.map((c) => c.level),
-    })
 
     return percentage
   }
@@ -243,7 +209,6 @@ export const useProgressStore = defineStore('progress', () => {
   const clearAllProgress = async () => {
     progressData.value.clear()
     await Preferences.remove({ key: 'fliply_progress' })
-    console.log('🗑️ All progress data cleared')
   }
 
   return {
