@@ -21,7 +21,7 @@ export const useUserStore = defineStore('user', () => {
     name: '',
     email: undefined,
     emoji: '😊',
-    avatar: undefined,
+    avatar: 'https://i.pravatar.cc/150?img=1',
     coins: 0,
     hasCompletedOnboarding: false,
     onboardingStep: 0,

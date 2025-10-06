@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col h-screen bg-gray-50">
-        <header class="bg-white border-b border-gray-200 px-4 py-4">
+        <header class="bg-white border-b border-gray-200 px-3 py-4">
             <div class="flex items-center justify-between mb-4">
                 <h1 class="text-2xl font-bold text-gray-800">{{ $t('library.title') }}</h1>
                 <!--<button class="text-primary p-2">
@@ -10,7 +10,7 @@
                     </svg>
                 </button>-->
             </div>
-            <div class="flex gap-4 border-b border-gray-200">
+            <div class="flex gap-4"><!--border-b border-gray-200-->
                 <button v-for="tab in tabs" :key="tab.name" @click="activeTab = tab.name" :class="[
                     'pb-2 px-1 text-sm font-medium transition',
                     activeTab === tab.name
@@ -21,7 +21,7 @@
                 </button>
             </div>
         </header>
-        <main class="flex-1 overflow-y-auto pb-20 px-4 py-5">
+        <main class="flex-1 overflow-y-auto pb-20 px-3 py-5">
             <div v-if="activeTab === 'mySets'" class="space-y-3">
                 <div v-if="setsStore.isLoading" class="text-center py-8">
                     <p class="text-gray-500">{{ $t('common.loading') }}</p>
@@ -57,7 +57,7 @@
                             <img :src="set.icon" alt="Set Icon" class="w-full h-full object-cover" />
                         </div>
                     </div>
-                    <div class="px-4 py-2 border-t border-gray-100">
+                    <div class="px-3 py-2 border-t border-gray-100">
                         <button @click.stop="deleteSet(set.id)"
                             class="text-red-500 hover:text-red-700 text-xs font-medium">
                             {{ $t('common.delete') }}

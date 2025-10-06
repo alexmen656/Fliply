@@ -17,7 +17,6 @@ app.use(i18n)
 
 app.config.globalProperties.$axios = axiosInstance
 
-// Load and apply theme on app start
 const themesStore = useThemesStore()
 themesStore.loadFromStorage().then(() => {
   themesStore.applyTheme(themesStore.currentTheme)

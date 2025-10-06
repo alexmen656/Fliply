@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col h-screen bg-gray-50">
-        <header class="bg-white border-b border-gray-200 px-4 py-4">
+        <header class="bg-white border-b border-gray-200 px-3 py-4">
             <div class="flex items-center justify-between">
                 <button @click="$router.back()" class="text-gray-600">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -13,21 +13,21 @@
                 </button>
             </div>
         </header>
-        <main class="flex-1 overflow-y-auto pb-20 px-4 py-5">
-            <div class="mb-6">
+        <main class="flex-1 overflow-y-auto pb-20 px-3 py-5">
+            <div class="mb-2">
                 <input v-model="setTitle" @keydown.enter="focusFirstCardFront" type="text"
                     :placeholder="$t('create.setTitlePlaceholder')"
-                    class="w-full text-xl font-bold text-gray-800 bg-white rounded-xl px-4 py-4 border-2 border-gray-200 focus:border-primary focus:outline-none" />
+                    class="w-full text-xl font-bold text-gray-800 bg-white rounded-xl px-3 py-4 border-2 border-gray-200 focus:border-primary focus:outline-none" />
             </div>
-            <div class="mb-6">
+            <div class="mb-3">
                 <textarea v-model="setDescription" :placeholder="$t('create.descriptionPlaceholder')" rows="3"
                     @keydown.enter.prevent="focusFirstCardFront"
-                    class="w-full text-gray-700 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-primary focus:outline-none resize-none"></textarea>
+                    class="w-full text-gray-700 bg-white rounded-xl px-3 py-3 border-2 border-gray-200 focus:border-primary focus:outline-none resize-none"></textarea>
             </div>
             <div class="space-y-4">
                 <div v-for="(card, index) in cards" :key="index" class="bg-white rounded-xl p-4 shadow-sm">
                     <div class="flex items-center justify-between mb-3">
-                        <span class="text-sm font-semibold text-gray-500">{{ $t('common.cards') }} {{ index + 1
+                        <span class="text-sm font-semibold text-gray-500">{{ $t('common.card') }} {{ index + 1
                             }}</span>
                         <button v-if="cards.length > 1" @click="removeCard(index)" class="text-red-500 text-sm">
                             {{ $t('common.delete') }}
@@ -59,7 +59,7 @@
                 </button>
             </div>
         </main>
-        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4 safe-area-inset">
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 pt-2 safe-area-inset">
             <button @click="saveSet" :disabled="isSaving"
                 class="w-full bg-primary text-white font-bold py-4 rounded-xl active:scale-98 transition disabled:opacity-50">
                 {{ isSaving ? $t('common.loading') : `${$t('create.createSet')} (${cards.length} ${$t('common.cards')})`
@@ -91,7 +91,6 @@ const cards = ref<Card[]>([
     { front: '', back: '' }
 ])
 
-// Refs für Inputs
 const cardFrontRefs = ref<(HTMLInputElement | null)[]>([])
 const cardBackRefs = ref<(HTMLTextAreaElement | null)[]>([])
 
@@ -121,13 +120,11 @@ const focusCardBack = (index: number) => {
 
 const handleBackEnter = (index: number) => {
     if (index === cards.value.length - 1) {
-        // Letzte Karte: neue Karte hinzufügen
         addCard()
         setTimeout(() => {
             cardFrontRefs.value[index + 1]?.focus()
         }, 100)
     } else {
-        // Nicht letzte Karte: zur nächsten Vorderseite springen
         setTimeout(() => {
             cardFrontRefs.value[index + 1]?.focus()
         }, 100)
