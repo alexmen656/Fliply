@@ -68,8 +68,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Step 2: Home Explanation -->
         <div v-if="currentStep === 2" class="flex-1 flex flex-col">
             <div class="flex-1 flex flex-col items-center justify-center px-6 text-white">
                 <div class="w-full max-w-md text-center">
@@ -114,8 +112,6 @@
                 </button>
             </div>
         </div>
-
-        <!-- Step 3: Create Sets -->
         <div v-if="currentStep === 3" class="flex-1 flex flex-col">
             <div class="flex-1 flex flex-col items-center justify-center px-6 text-white">
                 <div class="w-full max-w-md text-center">
@@ -153,8 +149,6 @@
                 </button>
             </div>
         </div>
-
-        <!-- Step 4: Learn & Streak -->
         <div v-if="currentStep === 4" class="flex-1 flex flex-col">
             <div class="flex-1 flex flex-col items-center justify-center px-6 text-white">
                 <div class="w-full max-w-md text-center">

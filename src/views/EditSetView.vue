@@ -26,26 +26,26 @@
                 <div class="flex items-center justify-between mb-3">
                     <h2 class="text-lg font-bold text-gray-800">{{ $t('common.cards') }} ({{ cards.length }})</h2>
                     <button @click="addCard" class="text-primary font-semibold text-sm">{{ $t('create.addCard')
-                    }}</button>
+                        }}</button>
                 </div>
                 <div class="space-y-4">
                     <div v-for="(card, index) in cards" :key="index" class="bg-white rounded-xl p-4 shadow-sm">
                         <div class="flex items-center justify-between mb-3">
                             <span class="text-sm font-semibold text-gray-500">{{ $t('create.card') }} {{ index + 1
-                            }}</span>
+                                }}</span>
                             <button @click="removeCard(index)" class="text-red-500 text-sm">{{ $t('common.delete')
-                            }}</button>
+                                }}</button>
                         </div>
                         <div class="space-y-3">
                             <div>
                                 <label class="text-xs font-medium text-gray-600 mb-1 block">{{ $t('create.term')
-                                }}</label>
+                                    }}</label>
                                 <input v-model="card.front" type="text" :placeholder="$t('create.termPlaceholder')"
                                     class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-primary focus:outline-none" />
                             </div>
                             <div>
                                 <label class="text-xs font-medium text-gray-600 mb-1 block">{{ $t('create.definition')
-                                }}</label>
+                                    }}</label>
                                 <textarea v-model="card.back" :placeholder="$t('create.definitionPlaceholder')" rows="3"
                                     class="w-full text-gray-800 bg-gray-50 rounded-lg px-3 py-3 border border-gray-200 focus:border-primary focus:outline-none resize-none"></textarea>
                             </div>

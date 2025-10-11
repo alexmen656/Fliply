@@ -5,50 +5,10 @@
             <section class="px-3 pt-3 pb-4">
                 <div class="space-y-2">
                     <div class="grid grid-cols-2 gap-2">
-                        <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-                            <div class="flex items-center gap-2 mb-2">
-                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
-                                </svg>
-                                <span class="text-sm font-medium">Streak</span>
-                            </div>
-                            <div class="text-3xl font-bold text-gray-800">{{ streakStore.currentStreak }}</div>
-                            <div class="text-xs opacity-90 mt-1">{{ $t('home.streak') }}</div>
-                        </div>
-                        <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-                            <div class="flex items-center gap-2 mb-2">
-                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                                </svg>
-                                <span class="text-sm font-medium">{{ $t('profile.goals') }}</span>
-                            </div>
-                            <div class="text-3xl font-bold text-gray-800">{{ goalsStore.todayProgress }}/{{
-                                goalsStore.dailyGoal }}</div>
-                            <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
-                                <div class="bg-primary rounded-full h-1.5 transition-all"
-                                    :style="{ width: goalsStore.getDailyProgressPercentage() + '%' }"></div>
-                            </div>
-                        </div>
+                        <StreakCard></StreakCard>
+                        <GoalsCard></GoalsCard>
                     </div>
-                    <div @click="router.push('/avatar-shop')"
-                        class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm cursor-pointer active:scale-95 transition">
-                        <div class="flex items-center gap-2 mb-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24" stroke-width="1.5" class="w-5 h-5 text-primary size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                            </svg>
-
-
-                            <span class="text-sm font-medium">{{ $t('profile.coins') }}</span>
-                        </div>
-                        <div class="text-3xl font-bold text-gray-800">{{ userStore.profile.coins }}</div>
-                        <!--  <div class="text-xs opacity-90 mt-1">{{ $t('avatarShop.title') }}</div> -->
-                    </div>
+                    <CoinsCard></CoinsCard>
                 </div>
             </section>
             <section class="py-5">
@@ -199,10 +159,13 @@ import { useStreakStore } from '@/stores/streak'
 import { useAchievementsStore } from '@/stores/achievements'
 import { useGoalsStore } from '@/stores/goals'
 import { useUserStore } from '@/stores/user'
+import StreakCard from '@/components/cards/StreakCard.vue'
+import GoalsCard from '@/components/cards/GoalsCard.vue'
+import CoinsCard from '@/components/cards/CoinsCard.vue'
 
 export default {
     name: 'Dashboard',
-    components: { BottomNavigation, Header },
+    components: { BottomNavigation, Header, StreakCard, GoalsCard, CoinsCard },
     setup() {
         const router = useRouter()
         const setsStore = useSetsStore()
@@ -217,7 +180,6 @@ export default {
             await streakStore.checkStreak()
             await goalsStore.loadGoals()
             await userStore.loadFromStorage()
-
             await achievementsStore.loadFromStorage()
             await achievementsStore.checkAndUnlockAchievements()
         })
