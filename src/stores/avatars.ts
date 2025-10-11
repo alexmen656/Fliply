@@ -5,7 +5,6 @@ import { Preferences } from '@capacitor/preferences'
 export interface Avatar {
   id: string
   url: string
-  name: string
   cost: number
   unlocked: boolean
 }
@@ -14,72 +13,50 @@ export const useAvatarsStore = defineStore('avatars', () => {
   const avatars = ref<Avatar[]>([
     {
       id: 'default',
-      url: 'https://i.pravatar.cc/150?img=1',
-      name: 'Standard',
+      url: 'avatar1.png',
       cost: 0,
       unlocked: true,
     },
     {
       id: 'avatar2',
-      url: 'https://i.pravatar.cc/150?img=2',
-      name: 'Cool Guy',
+      url: 'avatar2.png',
       cost: 50,
       unlocked: false,
     },
     {
       id: 'avatar3',
-      url: 'https://i.pravatar.cc/150?img=3',
-      name: 'Smart Lady',
+      url: 'avatar3.png',
       cost: 50,
       unlocked: false,
     },
     {
       id: 'avatar4',
-      url: 'https://i.pravatar.cc/150?img=4',
-      name: 'Happy Person',
+      url: 'avatar4.png',
       cost: 100,
       unlocked: false,
     },
     {
       id: 'avatar5',
-      url: 'https://i.pravatar.cc/150?img=5',
-      name: 'Business Pro',
+      url: 'avatar5.png',
       cost: 100,
       unlocked: false,
     },
     {
       id: 'avatar6',
-      url: 'https://i.pravatar.cc/150?img=6',
-      name: 'Creative Mind',
+      url: 'avatar6.png',
       cost: 150,
       unlocked: false,
     },
     {
       id: 'avatar7',
-      url: 'https://i.pravatar.cc/150?img=7',
-      name: 'Tech Guru',
+      url: 'avatar7.png',
       cost: 150,
       unlocked: false,
     },
     {
       id: 'avatar8',
-      url: 'https://i.pravatar.cc/150?img=8',
-      name: 'Adventure Seeker',
+      url: 'avatar8.png',
       cost: 200,
-      unlocked: false,
-    },
-    {
-      id: 'avatar9',
-      url: 'https://i.pravatar.cc/150?img=9',
-      name: 'Wisdom Master',
-      cost: 200,
-      unlocked: false,
-    },
-    {
-      id: 'avatar10',
-      url: 'https://i.pravatar.cc/150?img=10',
-      name: 'Legend',
-      cost: 500,
       unlocked: false,
     },
   ])

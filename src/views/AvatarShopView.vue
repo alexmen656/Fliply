@@ -70,9 +70,8 @@
                                     'bg-white rounded-xl p-3 shadow-sm active:scale-95 transition relative',
                                     userStore.profile.avatar === avatar.url ? 'ring-4 ring-[#4255FF]' : ''
                                 ]">
-                                <img :src="avatar.url" alt="Avatar"
+                                <img :src="'/assets/avatars/' + avatar.url" alt="Avatar"
                                     class="w-full aspect-square rounded-lg object-cover mb-2" />
-                                <div class="text-xs font-medium text-gray-700 text-center">{{ avatar.name }}</div>
                                 <div v-if="userStore.profile.avatar === avatar.url"
                                     class="absolute top-1 right-1 bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center">
                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -98,7 +97,7 @@
                                 @click="unlockAvatar(avatar)"
                                 class="bg-white rounded-xl p-3 shadow-sm active:scale-95 transition relative">
                                 <div class="relative">
-                                    <img :src="avatar.url" alt="Avatar"
+                                    <img :src="'/assets/avatars/' + avatar.url" alt="Avatar"
                                         class="w-full aspect-square rounded-lg object-cover mb-2 opacity-40" />
                                     <div class="absolute inset-0 flex items-center justify-center">
                                         <svg class="w-8 h-8 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
@@ -108,7 +107,6 @@
                                         </svg>
                                     </div>
                                 </div>
-                                <div class="text-xs font-medium text-gray-700 text-center mb-1">{{ avatar.name }}</div>
                                 <div
                                     class="bg-yellow-100 text-yellow-800 text-xs font-bold py-1 px-2 rounded-full text-center flex items-center justify-center gap-1">
                                     <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
@@ -233,9 +231,9 @@ const selectAvatar = async (avatar: Avatar) => {
 
 const unlockAvatar = async (avatar: Avatar) => {
     if (userStore.profile.coins >= avatar.cost) {
-        const confirmed = confirm(t('avatarShop.confirmUnlock', { name: avatar.name, cost: avatar.cost }))
+        const confirmed = confirm(t('avatarShop.confirmUnlock', { cost: avatar.cost }))
         if (confirmed) {
-            const success = await userStore.spendCoins(avatar.cost, `Avatar "${avatar.name}" ${t('avatarShop.purchased')}`)
+            const success = await userStore.spendCoins(avatar.cost, `Avatar  ${t('avatarShop.purchased')}`)
             if (success) {
                 await avatarsStore.unlockAvatar(avatar.id)
                 await userStore.setAvatar(avatar.url)

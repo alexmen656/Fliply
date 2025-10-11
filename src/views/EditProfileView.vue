@@ -16,8 +16,8 @@
                 <div class="relative">
                     <div
                         class="w-24 h-24 bg-gradient-to-br from-[#4255FF] to-indigo-600 rounded-full flex items-center justify-center text-4xl text-white shadow-lg overflow-hidden">
-                        <img v-if="userStore.profile.avatar" :src="userStore.profile.avatar" alt="Avatar"
-                            class="w-full h-full object-cover" />
+                        <img v-if="userStore.profile.avatar" :src="'/assets/avatars/' + userStore.profile.avatar"
+                            alt="Avatar" class="w-full h-full object-cover" />
                         <span v-else>{{ userEmoji }}</span>
                     </div>
                     <button @click="$router.push('/avatar-shop')"

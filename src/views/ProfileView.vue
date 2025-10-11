@@ -4,8 +4,8 @@
             <div class="flex items-start gap-4 mb-4">
                 <button @click="editProfile"
                     class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-4xl shadow-lg relative group overflow-hidden flex-shrink-0">
-                    <img v-if="userStore.profile.avatar" :src="userStore.profile.avatar" alt="Avatar"
-                        class="w-full h-full object-cover rounded-full"
+                    <img v-if="userStore.profile.avatar" :src="'/assets/avatars/' + userStore.profile.avatar"
+                        alt="Avatar" class="w-full h-full object-cover rounded-full"
                         @error="(e) => (e.target as HTMLImageElement).style.display = 'none'" />
                     <div class="absolute inset-0 group-active:bg-opacity-10 rounded-full transition">
                     </div>
