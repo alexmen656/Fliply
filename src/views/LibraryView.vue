@@ -2,9 +2,19 @@
     <div class="flex flex-col h-screen bg-gray-50">
         <header class="bg-white border-b border-gray-200 px-3 py-4">
             <div class="flex items-center justify-between mb-4">
-                <h1 class="text-2xl font-bold text-gray-800">{{ $t('library.title') }}</h1>
+                <h1 class="text-3xl font-bold text-gray-800">{{ $t('library.title') }}</h1>
+                <button @click="toggleSearch" class="text-gray-600 hover:text-gray-800 transition">
+                    <svg v-if="!isSearchOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
-            <div class="relative mb-4">
+            <div v-if="isSearchOpen" class="relative mb-4">
                 <input ref="searchInput" v-model="searchQuery" @input="handleSearch" type="text"
                     :placeholder="$t('home.searchPlaceholder')"
                     class="w-full bg-gray-50 rounded-lg px-4 py-3 pr-10 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white transition" />
@@ -22,9 +32,9 @@
                     </svg>
                 </button>
             </div>
-            <div class="flex gap-4 border-b border-gray-200">
+            <div class="flex gap-2 border-b border-gray-200 overflow-x-auto scrollbar-hide -mx-3 px-3">
                 <button v-for="tab in tabs" :key="tab.name" @click="activeTab = tab.name" :class="[
-                    'pb-2 px-1 text-sm font-medium transition',
+                    'pb-2 px-3 text-sm font-medium transition whitespace-nowrap flex-shrink-0',
                     activeTab === tab.name
                         ? 'text-primary border-b-2 border-primary'
                         : 'text-gray-500'
@@ -154,6 +164,7 @@ const activeTab = ref('mySets')
 const searchQuery = ref('')
 const searchInput = ref<HTMLInputElement | null>(null)
 const isSearching = ref(false)
+const isSearchOpen = ref(false)
 const recentSetsWithDetails = ref<any[]>([])
 
 const tabs = computed(() => [
@@ -205,6 +216,17 @@ const handleSearch = () => {
 
 const clearSearch = () => {
     searchQuery.value = ''
+}
+
+const toggleSearch = () => {
+    isSearchOpen.value = !isSearchOpen.value
+    if (isSearchOpen.value) {
+        setTimeout(() => {
+            searchInput.value?.focus()
+        }, 100)
+    } else {
+        searchQuery.value = ''
+    }
 }
 
 onMounted(async () => {
@@ -268,5 +290,14 @@ const createNewSet = () => {
 
 header {
     padding-top: env(safe-area-inset-top);
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
 }
 </style>

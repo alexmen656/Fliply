@@ -14,7 +14,8 @@
     "viewAll": "Alle anzeigen",
     "cards": "Karten",
     "card": "Karte",
-    "continue": "Weiter"
+    "continue": "Weiter",
+    "optional": "Optional"
   },
   "nav": {
     "home": "Start",
@@ -57,10 +58,12 @@
   },
   "create": {
     "title": "Neues Set erstellen",
+    "setInfo": "Set-Informationen",
     "setTitle": "Set-Titel",
     "setTitlePlaceholder": "z.B. Deutsch Vokabeln A2",
     "description": "Beschreibung",
     "descriptionPlaceholder": "Beschreibung (optional)",
+    "yourCards": "Deine Karten",
     "addCard": "+ Hinzufügen",
     "term": "Vorderseite",
     "definition": "Rückseite",
@@ -78,6 +81,7 @@
   "profile": {
     "title": "Profil",
     "stats": "Statistiken",
+    "statistics": "Statistiken",
     "totalCards": "Gelernte Karten",
     "studyStreak": "Tages-Streak",
     "achievements": "Erfolge",

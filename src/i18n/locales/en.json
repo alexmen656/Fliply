@@ -14,7 +14,8 @@
     "viewAll": "View all",
     "cards": "Cards",
     "card": "Card",
-    "continue": "Continue"
+    "continue": "Continue",
+    "optional": "Optional"
   },
   "nav": {
     "home": "Home",
@@ -57,10 +58,12 @@
   },
   "create": {
     "title": "Create New Set",
+    "setInfo": "Set Information",
     "setTitle": "Set Title",
     "setTitlePlaceholder": "e.g. German Vocabulary A2",
     "description": "Description",
     "descriptionPlaceholder": "Description (optional)",
+    "yourCards": "Your Cards",
     "addCard": "+ Add",
     "term": "Front",
     "definition": "Back",
@@ -78,6 +81,7 @@
   "profile": {
     "title": "Profile",
     "stats": "Statistics",
+    "statistics": "Statistics",
     "totalCards": "Cards Learned",
     "studyStreak": "Day Streak",
     "achievements": "Achievements",

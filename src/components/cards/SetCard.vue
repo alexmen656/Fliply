@@ -1,14 +1,15 @@
 <template>
-    <div class="bg-white rounded-xl shadow-sm active:scale-98 transition overflow-hidden mb-3">
+    <div
+        class="bg-white rounded-xl shadow-sm hover:shadow-md active:scale-98 transition overflow-hidden mb-3 border border-gray-100">
         <div @click="$emit('click', set.id)" class="flex items-stretch cursor-pointer">
             <div class="flex-1 p-4">
-                <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
-                <p class="text-sm text-gray-600 mb-2">
+                <h3 class="font-bold text-gray-800 mb-1.5 text-base leading-tight">{{ set.title }}</h3>
+                <p class="text-sm text-gray-600 mb-2.5">
                     {{ typeof set.cards === 'number' ? set.cards : set.cards.length }} {{ $t('common.cards') }}
                 </p>
                 <div class="flex items-center gap-2">
-                    <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
-                        <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-5 h-5 bg-gray-100 rounded-full flex items-center justify-center">
+                        <svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
@@ -18,7 +19,7 @@
                 <div v-if="showDate && set.accessedAt" class="mt-2">
                     <span class="text-xs text-gray-400">{{ formatDate(set.accessedAt) }}</span>
                 </div>
-                <div v-if="set.createdAt && !showDate" class="text-xs text-gray-500 mt-1">
+                <div v-if="set.createdAt && !showDate" class="text-xs text-gray-500 mt-2">
                     {{ $t('library.created') }}: {{ new Date(set.createdAt).toLocaleDateString('de-DE') }}
                 </div>
             </div>
@@ -32,15 +33,20 @@
                 </button>
             </div>
             <div v-if="set.icon && !isUrl(set.icon)"
-                class="w-20 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
+                class="w-20 bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
                 {{ set.icon }}
             </div>
             <div v-else-if="set.icon" class="w-20 flex-shrink-0">
                 <img :src="set.icon" alt="Set Icon" class="w-full h-full object-cover" />
             </div>
         </div>
-        <div v-if="showDelete" class="px-4 py-2 border-t border-gray-100">
-            <button @click.stop="$emit('delete', set.id)" class="text-red-500 hover:text-red-700 text-xs font-medium">
+        <div v-if="showDelete" class="px-4 py-3 border-t border-gray-100 bg-gray-50">
+            <button @click.stop="$emit('delete', set.id)"
+                class="text-red-500 hover:text-red-700 text-sm font-medium flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
                 {{ $t('common.delete') }}
             </button>
         </div>

@@ -34,7 +34,7 @@
                         <label class="text-sm font-medium text-gray-700 mb-2 block">
                             {{ $t('create.description') || 'Beschreibung' }}
                             <span class="text-xs text-gray-400 font-normal">({{ $t('common.optional') || 'Optional'
-                            }})</span>
+                                }})</span>
                         </label>
                         <textarea v-model="setDescription" ref="descriptionRef"
                             :placeholder="$t('create.descriptionPlaceholder')" rows="2"
@@ -52,7 +52,7 @@
                     <div v-for="(card, index) in cards" :key="index" class="bg-white rounded-xl border border-gray-200">
                         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
                             <span class="text-sm font-medium text-gray-600">{{ $t('common.card') }} {{ index + 1
-                            }}</span>
+                                }}</span>
                             <button v-if="cards.length > 1" @click="removeCard(index)"
                                 class="text-gray-400 hover:text-red-500">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,9 +83,6 @@
                     </div>
                     <button @click="addCard"
                         class="w-full bg-white border-2 border-dashed border-gray-300 text-gray-600 font-medium py-4 rounded-xl hover:border-primary hover:text-primary flex items-center justify-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
                         <span>{{ $t('create.addCard') }}</span>
                     </button>
                 </div>
