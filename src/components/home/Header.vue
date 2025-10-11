@@ -2,9 +2,6 @@
     <header class="px-4 pt-3 relative">
         <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-3">
-                <!--<svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
-                </svg>-->
                 <div>
                     <span class="text-black text-3xl font-bold">Fliply</span>
                     <p v-if="userStore.profile.name" class="text-black text-lg">
@@ -14,13 +11,6 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <button @click="toggleSearch" class="text-white p-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
-
                 <!--<button @click="toggleNotifications" class="text-white p-2 relative">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -33,49 +23,6 @@
                 </button>-->
             </div>
         </div>
-
-        <Transition name="search">
-            <div v-if="showSearch" class="relative mt-3 mb-4">
-                <input ref="searchInput" v-model="searchQuery" @input="handleSearch" @focus="showSearchResults = true"
-                    type="text" :placeholder="$t('home.searchPlaceholder')"
-                    class="w-full bg-white rounded-lg px-4 py-3 pr-10 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300" />
-                <button @click="closeSearch"
-                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-
-                <div v-if="showSearchResults && searchQuery.length > 0"
-                    class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl max-h-96 overflow-y-auto z-50">
-                    <div v-if="isSearching" class="p-4 text-center text-gray-500">
-                        {{ $t('common.loading') }}
-                    </div>
-                    <div v-else-if="searchResults.length > 0" class="py-2">
-                        <div v-for="result in searchResults" :key="result.id" @click="selectResult(result)"
-                            class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0">
-                            <div class="flex items-start gap-3">
-                                <div v-if="result.icon && !isUrl(result.icon)" class="text-2xl">{{ result.icon }}</div>
-                                <img v-else-if="result.icon" :src="result.icon" alt="Set Icon"
-                                    class="w-10 h-10 rounded object-cover" />
-                                <div v-else
-                                    class="w-10 h-10 bg-gray-200 rounded flex items-center justify-center text-xl">📚
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="font-semibold text-gray-800">{{ result.title }}</h4>
-                                    <p class="text-sm text-gray-500">{{ result.cards }} {{ $t('common.cards') }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-else class="p-8 text-center text-gray-500">
-                        <p class="font-medium text-gray-700 mb-1">{{ $t('allCards.noCards') }}</p>
-                        <p class="text-sm">{{ $t('home.searchPlaceholder') }}</p>
-                    </div>
-                </div>
-            </div>
-        </Transition>
 
         <Transition name="dropdown">
             <div v-if="showNotifications"
@@ -111,125 +58,31 @@
             </div>
         </Transition>
 
-        <div v-if="showNotifications || (showSearchResults && searchQuery.length > 0)" @click="closeDropdowns"
+        <div v-if="showNotifications" @click="closeDropdowns"
             class="fixed inset-0 z-40"></div>
     </header>
 </template>
 
 <script lang="ts">
-import { ref, computed, onMounted, onUnmounted, getCurrentInstance, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useNotificationsStore, type Notification as NotificationType } from '@/stores/notifications'
 import { useUserStore } from '@/stores/user'
-import { useSetsStore } from '@/stores/sets'
-
-interface SearchResult {
-    id: string | number
-    title: string
-    cards: number
-    author: string
-    icon: string
-}
 
 export default {
     setup() {
-        const instance = getCurrentInstance()
-        const $axios = instance?.appContext.config.globalProperties.$axios
         const router = useRouter()
         const notificationsStore = useNotificationsStore()
         const userStore = useUserStore()
 
         userStore.loadFromStorage()
 
-        const searchInput = ref<HTMLInputElement | null>(null)
-        const searchQuery = ref('')
-        const showSearch = ref(false)
-        const showSearchResults = ref(false)
-        const isSearching = ref(false)
-        const searchResults = ref<SearchResult[]>([])
-        const allSets = ref<SearchResult[]>([])
-        const setsStore = useSetsStore()
-
-        const loadAllSetsForSearch = async () => {
-            await setsStore.fetchMySets()
-            await setsStore.fetchExpertSets()
-
-            const combined = [
-                ...setsStore.mySets.map(set => ({
-                    id: set.id!,
-                    title: set.title,
-                    cards: typeof set.cards === 'number' ? set.cards : set.cards.length,
-                    author: set.author,
-                    icon: set.icon
-                })),
-                ...setsStore.expertSets.map(set => ({
-                    id: set.id!,
-                    title: set.title,
-                    cards: typeof set.cards === 'number' ? set.cards : set.cards.length,
-                    author: set.author,
-                    icon: set.icon
-                }))
-            ]
-            allSets.value = combined
-        }
-
-        loadAllSetsForSearch()
-
         const showNotifications = ref(false)
         const notifications = computed(() => notificationsStore.notifications)
         const unreadCount = computed(() => notificationsStore.unreadCount)
 
-        let searchTimeout: ReturnType<typeof setTimeout> | null = null
-
-        const handleSearch = () => {
-            if (searchTimeout) clearTimeout(searchTimeout)
-
-            if (searchQuery.value.trim() === '') {
-                searchResults.value = []
-                return
-            }
-
-            isSearching.value = true
-            searchTimeout = setTimeout(() => {
-                const query = searchQuery.value.toLowerCase()
-                searchResults.value = allSets.value.filter(set =>
-                    set.title.toLowerCase().includes(query)
-                )
-                isSearching.value = false
-            }, 300)
-        }
-
-        const toggleSearch = async () => {
-            showSearch.value = !showSearch.value
-            if (showSearch.value) {
-                showNotifications.value = false
-                await nextTick()
-                searchInput.value?.focus()
-            } else {
-                searchQuery.value = ''
-                searchResults.value = []
-                showSearchResults.value = false
-            }
-        }
-
-        const closeSearch = () => {
-            showSearch.value = false
-            searchQuery.value = ''
-            searchResults.value = []
-            showSearchResults.value = false
-        }
-
-        const selectResult = (result: SearchResult) => {
-            router.push(`/set/${result.id}`)
-            closeSearch()
-        }
-
         const toggleNotifications = () => {
             showNotifications.value = !showNotifications.value
-            if (showNotifications.value) {
-                showSearch.value = false
-                showSearchResults.value = false
-            }
         }
 
         const markAllAsRead = () => {
@@ -244,17 +97,11 @@ export default {
 
         const closeDropdowns = () => {
             showNotifications.value = false
-            showSearchResults.value = false
-        }
-
-        const isUrl = (str: string) => {
-            return str && (str.startsWith('http://') || str.startsWith('https://'))
         }
 
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
                 closeDropdowns()
-                closeSearch()
             }
         }
 
@@ -264,29 +111,17 @@ export default {
 
         onUnmounted(() => {
             document.removeEventListener('keydown', handleEscape)
-            if (searchTimeout) clearTimeout(searchTimeout)
         })
 
         return {
-            searchInput,
-            searchQuery,
-            showSearch,
-            showSearchResults,
-            isSearching,
-            searchResults,
             showNotifications,
             notifications,
             unreadCount,
             userStore,
-            handleSearch,
-            toggleSearch,
-            closeSearch,
-            selectResult,
             toggleNotifications,
             markAllAsRead,
             handleNotificationClick,
-            closeDropdowns,
-            isUrl
+            closeDropdowns
         }
     }
 }

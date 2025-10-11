@@ -51,7 +51,9 @@
     "minutesAgo": "vor {count} Min.",
     "hoursAgo": "vor {count} Std.",
     "yesterday": "Gestern",
-    "daysAgo": "vor {count} Tagen"
+    "daysAgo": "vor {count} Tagen",
+    "searchResults": "Suchergebnisse",
+    "tryDifferentSearch": "Versuche einen anderen Suchbegriff"
   },
   "create": {
     "title": "Neues Set erstellen",

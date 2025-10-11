@@ -3,14 +3,26 @@
         <header class="bg-white border-b border-gray-200 px-3 py-4">
             <div class="flex items-center justify-between mb-4">
                 <h1 class="text-2xl font-bold text-gray-800">{{ $t('library.title') }}</h1>
-                <!--<button class="text-primary p-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                    </svg>
-                </button>-->
             </div>
-            <div class="flex gap-4"><!--border-b border-gray-200-->
+            <div class="relative mb-4">
+                <input ref="searchInput" v-model="searchQuery" @input="handleSearch" type="text"
+                    :placeholder="$t('home.searchPlaceholder')"
+                    class="w-full bg-gray-50 rounded-lg px-4 py-3 pr-10 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white transition" />
+                <svg v-if="searchQuery.length === 0"
+                    class="w-5 h-5 text-gray-400 absolute right-3 top-1/2 transform -translate-y-1/2" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <button v-else @click="clearSearch"
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="flex gap-4 border-b border-gray-200">
                 <button v-for="tab in tabs" :key="tab.name" @click="activeTab = tab.name" :class="[
                     'pb-2 px-1 text-sm font-medium transition',
                     activeTab === tab.name
@@ -22,11 +34,32 @@
             </div>
         </header>
         <main class="flex-1 overflow-y-auto pb-20 px-3 py-5">
-            <div v-if="activeTab === 'mySets'" class="space-y-3">
+            <div v-if="searchQuery.length > 0" class="space-y-3 mb-6">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-lg font-semibold text-gray-800">
+                        {{ $t('library.searchResults') }} ({{ filteredResults.length }})
+                    </h2>
+                </div>
+                <div v-if="isSearching" class="text-center py-8">
+                    <p class="text-gray-500">{{ $t('common.loading') }}</p>
+                </div>
+                <div v-else-if="filteredResults.length === 0" class="text-center py-8">
+                    <div class="mx-auto w-16 h-16 mb-3 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-full h-full">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">{{ $t('allCards.noCards') }}</h3>
+                    <p class="text-sm text-gray-600">{{ $t('library.tryDifferentSearch') }}</p>
+                </div>
+                <SetCard v-else v-for="set in filteredResults" :key="set.id" :set="set" @click="openSet" />
+            </div>
+            <div v-else-if="activeTab === 'mySets'" class="space-y-3">
                 <div v-if="setsStore.isLoading" class="text-center py-8">
                     <p class="text-gray-500">{{ $t('common.loading') }}</p>
                 </div>
-
                 <div v-else-if="setsStore.mySets.length === 0" class="text-center py-8">
                     <div class="mx-auto w-16 h-16 mb-3 text-gray-400">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -38,44 +71,37 @@
                     <h3 class="font-bold text-gray-800 mb-2">{{ $t('library.noSets') }}</h3>
                     <p class="text-sm text-gray-600 mb-4">{{ $t('library.noSetsDescription') }}</p>
                 </div>
+                <div v-else>
+                    <SetCard v-for="set in setsStore.mySets" :key="set.id" :set="set" :show-delete="true"
+                        @click="openSet" @delete="deleteSet" />
 
-                <div v-else v-for="set in setsStore.mySets" :key="set.id" @click="openSet(set.id)"
-                    class="bg-white rounded-xl shadow-sm active:scale-98 transition cursor-pointer overflow-hidden">
-                    <div class="flex items-stretch">
-                        <div class="flex-1 p-4">
-                            <h3 class="font-bold text-gray-800 mb-1">{{ set.title }}</h3>
-                            <p class="text-sm text-gray-600 mb-2">{{ set.cards }} {{ $t('common.cards') }}</p>
-                            <div class="text-xs text-gray-500">
-                                {{ $t('library.created') }}: {{ new Date(set.createdAt ||
-                                    '').toLocaleDateString('de-DE') }}
-                            </div>
-                        </div>
-                        <div v-if="set.icon && !isUrl(set.icon)"
-                            class="w-20 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
-                            {{ set.icon }}
-                        </div>
-                        <div v-else-if="set.icon" class="w-20 flex-shrink-0">
-                            <img :src="set.icon" alt="Set Icon" class="w-full h-full object-cover" />
-                        </div>
-                    </div>
-                    <div class="px-3 py-2 border-t border-gray-100">
-                        <button @click.stop="deleteSet(set.id)"
-                            class="text-red-500 hover:text-red-700 text-xs font-medium">
-                            {{ $t('common.delete') }}
-                        </button>
-                    </div>
+                    <button @click="createNewSet"
+                        class="w-full bg-primary text-white font-semibold py-4 rounded-xl active:scale-98 transition mt-4">
+                        + {{ $t('library.createNewSet') }}
+                    </button>
                 </div>
-
-                <button @click="createNewSet"
-                    class="w-full bg-primary text-white font-semibold py-4 rounded-xl active:scale-98 transition mt-4">
-                    + {{ $t('library.createNewSet') }}
-                </button>
             </div>
-            <div v-if="activeTab === 'favorites'" class="space-y-3">
+            <div v-else-if="activeTab === 'expertSets'" class="space-y-3">
                 <div v-if="setsStore.isLoading" class="text-center py-8">
                     <p class="text-gray-500">{{ $t('common.loading') }}</p>
                 </div>
-
+                <div v-else-if="setsStore.expertSets.length === 0" class="text-center py-8">
+                    <div class="mx-auto w-16 h-16 mb-3 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-full h-full">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-gray-800 mb-2">{{ $t('home.noExpertSets') }}</h3>
+                    <p class="text-sm text-gray-600">{{ $t('home.checkBackLater') }}</p>
+                </div>
+                <SetCard v-else v-for="set in setsStore.expertSets" :key="set.id" :set="set" @click="openSet" />
+            </div>
+            <div v-else-if="activeTab === 'favorites'" class="space-y-3">
+                <div v-if="setsStore.isLoading" class="text-center py-8">
+                    <p class="text-gray-500">{{ $t('common.loading') }}</p>
+                </div>
                 <div v-else-if="setsStore.favoriteSets.length === 0" class="text-center py-8">
                     <div class="mx-auto w-16 h-16 mb-3 text-gray-400">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -87,48 +113,13 @@
                     <h3 class="font-bold text-gray-800 mb-2">{{ $t('library.noFavorites') }}</h3>
                     <p class="text-sm text-gray-600 mb-4">{{ $t('library.noFavoritesDescription') }}</p>
                 </div>
-
-                <div v-else v-for="fav in setsStore.favoriteSets" :key="fav.id" @click="openSet(fav.id)"
-                    class="bg-white rounded-xl shadow-sm active:scale-98 transition cursor-pointer overflow-hidden">
-                    <div class="flex items-stretch">
-                        <div class="flex-1 p-4">
-                            <h3 class="font-bold text-gray-800 mb-1">{{ fav.title }}</h3>
-                            <p class="text-sm text-gray-600 mb-2">{{ fav.cards }} {{ $t('common.cards') }}</p>
-                            <div class="flex items-center gap-2">
-                                <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
-                                    <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                </div>
-                                <span class="text-xs text-gray-500">{{ fav.author }}</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center pr-4">
-                            <button @click.stop="toggleFavorite(fav.id!)"
-                                class="text-yellow-500 transition-transform active:scale-90">
-                                <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div v-if="fav.icon && !isUrl(fav.icon)"
-                            class="w-20 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
-                            {{ fav.icon }}
-                        </div>
-                        <div v-else-if="fav.icon" class="w-20 flex-shrink-0">
-                            <img :src="fav.icon" alt="Set Icon" class="w-full h-full object-cover" />
-                        </div>
-                    </div>
-                </div>
+                <SetCard v-else v-for="fav in setsStore.favoriteSets" :key="fav.id" :set="fav" :show-favorite="true"
+                    :is-favorite="true" @click="openSet" @toggle-favorite="toggleFavorite" />
             </div>
-            <div v-if="activeTab === 'recent'" class="space-y-3">
+            <div v-else-if="activeTab === 'recent'" class="space-y-3">
                 <div v-if="setsStore.isLoading" class="text-center py-8">
-                    <p class="text-gray-500">Lade zuletzt verwendet...</p>
+                    <p class="text-gray-500">{{ $t('common.loading') }}</p>
                 </div>
-
                 <div v-else-if="recentSetsWithDetails.length === 0" class="text-center py-8">
                     <div class="mx-auto w-16 h-16 mb-3 text-gray-400">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -140,34 +131,8 @@
                     <h3 class="font-bold text-gray-800 mb-2">{{ $t('library.noRecent') }}</h3>
                     <p class="text-sm text-gray-600 mb-4">{{ $t('library.noRecentDescription') }}</p>
                 </div>
-
-                <div v-else v-for="recent in recentSetsWithDetails" :key="recent.id" @click="openSet(recent.id)"
-                    class="bg-white rounded-xl shadow-sm active:scale-98 transition cursor-pointer overflow-hidden">
-                    <div class="flex items-stretch">
-                        <div class="flex-1 p-4">
-                            <h3 class="font-bold text-gray-800 mb-1">{{ recent.title }}</h3>
-                            <p class="text-sm text-gray-600 mb-2">{{ recent.cards }} {{ $t('common.cards') }}</p>
-                            <div class="flex items-center gap-2 mb-1">
-                                <div class="w-5 h-5 bg-gray-200 rounded-full flex items-center justify-center">
-                                    <svg class="w-3 h-3 text-gray-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                </div>
-                                <span class="text-xs text-gray-500">{{ recent.author || t('library.unknown') }}</span>
-                            </div>
-                            <span class="text-xs text-gray-400">{{ formatDate(recent.accessedAt) }}</span>
-                        </div>
-                        <div v-if="recent.icon && !isUrl(recent.icon)"
-                            class="w-20 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
-                            {{ recent.icon }}
-                        </div>
-                        <div v-else-if="recent.icon" class="w-20 flex-shrink-0">
-                            <img :src="recent.icon" alt="Set Icon" class="w-full h-full object-cover" />
-                        </div>
-                    </div>
-                </div>
+                <SetCard v-else v-for="recent in recentSetsWithDetails" :key="recent.id" :set="recent" :show-date="true"
+                    @click="openSet" />
             </div>
         </main>
         <BottomNavigation />
@@ -179,23 +144,72 @@ import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import BottomNavigation from '@/components/BottomNavigation.vue'
+import SetCard from '@/components/cards/SetCard.vue'
 import { useSetsStore } from '@/stores/sets'
 
 const { t } = useI18n()
 const router = useRouter()
 const setsStore = useSetsStore()
 const activeTab = ref('mySets')
+const searchQuery = ref('')
+const searchInput = ref<HTMLInputElement | null>(null)
+const isSearching = ref(false)
+const recentSetsWithDetails = ref<any[]>([])
 
 const tabs = computed(() => [
     { name: 'mySets', label: t('library.mySets') },
+    { name: 'expertSets', label: t('home.expertSets') },
     { name: 'favorites', label: t('library.favorites') },
     { name: 'recent', label: t('library.recentlyViewed') }
 ])
 
-const recentSetsWithDetails = ref<any[]>([])
+let searchTimeout: ReturnType<typeof setTimeout> | null = null
+
+const allSets = computed(() => {
+    return [
+        ...setsStore.mySets.map(set => ({
+            id: set.id!,
+            title: set.title,
+            cards: typeof set.cards === 'number' ? set.cards : set.cards.length,
+            author: set.author,
+            icon: set.icon
+        })),
+        ...setsStore.expertSets.map(set => ({
+            id: set.id!,
+            title: set.title,
+            cards: typeof set.cards === 'number' ? set.cards : set.cards.length,
+            author: set.author,
+            icon: set.icon
+        }))
+    ]
+})
+
+const filteredResults = computed(() => {
+    if (!searchQuery.value.trim()) return []
+
+    const query = searchQuery.value.toLowerCase()
+    return allSets.value.filter(set =>
+        set.title.toLowerCase().includes(query) ||
+        set.author.toLowerCase().includes(query)
+    )
+})
+
+const handleSearch = () => {
+    if (searchTimeout) clearTimeout(searchTimeout)
+
+    isSearching.value = true
+    searchTimeout = setTimeout(() => {
+        isSearching.value = false
+    }, 300)
+}
+
+const clearSearch = () => {
+    searchQuery.value = ''
+}
 
 onMounted(async () => {
     await setsStore.fetchMySets()
+    await setsStore.fetchExpertSets()
     await setsStore.loadFavorites()
     await loadRecentSets()
 })
@@ -207,6 +221,7 @@ const loadRecentSets = async () => {
 const openSet = async (id: string | number | undefined) => {
     if (id) {
         let set = setsStore.mySets.find(s => s.id === id) ||
+            setsStore.expertSets.find(s => s.id === id) ||
             setsStore.favoriteSets.find(s => s.id === id)
 
         if (!set) {
@@ -237,39 +252,8 @@ const toggleFavorite = async (id: number | string) => {
     await setsStore.toggleFavorite(id)
 }
 
-const isFavorite = (id: number | string) => {
-    return setsStore.isFavorite(id)
-}
-
 const createNewSet = () => {
     router.push('/create')
-}
-
-const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffInMs = now.getTime() - date.getTime()
-    const diffInMinutes = Math.floor(diffInMs / (1000 * 60))
-    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
-    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
-
-    if (diffInMinutes < 1) {
-        return t('library.justNow')
-    } else if (diffInMinutes < 60) {
-        return t('library.minutesAgo', { count: diffInMinutes })
-    } else if (diffInHours < 24) {
-        return t('library.hoursAgo', { count: diffInHours })
-    } else if (diffInDays === 1) {
-        return t('library.yesterday')
-    } else if (diffInDays < 7) {
-        return t('library.daysAgo', { count: diffInDays })
-    } else {
-        return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })
-    }
-}
-
-const isUrl = (str: string) => {
-    return str && (str.startsWith('http://') || str.startsWith('https://'))
 }
 </script>
 
