@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col h-screen bg-gray-50">
-        <Header></Header>
         <main class="flex-1 overflow-y-auto pb-20">
+            <Header></Header>
             <section class="px-3 pt-3 pb-4">
                 <div class="space-y-2">
                     <div class="grid grid-cols-2 gap-2">

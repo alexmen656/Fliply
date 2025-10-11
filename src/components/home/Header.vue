@@ -1,13 +1,13 @@
 <template>
-    <header class="bg-primary px-4 pt-3 relative">
+    <header class="px-4 pt-3 relative">
         <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-3">
                 <!--<svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
                 </svg>-->
                 <div>
-                    <span class="text-white text-xl font-bold">Fliply</span>
-                    <p v-if="userStore.profile.name" class="text-blue-100 text-sm">
+                    <span class="text-black text-3xl font-bold">Fliply</span>
+                    <p v-if="userStore.profile.name" class="text-black text-lg">
                         {{ $t('onboarding.welcome').split(' ')[0] }}, {{ userStore.profile.name }}!
                     </p>
                 </div>
