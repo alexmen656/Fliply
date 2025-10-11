@@ -34,7 +34,7 @@
                         <label class="text-sm font-medium text-gray-700 mb-2 block">
                             {{ $t('create.description') || 'Beschreibung' }}
                             <span class="text-xs text-gray-400 font-normal">({{ $t('common.optional') || 'Optional'
-                                }})</span>
+                            }})</span>
                         </label>
                         <textarea v-model="setDescription" ref="descriptionRef"
                             :placeholder="$t('create.descriptionPlaceholder')" rows="2"
@@ -52,7 +52,7 @@
                     <div v-for="(card, index) in cards" :key="index" class="bg-white rounded-xl border border-gray-200">
                         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
                             <span class="text-sm font-medium text-gray-600">{{ $t('common.card') }} {{ index + 1
-                                }}</span>
+                            }}</span>
                             <button v-if="cards.length > 1" @click="removeCard(index)"
                                 class="text-gray-400 hover:text-red-500">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,6 +213,7 @@ const saveSet = async () => {
     try {
         await setsStore.createSet({
             title: setTitle.value,
+            description: setDescription.value,
             cards: validCards.map((card, index) => ({
                 ...card,
                 order: index

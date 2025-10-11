@@ -138,12 +138,12 @@ const activeFilter = ref('all')
 const isLoading = ref(true)
 const setTitle = ref('')
 
-const filters = ref([
-    { id: 'all', label: 'Alle', count: undefined },
-    { id: 'starred', label: 'Markiert' },
-    { id: 'not-learned', label: 'Noch nicht gelernt' },
-    { id: 'learning', label: 'Am Lernen' },
-    { id: 'mastered', label: 'Gemeistert' }
+const filters = computed(() => [
+    { id: 'all', label: t('allCards.all'), count: undefined },
+    { id: 'starred', label: t('allCards.starred') },
+    { id: 'not-learned', label: t('allCards.notLearned') },
+    { id: 'learning', label: t('allCards.learning') },
+    { id: 'mastered', label: t('allCards.mastered') }
 ])
 
 const cards = ref<Card[]>([])

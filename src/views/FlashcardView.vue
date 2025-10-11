@@ -91,7 +91,6 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useStreakStore } from '@/stores/streak'
-import { useUserStore } from '@/stores/user'
 import { useSetsStore } from '@/stores/sets'
 import { useProgressStore } from '@/stores/progress'
 import { useGoalsStore } from '@/stores/goals'
@@ -193,7 +192,7 @@ const finishSession = async () => {
     }
 
     streakStore.recordStudySession()
-    router.push('/home')
+    router.back()
 }
 
 const exitFlashcards = async () => {

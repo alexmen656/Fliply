@@ -44,7 +44,7 @@
             </div>
             <div v-if="!isLoading" class="mb-4">
                 <div class="flex items-center justify-between text-xs text-gray-600 mb-2">
-                    <span class="font-medium">Fortschritt</span>
+                    <span class="font-medium">{{ $t('setDetail.progress') }}</span>
                     <span class="font-bold text-primary">{{ progress }}%</span>
                 </div>
                 <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
@@ -70,9 +70,17 @@
                 </div>-->
             </div>
         </header>
-        <main class="flex-1 overflow-y-auto pb-30 px-4 py-5">
+        <main class="flex-1 overflow-y-auto pb-20 px-4 py-5">
             <section v-if="!isLoading" class="mb-6">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">{{ $t('setDetail.studyModes') }}</h2>
+                <div class="flex items-center gap-2 mb-3">
+                    <h2 class="text-lg font-bold text-gray-800">{{ $t('setDetail.studyModes') }}</h2>
+                    <button @click="showCoinsInfo = true" class="text-gray-400 hover:text-gray-600 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
                 <div class="grid grid-cols-2 gap-3">
                     <button @click="startMode('flashcards')"
                         class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition-all duration-200 flex flex-col items-center justify-center hover:shadow-xl transform hover:-translate-y-1">
@@ -83,21 +91,10 @@
                         </svg>
                         <span class="font-semibold">{{ $t('setDetail.flashcards') }}</span>
                         <span v-if="stats.flashcardsCompleted > 0" class="text-xs mt-1 opacity-90">{{
-                            stats.flashcardsCompleted }}x gespielt</span>
+                            stats.flashcardsCompleted }}x {{ $t('setDetail.played') }}</span>
                     </button>
                     <button @click="startMode('quiz')"
                         class="bg-gradient-to-br from-purple-500 to-pink-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition-all duration-200 flex flex-col items-center justify-center relative hover:shadow-xl transform hover:-translate-y-1">
-                        <div
-                            class="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 animate-pulse-slow">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span>{{ totalCards * 10 }}</span>
-                        </div>
                         <svg class="w-10 h-10 mb-2 animate-bounce-subtle" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -105,21 +102,10 @@
                         </svg>
                         <span class="font-semibold">{{ $t('setDetail.quiz') }}</span>
                         <span v-if="stats.quizCompleted > 0" class="text-xs mt-1 opacity-90">{{ stats.quizCompleted }}x
-                            gespielt</span>
+                            {{ $t('setDetail.played') }}</span>
                     </button>
                     <button @click="startMode('match')"
                         class="bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition-all duration-200 flex flex-col items-center justify-center relative hover:shadow-xl transform hover:-translate-y-1">
-                        <div
-                            class="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 animate-pulse-slow">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span>{{ totalCards * 7 }}</span>
-                        </div>
                         <svg class="w-10 h-10 mb-2 animate-bounce-subtle" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -127,21 +113,10 @@
                         </svg>
                         <span class="font-semibold">{{ $t('setDetail.match') }}</span>
                         <span v-if="stats.matchCompleted > 0" class="text-xs mt-1 opacity-90">{{ stats.matchCompleted
-                            }}x gespielt</span>
+                            }}x {{ $t('setDetail.played') }}</span>
                     </button>
                     <button @click="startMode('learn')"
                         class="bg-gradient-to-br from-orange-500 to-red-600 text-white rounded-2xl p-6 shadow-lg active:scale-95 transition-all duration-200 flex flex-col items-center justify-center relative hover:shadow-xl transform hover:-translate-y-1">
-                        <div
-                            class="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 animate-pulse-slow">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span>{{ totalCards * 5 }}</span>
-                        </div>
                         <svg class="w-10 h-10 mb-2 animate-bounce-subtle" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -149,7 +124,7 @@
                         </svg>
                         <span class="font-semibold">{{ $t('setDetail.learn') }}</span>
                         <span v-if="stats.learnCompleted > 0" class="text-xs mt-1 opacity-90">{{ stats.learnCompleted
-                            }}x gespielt</span>
+                            }}x {{ $t('setDetail.played') }}</span>
                     </button>
                 </div>
             </section>
@@ -177,18 +152,75 @@
                 <p class="text-gray-500">{{ $t('allCards.noCards') }}</p>
             </section>
         </main>
-        <div v-if="!isLoading"
-            class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-4 safe-area-inset">
-            <button @click="startMode('flashcards')"
-                class="w-full bg-primary text-white font-bold py-4 rounded-xl active:scale-98 transition flex items-center justify-center gap-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Jetzt lernen
-            </button>
+
+        <!-- Coins Info Modal -->
+        <div v-if="showCoinsInfo" @click="showCoinsInfo = false"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+            <div @click.stop class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">{{ $t('setDetail.earnCoins') }}</h3>
+                    <button @click="showCoinsInfo = false" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-xl">
+                        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <div>
+                            <div class="font-semibold text-gray-800">{{ $t('setDetail.flashcards') }}</div>
+                            <div class="text-sm text-gray-600">{{ totalCards }} {{ $t('profile.coins') }}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-purple-50 rounded-xl">
+                        <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <div>
+                            <div class="font-semibold text-gray-800">{{ $t('setDetail.quiz') }}</div>
+                            <div class="text-sm text-gray-600">{{ totalCards * 10 }} {{ $t('profile.coins') }}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-green-50 rounded-xl">
+                        <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <div>
+                            <div class="font-semibold text-gray-800">{{ $t('setDetail.match') }}</div>
+                            <div class="text-sm text-gray-600">{{ totalCards * 7 }} {{ $t('profile.coins') }}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-orange-50 rounded-xl">
+                        <svg class="w-8 h-8 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <div>
+                            <div class="font-semibold text-gray-800">{{ $t('setDetail.learn') }}</div>
+                            <div class="text-sm text-gray-600">{{ totalCards * 5 }} {{ $t('profile.coins') }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -212,6 +244,7 @@ const cards = ref<any[]>([])
 const setIcon = ref('📚')
 const isLoading = ref(true)
 const isFavorite = ref(false)
+const showCoinsInfo = ref(false)
 
 const progress = computed(() => {
     const setId = route.params.id
@@ -326,9 +359,5 @@ const viewAllCards = () => {
 
 header {
     padding-top: env(safe-area-inset-top);
-}
-
-.pb-30 {
-    padding-bottom: 120px;
 }
 </style>

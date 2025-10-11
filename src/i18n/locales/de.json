@@ -125,7 +125,10 @@
     "match": "Zuordnen",
     "quiz": "Quiz",
     "allCards": "Alle Karten",
-    "createdBy": "Erstellt von"
+    "createdBy": "Erstellt von",
+    "played": "gespielt",
+    "earnCoins": "Münzen verdienen",
+    "progress": "Fortschritt"
   },
   "flashcards": {
     "title": "Karteikarten",
@@ -153,7 +156,23 @@
     "accuracy": "Genauigkeit",
     "studied": "Gelernt",
     "continueStudying": "Weiter lernen",
-    "confirmExit": "Möchtest du den Lernmodus wirklich beenden?"
+    "confirmExit": "Möchtest du den Lernmodus wirklich beenden?",
+    "tip": "Tipp",
+    "answerHasLetters": "Die Antwort hat {count} Buchstaben",
+    "mastered": "Gemeistert",
+    "learning": "Am Lernen",
+    "notYet": "Noch nicht",
+    "sessionCompleted": "Lernrunde abgeschlossen!",
+    "masteredCards": "Du hast {mastered} von {total} Karten gemeistert",
+    "coinsEarned": "Münzen verdient!",
+    "totalCoins": "Gesamt: {count} Münzen",
+    "howWellKnown": "Wie gut kanntest du die Antwort?",
+    "hard": "Schwer",
+    "good": "Gut",
+    "easy": "Leicht",
+    "checkAnswer": "Antwort prüfen",
+    "tryAgain": "Nochmal",
+    "back": "Zurück"
   },
   "match": {
     "title": "Zuordnen",
@@ -182,7 +201,12 @@
     "title": "Alle Karten",
     "searchPlaceholder": "Karten durchsuchen...",
     "noCards": "Keine Karten gefunden",
-    "confirmDelete": "Möchtest du diese Karte wirklich löschen?"
+    "confirmDelete": "Möchtest du diese Karte wirklich löschen?",
+    "all": "Alle",
+    "starred": "Markiert",
+    "notLearned": "Noch nicht gelernt",
+    "learning": "Am Lernen",
+    "mastered": "Gemeistert"
   },
   "editSet": {
     "title": "Set bearbeiten",

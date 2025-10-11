@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <div class="text-sm text-gray-600 mb-2">Wie gut kanntest du die Antwort?</div>
+                            <div class="text-sm text-gray-600 mb-2">{{ $t('learn.howWellKnown') }}</div>
                             <div class="grid grid-cols-3 gap-2">
                                 <button @click="rateCard(1)"
                                     class="py-3 px-4 rounded-xl font-semibold text-sm bg-red-100 text-red-800 active:scale-95 transition flex flex-col items-center gap-1">
@@ -70,7 +70,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    <span>Schwer</span>
+                                    <span>{{ $t('learn.hard') }}</span>
                                 </button>
                                 <button @click="rateCard(2)"
                                     class="py-3 px-4 rounded-xl font-semibold text-sm bg-yellow-100 text-yellow-800 active:scale-95 transition flex flex-col items-center gap-1">
@@ -78,7 +78,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
-                                    <span>Gut</span>
+                                    <span>{{ $t('learn.good') }}</span>
                                 </button>
                                 <button @click="rateCard(3)"
                                     class="py-3 px-4 rounded-xl font-semibold text-sm bg-green-100 text-green-800 active:scale-95 transition flex flex-col items-center gap-1">
@@ -86,7 +86,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    <span>Leicht</span>
+                                    <span>{{ $t('learn.easy') }}</span>
                                 </button>
                             </div>
                         </div>
@@ -100,23 +100,23 @@
                                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <div>
-                            <div class="font-semibold text-blue-800 mb-1">Tipp</div>
-                            <div>Die Antwort hat {{ currentCard.back.length }} Buchstaben</div>
+                            <div class="font-semibold text-blue-800 mb-1">{{ $t('learn.tip') }}</div>
+                            <div>{{ $t('learn.answerHasLetters', { count: currentCard.back.length }) }}</div>
                         </div>
                     </div>
                 </div>
                 <div class="grid grid-cols-3 gap-3 mt-6">
                     <div class="bg-white rounded-xl p-4 text-center">
                         <div class="text-2xl font-bold text-green-600">{{ stats.mastered }}</div>
-                        <div class="text-xs text-gray-600">Gemeistert</div>
+                        <div class="text-xs text-gray-600">{{ $t('learn.mastered') }}</div>
                     </div>
                     <div class="bg-white rounded-xl p-4 text-center">
                         <div class="text-2xl font-bold text-yellow-600">{{ stats.learning }}</div>
-                        <div class="text-xs text-gray-600">Am Lernen</div>
+                        <div class="text-xs text-gray-600">{{ $t('learn.learning') }}</div>
                     </div>
                     <div class="bg-white rounded-xl p-4 text-center">
                         <div class="text-2xl font-bold text-gray-600">{{ stats.notSeen }}</div>
-                        <div class="text-xs text-gray-600">Noch nicht</div>
+                        <div class="text-xs text-gray-600">{{ $t('learn.notYet') }}</div>
                     </div>
                 </div>
             </div>
@@ -131,8 +131,10 @@
                                 d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Lernrunde abgeschlossen!</h2>
-                    <p class="text-gray-600 mb-6">Du hast {{ masteredCards }} von {{ cards.length }} Karten gemeistert
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ $t('learn.sessionCompleted') }}</h2>
+                    <p class="text-gray-600 mb-6">{{ $t('learn.masteredCards', {
+                        mastered: masteredCards, total:
+                        cards.length }) }}
                     </p>
                     <div v-if="coinsEarned > 0" class="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-4 mb-6">
                         <div class="flex items-center justify-center gap-2">
@@ -144,33 +146,36 @@
                                     clip-rule="evenodd" />
                             </svg>
                             <div>
-                                <div class="text-lg font-bold text-yellow-800">+{{ coinsEarned }} Münzen verdient!</div>
-                                <div class="text-sm text-yellow-700">Gesamt: {{ userStore.profile.coins }} Münzen</div>
+                                <div class="text-lg font-bold text-yellow-800">+{{ coinsEarned }} {{ $t('profile.coins')
+                                    }}</div>
+                                <div class="text-sm text-yellow-700">{{ $t('learn.totalCoins', {
+                                    count:
+                                    userStore.profile.coins }) }}</div>
                             </div>
                         </div>
                     </div>
                     <div class="grid grid-cols-3 gap-4 mb-6">
                         <div class="bg-green-50 rounded-xl p-4">
                             <div class="text-2xl font-bold text-green-600">{{ stats.mastered }}</div>
-                            <div class="text-xs text-gray-600">Gemeistert</div>
+                            <div class="text-xs text-gray-600">{{ $t('learn.mastered') }}</div>
                         </div>
                         <div class="bg-yellow-50 rounded-xl p-4">
                             <div class="text-2xl font-bold text-yellow-600">{{ stats.learning }}</div>
-                            <div class="text-xs text-gray-600">Am Lernen</div>
+                            <div class="text-xs text-gray-600">{{ $t('learn.learning') }}</div>
                         </div>
                         <div class="bg-blue-50 rounded-xl p-4">
                             <div class="text-2xl font-bold text-blue-600">{{ getAccuracy() }}%</div>
-                            <div class="text-xs text-gray-600">Genauigkeit</div>
+                            <div class="text-xs text-gray-600">{{ $t('learn.accuracy') }}</div>
                         </div>
                     </div>
                     <div class="flex gap-3">
                         <button @click="restartLearn"
                             class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold active:scale-95 transition">
-                            Nochmal
+                            {{ $t('learn.tryAgain') }}
                         </button>
                         <button @click="$router.back()"
                             class="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-semibold active:scale-95 transition">
-                            Zurück
+                            {{ $t('common.back') }}
                         </button>
                     </div>
                 </div>
@@ -180,7 +185,7 @@
             class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 safe-area-inset">
             <button @click="checkAnswer" :disabled="!userAnswer.trim()"
                 class="w-full bg-primary text-white py-4 rounded-xl font-semibold active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                Antwort prüfen
+                {{ $t('learn.checkAnswer') }}
             </button>
         </div>
     </div>

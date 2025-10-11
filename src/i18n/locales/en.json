@@ -125,7 +125,10 @@
     "match": "Match",
     "quiz": "Quiz",
     "allCards": "All Cards",
-    "createdBy": "Created by"
+    "createdBy": "Created by",
+    "played": "played",
+    "earnCoins": "Earn Coins",
+    "progress": "Progress"
   },
   "flashcards": {
     "title": "Flashcards",
@@ -153,7 +156,23 @@
     "accuracy": "Accuracy",
     "studied": "Studied",
     "continueStudying": "Continue Studying",
-    "confirmExit": "Do you really want to end the learning mode?"
+    "confirmExit": "Do you really want to end the learning mode?",
+    "tip": "Tip",
+    "answerHasLetters": "The answer has {count} letters",
+    "mastered": "Mastered",
+    "learning": "Learning",
+    "notYet": "Not Yet",
+    "sessionCompleted": "Learning Session Completed!",
+    "masteredCards": "You've mastered {mastered} of {total} cards",
+    "coinsEarned": "Coins Earned!",
+    "totalCoins": "Total: {count} Coins",
+    "howWellKnown": "How well did you know the answer?",
+    "hard": "Hard",
+    "good": "Good",
+    "easy": "Easy",
+    "checkAnswer": "Check Answer",
+    "tryAgain": "Try Again",
+    "back": "Back"
   },
   "match": {
     "title": "Match",
@@ -176,13 +195,24 @@
     "correct": "Correct",
     "incorrect": "Incorrect",
     "tryAgain": "Try Again",
-    "confirmExit": "Do you really want to end the quiz?"
+    "confirmExit": "Do you really want to end the quiz?",
+    "whatMeans": "What does \"{term}\" mean?",
+    "termMeans": "\"{term}\" means \"{meaning}\".",
+    "correctAnswer": "Correct!",
+    "wrongAnswer": "Wrong",
+    "next": "Next →",
+    "showResults": "Show Results"
   },
   "allCards": {
     "title": "All Cards",
     "searchPlaceholder": "Search cards...",
     "noCards": "No cards found",
-    "confirmDelete": "Do you really want to delete this card?"
+    "confirmDelete": "Do you really want to delete this card?",
+    "all": "All",
+    "starred": "Starred",
+    "notLearned": "Not Learned",
+    "learning": "Learning",
+    "mastered": "Mastered"
   },
   "editSet": {
     "title": "Edit Set",

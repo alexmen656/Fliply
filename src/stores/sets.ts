@@ -14,6 +14,7 @@ export interface Set {
   id?: string | number
   userId?: string
   title: string
+  description?: string
   cards: Card[] | number
   author: string
   avatar?: string
@@ -111,6 +112,7 @@ export const useSetsStore = defineStore('sets', () => {
 
   const createSet = async (setData: {
     title: string
+    description?: string
     cards: Card[]
     icon?: string
     isExpert?: boolean
@@ -128,6 +130,7 @@ export const useSetsStore = defineStore('sets', () => {
       const response = await axios.post('/api/sets', {
         userId,
         title: setData.title,
+        description: setData.description || '',
         cards: setData.cards,
         icon: setData.icon || '📚',
         isExpert: setData.isExpert || false,
