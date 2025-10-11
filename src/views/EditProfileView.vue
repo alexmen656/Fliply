@@ -18,7 +18,6 @@
                         class="w-24 h-24 bg-gradient-to-br from-[#4255FF] to-indigo-600 rounded-full flex items-center justify-center text-4xl text-white shadow-lg overflow-hidden">
                         <img v-if="userStore.profile.avatar" :src="'/assets/avatars/' + userStore.profile.avatar"
                             alt="Avatar" class="w-full h-full object-cover" />
-                        <span v-else>{{ userEmoji }}</span>
                     </div>
                     <button @click="$router.push('/avatar-shop')"
                         class="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
@@ -53,19 +52,6 @@
                         class="w-full text-gray-800 bg-white rounded-xl px-4 py-3 border-2 border-gray-200 focus:border-primary focus:outline-none" />
                 </div>
             </div>
-            <div v-if="showEmojiPicker"
-                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-                @click="showEmojiPicker = false">
-                <div class="bg-white rounded-2xl p-6 m-4 max-w-sm w-full" @click.stop>
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">{{ $t('profile.chooseEmoji') }}</h3>
-                    <div class="grid grid-cols-5 gap-3">
-                        <button v-for="emoji in emojiList" :key="emoji" @click="selectEmoji(emoji)"
-                            class="text-4xl p-3 hover:bg-gray-100 rounded-xl active:scale-95 transition">
-                            {{ emoji }}
-                        </button>
-                    </div>
-                </div>
-            </div>
         </main>
     </div>
 </template>
@@ -82,42 +68,28 @@ const goalsStore = useGoalsStore()
 
 const userName = ref('Max Mustermann')
 const userEmail = ref('max@example.com')
-const userBio = ref('Lerne fleißig für meine Prüfungen 📚')
+const userBio = ref('Learning...')
 const dailyGoal = ref(20)
-const userEmoji = ref('👤')
-const showEmojiPicker = ref(false)
 
 onMounted(async () => {
     await userStore.loadFromStorage()
     await goalsStore.loadGoals()
     if (userStore.profile.name) userName.value = userStore.profile.name
     if (userStore.profile.email) userEmail.value = userStore.profile.email
-    if (userStore.profile.emoji) userEmoji.value = userStore.profile.emoji
+    if (userStore.profile.bio) userBio.value = userStore.profile.bio
     dailyGoal.value = goalsStore.dailyGoal
 })
-
-const emojiList = ['👤', '😀', '🎓', '📚', '🚀', '⭐', '💪', '🎯', '🔥', '✨', '🌟', '💡', '🎨', '🎮', '🏆']
-
-const changeEmoji = () => {
-    showEmojiPicker.value = true
-}
-
-const selectEmoji = (emoji: string) => {
-    userEmoji.value = emoji
-    showEmojiPicker.value = false
-}
 
 const saveProfile = async () => {
     await userStore.updateProfile({
         name: userName.value,
         email: userEmail.value,
-        emoji: userStore.profile.avatar ? undefined : userEmoji.value,
+        bio: userBio.value,
+        emoji: userStore.profile.avatar
     })
 
-    // Synchronisiere das Lernziel mit dem globalen Store
     goalsStore.dailyGoal = dailyGoal.value
     await goalsStore.saveGoals()
-
     router.back()
 }
 </script>

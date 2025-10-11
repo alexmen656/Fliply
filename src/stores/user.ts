@@ -10,6 +10,7 @@ export interface UserProfile {
   email?: string
   emoji?: string
   avatar?: string
+  bio?: string
   coins: number
   hasCompletedOnboarding: boolean
   onboardingStep: number

@@ -58,8 +58,7 @@
             </div>
         </Transition>
 
-        <div v-if="showNotifications" @click="closeDropdowns"
-            class="fixed inset-0 z-40"></div>
+        <div v-if="showNotifications" @click="closeDropdowns" class="fixed inset-0 z-40"></div>
     </header>
 </template>
 

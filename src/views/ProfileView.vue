@@ -1,248 +1,141 @@
 <template>
-    <div class="flex flex-col h-screen bg-gray-50">
-        <header :class="['px-4 py-8 flex-shrink-0', currentBannerGradient]">
-            <div class="flex items-start gap-4 mb-4">
-                <button @click="editProfile"
-                    class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-4xl shadow-lg relative group overflow-hidden flex-shrink-0">
-                    <img v-if="userStore.profile.avatar" :src="'/assets/avatars/' + userStore.profile.avatar"
-                        alt="Avatar" class="w-full h-full object-cover rounded-full"
-                        @error="(e) => (e.target as HTMLImageElement).style.display = 'none'" />
-                    <div class="absolute inset-0 group-active:bg-opacity-10 rounded-full transition">
-                    </div>
-                </button>
-                <div class="flex-1 pt-2">
-                    <h1 class="text-2xl font-bold text-white mb-1">{{ userStore.profile.name || $t('profile.title') }}
-                    </h1>
-                    <p class="text-white opacity-90 text-sm">{{ userStore.profile.email || $t('profile.noEmail') }}</p>
-                </div>
-            </div>
-            <div class="flex gap-2">
-                <button @click="openCoinHistory"
-                    class="flex-1 bg-white text-primary px-4 py-3 rounded-xl font-semibold text-sm active:scale-95 transition flex items-center justify-center gap-2">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>{{ userStore.profile.coins }}</span>
-                </button>
-                <button @click="openAvatarShop"
-                    class="flex-1 bg-white text-primary px-4 py-3 rounded-xl font-semibold text-sm active:scale-95 transition flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                    <span>{{ $t('avatarShop.title') }}</span>
-                </button>
-            </div>
+    <div class="flex flex-col h-screen bg-gray-100">
+        <header class="bg-gray-100 px-6 pt-16 pb-4">
+            <h1 class="text-3xl font-bold text-gray-800">{{ $t('profile.title') }}</h1>
         </header>
-        <div class="px-4 -mt-6 mb-6 flex-shrink-0">
-            <div class="bg-white rounded-2xl p-4 shadow-lg">
-                <div v-if="isLoadingStats" class="text-center py-4">
-                    <p class="text-gray-500 text-sm">{{ $t('common.loading') }}</p>
-                </div>
-                <div v-else class="grid grid-cols-3 gap-4">
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-primary">{{ totalSets }}</div>
-                        <div class="text-xs text-gray-600 mt-1">Sets</div>
+        <main class="flex-1 overflow-y-auto pb-32 px-4">
+            <div class="bg-white rounded-xl overflow-hidden mb-8">
+                <button @click="editProfile" class="w-full flex items-center gap-4 px-4 py-4">
+                    <div
+                        class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0">
+                        <img v-if="userStore.profile.avatar" :src="'/assets/avatars/' + userStore.profile.avatar"
+                            alt="Avatar" class="w-full h-full object-cover" />
+                        <span v-else class="text-2xl">{{ userStore.profile.emoji || '👤' }}</span>
                     </div>
-                    <div class="text-center border-l border-r border-gray-200">
-                        <div class="text-2xl font-bold text-green-600">{{ totalCards }}</div>
-                        <div class="text-xs text-gray-600 mt-1">{{ $t('common.cards') }}</div>
+                    <div class="flex-1 text-left min-w-0">
+                        <h2 class="text-lg font-semibold text-gray-800 truncate">
+                            {{ userStore.profile.name || $t('profile.title') }}
+                        </h2>
+                        <p class="text-sm text-gray-500 truncate">
+                            {{ userStore.profile.email || $t('profile.noEmail') }}
+                        </p>
+                        <p v-if="userStore.profile.bio" class="text-sm text-gray-600 mt-1 line-clamp-1">
+                            {{ userStore.profile.bio }}
+                        </p>
                     </div>
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-orange-600">{{ streakDays }}</div>
-                        <div class="text-xs text-gray-600 mt-1">{{ $t('home.streak') }}</div>
-                    </div>
-                </div>
+                    <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
             </div>
-        </div>
-        <main class="flex-1 overflow-y-auto pb-30 px-4">
-            <section class="mb-6">
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-lg font-bold text-gray-800">{{ $t('profile.achievements') }}</h2>
-                    <button @click="viewAllAchievements" class="text-primary text-sm font-semibold">
-                        {{ $t('common.viewAll') }}
-                    </button>
-                </div>
-                <div v-if="displayedAchievements.length === 0" class="bg-white rounded-xl p-6 text-center shadow-sm">
-                    <p class="text-gray-500 text-sm">{{ $t('profile.noAchievements') }}</p>
-                    <p class="text-gray-400 text-xs mt-1 flex items-center justify-center gap-1">
-                        <span>{{ $t('profile.keepLearning') }}</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </p>
-                </div>
-                <div v-else class="grid grid-cols-3 gap-3">
-                    <div v-for="badge in displayedAchievements" :key="badge.id" :class="[
-                        'rounded-xl p-3 shadow-sm text-center transition',
-                        badge.unlocked
-                            ? 'bg-white'
-                            : 'bg-gray-100 opacity-60'
-                    ]">
-                        <div :class="[
-                            'text-3xl mb-1',
-                            !badge.unlocked && 'grayscale opacity-40'
-                        ]">
-                            {{ badge.icon }}
-                        </div>
-                        <div :class="[
-                            'text-xs font-medium',
-                            badge.unlocked ? 'text-gray-700' : 'text-gray-400'
-                        ]">
-                            {{ badge.name }}
-                        </div>
-                        <div v-if="badge.unlocked" class="mt-1">
-                            <svg class="w-3 h-3 mx-auto text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clip-rule="evenodd" />
+            <div class="bg-white rounded-xl overflow-hidden mb-8">
+                <button @click="$router.push('/stats')"
+                    class="w-full flex items-center justify-between px-4 py-3.5 border-b border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg>
                         </div>
-                        <div v-else class="mt-1">
-                            <svg class="w-3 h-3 mx-auto text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </div>
+                        <span class="text-gray-800">{{ $t('profile.statistics') || 'Statistiken' }}</span>
                     </div>
-                </div>
-            </section>
-            <section class="mb-6">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">{{ $t('profile.settings') }}</h2>
-                <div class="bg-white rounded-xl overflow-hidden shadow-sm">
-                    <button v-for="(setting, index) in settings" :key="setting.id" @click="setting.action" :class="[
-                        'w-full flex items-center justify-between px-4 py-4 active:bg-gray-50 transition',
-                        index !== settings.length - 1 ? 'border-b border-gray-100' : ''
-                    ]">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center"
-                                :class="setting.iconBg">
-                                <svg class="w-5 h-5" :class="setting.iconColor" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        :d="setting.iconPath" />
-                                </svg>
-                            </div>
-                            <span class="font-medium text-gray-800">{{ setting.name }}</span>
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+                <button @click="openCoinHistory"
+                    class="w-full flex items-center justify-between px-4 py-3.5 border-b border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z" />
+                            </svg>
                         </div>
+                        <span class="text-gray-800">{{ $t('profile.coins') || 'Coins' }}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-gray-500 font-semibold">{{ userStore.profile.coins }}</span>
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
-                    </button>
-                </div>
-            </section>
-            <section>
-                <div class="bg-white rounded-xl p-4 shadow-sm text-center">
-                    <p class="text-sm text-gray-600 mb-2" @click="handleVersionClick">Fliply Version 1.0.0</p>
-                    <p class="text-xs text-gray-500">{{ $t('profile.madeWithLove') }}</p>
-                </div>
-            </section>
-        </main>
+                    </div>
+                </button>
 
+                <button @click="openAvatarShop" class="w-full flex items-center justify-between px-4 py-3.5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                        </div>
+                        <span class="text-gray-800">{{ $t('avatarShop.title') }}</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+            <div class="bg-white rounded-xl overflow-hidden mb-8">
+                <button v-for="(setting, index) in settings" :key="setting.id" @click="setting.action" :class="[
+                    'w-full flex items-center justify-between px-4 py-3.5',
+                    index !== settings.length - 1 ? 'border-b border-gray-100' : ''
+                ]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center" :class="setting.iconBg">
+                            <svg class="w-4 h-4" :class="setting.iconColor" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    :d="setting.iconPath" />
+                            </svg>
+                        </div>
+                        <span class="text-gray-800">{{ setting.name }}</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+            <div class="text-center mb-4">
+                <p class="text-sm text-gray-500 mb-1" @click="handleVersionClick">Fliply Version 1.0.0</p>
+                <p class="text-xs text-gray-400">{{ $t('profile.madeWithLove') }}</p>
+            </div>
+        </main>
         <BottomNavigation />
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import BottomNavigation from '@/components/BottomNavigation.vue'
 import { useUserStore } from '@/stores/user'
-import { useSetsStore } from '@/stores/sets'
-import { useAchievementsStore } from '@/stores/achievements'
-import { useBannersStore } from '@/stores/banners'
-import { Preferences } from '@capacitor/preferences'
-import axios from '@/axios'
 
 const { t } = useI18n()
 const router = useRouter()
 const userStore = useUserStore()
-const setsStore = useSetsStore()
-const achievementsStore = useAchievementsStore()
-const bannersStore = useBannersStore()
 
 const versionClickCount = ref(0)
 const versionClickTimer = ref<number | null>(null)
 
-const currentBannerGradient = computed(() => {
-    const banner = bannersStore.getCurrentBanner()
-    return banner ? banner.gradient : 'bg-gradient-to-br from-[#4255FF] to-indigo-600'
-})
-
-const totalSets = computed(() => setsStore.mySets.length)
-const totalCards = ref(0)
-const streakDays = ref(0)
-const isLoadingStats = ref(true)
-
-const displayedAchievements = computed(() => {
-    const unlocked = achievementsStore.unlockedAchievements
-    const locked = achievementsStore.lockedAchievements
-    const unlockedCount = unlocked.length
-    const remainder = unlockedCount % 3
-    const lockedNeeded = remainder === 0 ? 0 : 3 - remainder
-
-    return [...unlocked, ...locked.slice(0, lockedNeeded)]
-})
-
 onMounted(async () => {
-    isLoadingStats.value = true
-
     await userStore.loadFromStorage()
-    await setsStore.fetchMySets()
-    await bannersStore.loadFromStorage()
-
-    try {
-        const { value } = await Preferences.get({ key: 'fliply_total_cards' })
-        if (value) {
-            totalCards.value = parseInt(value, 10)
-        } else {
-            let cardCount = 0
-            for (const set of setsStore.mySets) {
-                cardCount += typeof set.cards === 'number' ? set.cards : (set.cards as any[]).length
-            }
-            totalCards.value = cardCount
-            await Preferences.set({ key: 'fliply_total_cards', value: cardCount.toString() })
-        }
-    } catch (error) {
-        console.error('Error loading total cards:', error)
-    }
-
-    if (userStore.profile.id) {
-        try {
-            const response = await axios.get(`/api/users/${userStore.profile.id}`)
-            if (response.data.success) {
-                streakDays.value = response.data.data.currentStreak || 0
-            }
-        } catch (error) {
-            console.error('Error loading streak from API:', error)
-            try {
-                const { value } = await Preferences.get({ key: 'fliply_streak' })
-                if (value) {
-                    const streakData = JSON.parse(value)
-                    streakDays.value = streakData.currentStreak || 0
-                }
-            } catch (e) {
-                console.error('Error loading streak from preferences:', e)
-            }
-        }
-    }
-
-    await achievementsStore.loadFromStorage()
-    await achievementsStore.checkAndUnlockAchievements()
-
-    isLoadingStats.value = false
 })
 
-const viewAllAchievements = () => {
-    router.push('/achievements')
+const editProfile = () => {
+    router.push('/edit-profile')
 }
 
 const openCoinHistory = () => {
     router.push('/coin-history')
+}
+
+const openAvatarShop = () => {
+    router.push('/avatar-shop')
 }
 
 const handleVersionClick = () => {
@@ -262,24 +155,7 @@ const handleVersionClick = () => {
     }
 }
 
-const badges_old = ref([
-    { id: 1, icon: '🏆', name: 'Starter' },
-    { id: 2, icon: '🔥', name: '7 Days' },
-    { id: 3, icon: '⭐', name: 'Top Learner' },
-    { id: 4, icon: '🎯', name: '100 Cards' },
-    { id: 5, icon: '📚', name: 'Books' },
-    { id: 6, icon: '💪', name: 'Diligent' }
-])
-
 const settings = ref([
-    /*{
-        id: 1,
-        name: 'Benachrichtigungen',
-        iconPath: 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9',
-        iconBg: 'bg-blue-100',
-        iconColor: 'text-blue-600',
-        action: () => router.push('/settings/notifications')
-    },*/
     {
         id: 2,
         name: t('profile.goals'),
@@ -314,14 +190,6 @@ const settings = ref([
     }
 ])
 
-const editProfile = () => {
-    router.push('/edit-profile')
-}
-
-const openAvatarShop = () => {
-    router.push('/avatar-shop')
-}
-
 const logout = () => {
     if (confirm(t('profile.logoutConfirm'))) {
         console.log('Logging out...')
@@ -331,23 +199,23 @@ const logout = () => {
 </script>
 
 <style scoped>
-.safe-area-inset {
-    padding-bottom: env(safe-area-inset-bottom);
-}
-
-.active\:bg-gray-50:active {
-    background-color: rgb(249 250 251);
-}
-
 header {
     padding-top: env(safe-area-inset-top);
 }
 
-.grayscale {
-    filter: grayscale(100%);
+.safe-area-inset {
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
-.pb-30 {
-    padding-bottom: 120px;
+.pb-32 {
+    padding-bottom: 128px;
+}
+
+.line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
 }
 </style>

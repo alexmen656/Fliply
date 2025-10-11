@@ -15,6 +15,7 @@ import ExpertSetsView from '../views/ExpertSetsView.vue'
 import AvatarShopView from '../views/AvatarShopView.vue'
 import AchievementsView from '../views/AchievementsView.vue'
 import CoinHistoryView from '../views/CoinHistoryView.vue'
+import StatsView from '../views/StatsView.vue'
 import NotificationsView from '../views/settings/NotificationsView.vue'
 import GoalsView from '../views/settings/GoalsView.vue'
 import AppearanceView from '../views/settings/AppearanceView.vue'
@@ -113,6 +114,11 @@ const router = createRouter({
       path: '/coin-history',
       name: 'coin-history',
       component: CoinHistoryView,
+    },
+    {
+      path: '/stats',
+      name: 'stats',
+      component: StatsView,
     },
     {
       path: '/settings/notifications',
