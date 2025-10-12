@@ -40,7 +40,7 @@ Unlock achievements by:
 - Available in English and German
 - Switch between languages seamlessly in the app settings
 
-### Demo
+## Demo
 Video demo: [YouTube](https://www.youtube.com/watch?v=2r9RwOVMajc)
 
 ## Recommended IDE Setup
