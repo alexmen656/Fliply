@@ -20,7 +20,6 @@ Fliply is a learning application built with Vue 3 and Vite. Users can create cus
 - Earn coins by completing Quiz, Learn, and Match modes
 - Unlock new app themes with your earned coins
 - Customize your profile with unlockable profile pictures
-- Collect and display banners to showcase your achievements
 
 ### Achievements System
 
